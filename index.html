@@ -1,0 +1,275 @@
+<!doctype html><html lang="ko"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>너울(NEOUL) 베타 — AI 수능 학습관리 데모</title>
+<style>
+:root{--deep:#1A3A5C;--mid:#2B5F8B;--light:#A8C4DD;--foam:#F5F9FC;--wave:#bfe0f6;--ink:#1F2937;--muted:#64748b;--border:#e3ecf4;
+--c1:#E8412E;--c2:#F2A03D;--c3:#2F8F4E;--c4:#2B5F8B;--c5:#6B4E9E;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Malgun Gothic','맑은 고딕','Noto Sans KR',system-ui,sans-serif;background:var(--foam);color:var(--ink);line-height:1.5}
+.hidden{display:none!important}
+button{font-family:inherit;cursor:pointer;border:none}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(155deg,#0A3D62,#1B6CA8);padding:20px}
+.lbox{background:#fff;border-radius:22px;padding:40px 36px;width:380px;max-width:94vw;box-shadow:0 30px 70px -30px rgba(0,0,0,.4);text-align:center}
+.logo{font-size:1.7rem;font-weight:800;color:var(--deep)}.logo .n{color:var(--mid)}
+.tag{color:var(--muted);font-size:.9rem;margin:6px 0 24px}
+.lbox input,.lbox select{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:.95rem;margin-bottom:12px}
+.btn{background:var(--mid);color:#fff;padding:13px;border-radius:12px;font-weight:700;font-size:.98rem;width:100%}.btn:hover{background:var(--deep)}
+.demo-note{font-size:.78rem;color:var(--muted);margin-top:14px}
+#app{max-width:1000px;margin:0 auto;padding:0 14px 70px}
+.top{position:sticky;top:0;background:rgba(245,249,252,.94);backdrop-filter:blur(8px);z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 4px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.top .logo{font-size:1.2rem}
+.stat{display:flex;align-items:center;gap:14px;font-size:.82rem;color:var(--muted)}
+.lvl{background:var(--deep);color:#fff;font-weight:700;font-size:.76rem;padding:4px 9px;border-radius:8px}
+.pts{background:var(--c2);color:#fff;font-weight:700;font-size:.76rem;padding:4px 9px;border-radius:8px}
+.xpbar{width:110px;height:8px;background:var(--border);border-radius:6px;overflow:hidden}.xpfill{height:100%;background:linear-gradient(90deg,var(--light),var(--mid));transition:width .6s}
+.tabs{display:flex;gap:6px;margin:16px 0;flex-wrap:wrap}
+.tab{padding:9px 14px;border-radius:11px;background:#fff;border:1px solid var(--border);font-size:.86rem;font-weight:600;color:var(--muted)}
+.tab.on{background:var(--deep);color:#fff;border-color:var(--deep)}
+.panel{animation:fade .3s}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
+.subtle{color:var(--muted);font-size:.85rem;margin-bottom:12px}
+.auto{display:inline-block;background:var(--wave);color:var(--deep);font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:7px;margin-left:6px}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 10px 24px -20px rgba(10,61,98,.3)}
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal .h{text-align:center;font-size:.74rem;font-weight:700;color:var(--muted);padding:4px 0}
+.cell{min-height:74px;border:1px solid var(--border);border-radius:9px;padding:5px;background:#fff;font-size:.7rem}
+.cell.today{border-color:var(--mid);box-shadow:0 0 0 2px var(--mid) inset;background:#f0f7fc}
+.cell .dn{font-weight:700;color:var(--muted);font-size:.72rem}
+.cell.today .dn{color:var(--mid)}
+.ev{display:block;border-radius:5px;padding:1px 4px;margin-top:2px;color:#fff;font-size:.64rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.leg{display:flex;gap:10px;flex-wrap:wrap;font-size:.74rem;color:var(--muted);margin:10px 0}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:middle}
+.rev{display:flex;align-items:center;gap:12px;padding:11px;border:1px solid var(--border);border-radius:12px;margin-bottom:9px;background:#fff}
+.dot{width:42px;height:42px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:.74rem;flex-direction:column;line-height:1}
+.dot small{font-size:.56rem;font-weight:600;opacity:.95}
+.rev .m{flex:1}.rev .m b{font-size:.92rem}.rev .m span{display:block;color:var(--muted);font-size:.78rem}
+.do{background:var(--mid);color:#fff;padding:8px 13px;border-radius:9px;font-weight:700;font-size:.8rem;white-space:nowrap}.do.done{background:#e8f3ec;color:var(--c3);pointer-events:none}
+/* 단권화 */
+.dz{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:11px;margin-bottom:8px;background:#fff}
+.marks{display:flex;gap:3px;flex:none}
+.mk{width:14px;height:14px;border-radius:3px;border:1px solid #ddd}
+.dz .t{flex:1;font-size:.88rem}.dz .t small{display:block;color:var(--muted);font-size:.74rem}
+.tagx{font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.tagx.keep{background:#fdeeec;color:var(--c1)}.tagx.gone{background:#eef8f1;color:var(--c3)}
+/* quiz */
+.qsel{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.qs{padding:7px 13px;border-radius:9px;border:1px solid var(--border);background:#fff;font-size:.82rem;font-weight:600;color:var(--muted)}.qs.on{background:var(--mid);color:#fff;border-color:var(--mid)}
+.q{font-size:1rem;font-weight:700;margin:4px 0 12px}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:.9rem}.opt:hover{border-color:var(--light)}
+.opt.correct{border-color:var(--c3);background:#eef8f1}.opt.wrong{border-color:var(--c1);background:#fdeeec}
+.fb{padding:12px 14px;border-radius:12px;font-size:.85rem;margin:8px 0}.fb.ok{background:#eef8f1;color:var(--c3)}.fb.no{background:#fdeeec;color:var(--c1)}
+.pill{display:inline-block;background:var(--deep);color:#fff;font-size:.72rem;padding:3px 9px;border-radius:20px;margin:2px 4px 2px 0}
+/* shop */
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.kpi .k{background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px;text-align:center}.kpi .k b{display:block;font-size:1.4rem;color:var(--deep)}.kpi .k span{font-size:.76rem;color:var(--muted)}
+.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:11px}
+.item{background:#fff;border:1px solid var(--border);border-radius:14px;padding:15px;text-align:center}
+.item .ico{font-size:1.7rem}.item b{display:block;font-size:.9rem;margin:6px 0 2px}.item .c{color:var(--c2);font-weight:700;font-size:.84rem;margin-bottom:9px}
+.redeem{background:var(--deep);color:#fff;padding:8px;border-radius:9px;font-weight:700;font-size:.8rem;width:100%}.redeem:disabled{background:#cbd5e1;cursor:not-allowed}
+.wk{display:flex;align-items:flex-end;gap:8px;height:150px;margin:12px 0;padding-top:6px}.wk .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}.wk .col i{width:100%;background:linear-gradient(180deg,var(--mid),var(--light));border-radius:6px 6px 0 0}.wk .col span{font-size:.7rem;color:var(--muted)}
+.note{background:var(--deep);color:#cfe2f2;border-radius:14px;padding:15px 17px;font-size:.84rem;line-height:1.55}.note b{color:#fff}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--deep);color:#fff;padding:12px 20px;border-radius:30px;font-weight:700;font-size:.88rem;opacity:0;transition:.4s;z-index:50}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.foot{text-align:center;color:var(--muted);font-size:.74rem;margin-top:22px}
+</style></head><body>
+<div id="login"><div class="lbox">
+  <div class="logo">너울<span class="n"> NEOUL</span></div>
+  <div class="tag">인강은 1번, 복습은 누적 5번 — AI 학습관리 베타</div>
+  <input id="email" type="email" placeholder="이메일 (아무거나)" value="student@neoul.ai"/>
+  <select id="role"><option value="student">학생으로 입장</option><option value="parent">학부모로 입장</option><option value="admin">관리자로 입장</option></select>
+  <button class="btn" onclick="enter()">베타 체험 시작</button>
+  <div class="demo-note">데모 · mock 데이터로 핵심 흐름을 보여줍니다</div>
+</div></div>
+<div id="app" class="hidden">
+  <div class="top">
+    <div class="logo">너울<span style="color:var(--mid)"> NEOUL</span></div>
+    <div class="stat">
+      <span class="lvl" id="lvl">Lv.4</span><span class="pts" id="pts">1,240P</span>
+      <div><div style="font-size:.7rem">XP <span id="xpv">320</span>/500</div><div class="xpbar"><div class="xpfill" id="xpf" style="width:64%"></div></div></div>
+    </div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div id="view"></div>
+  <div class="foot">너울 NEOUL 베타 데모 v2.0 · 5회독 자동 스케줄(1·3·7·11·15) · 소거법 단권화 · BM 특허 출원 예정</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const COL=['#E8412E','#F2A03D','#2F8F4E','#2B5F8B','#6B4E9E'];
+const TODAY=12; // 데모 기준 '오늘' = 12일
+// 인강 진도(DAY): subj, day, 페이지범위, 인강(1회독)일
+const PROG=[
+ {subj:'국어',day:1,pg:'P.5~20',lec:2,lecName:'강민철 문학'},
+ {subj:'수학',day:1,pg:'P.10~32',lec:6,lecName:'현우진 수1'},
+ {subj:'영어',day:1,pg:'P.1~18',lec:10,lecName:'조정식 구문'},
+ {subj:'탐구',day:1,pg:'P.1~24',lec:12,lecName:'이지영 생윤'},
+ {subj:'수학',day:2,pg:'P.33~50',lec:2,lecName:'현우진 수1'},
+ {subj:'국어',day:2,pg:'P.21~38',lec:8,lecName:'강민철 문학'},
+ {subj:'한국사',day:1,pg:'P.1~16',lec:4,lecName:'이다지 한국사'},
+ {subj:'내신 통합사회',day:1,pg:'교과서 P.1~22',lec:9,lecName:'학교 시험범위'},
+];
+const OFF=[0,2,6,10,14]; // 인강일 기준 1·2·3·4·5회독 (= 1·3·7·11·15일 체계)
+const SUBJC={'국어':'#E8412E','수학':'#2B5F8B','영어':'#2F8F4E','탐구':'#6B4E9E'};
+// 회독 이벤트 생성
+function events(){const ev=[];PROG.forEach(p=>{OFF.forEach((o,i)=>{const d=p.lec+o;if(d>=1&&d<=35)ev.push({date:d,subj:p.subj,day:p.day,round:i+1,pg:p.pg});});});return ev;}
+const EV=events();
+const QUIZ={
+ '국어':[
+  {q:"'반어法'이 쓰인 것은? (강민철 문학)",o:['나 보기가 역겨워','죽어도 아니 눈물 흘리오리다','산산이 부서진 이름','먼 훗날 당신이'],a:1,e:'속마음과 반대로 표현 = 반어.'},
+  {q:"'설의법'의 효과로 옳은 것은?",o:['의문으로 강조','직접 명령','대상 나열','소리 흉내'],a:0,e:'의문 형식으로 의미를 강조.'},
+  {q:"'수미상관'의 정의는?",o:['처음과 끝 호응','점층 반복','문답 구성','시점 전환'],a:0,e:'첫 연과 끝 연이 호응·반복.'},
+  {q:"'객관적 상관물'에 가까운 것은?",o:['화자의 이름','감정을 투영한 사물','배경 연도','각운'],a:1,e:'감정을 드러내는 외부 사물.'},
+  {q:"'언어와 매체'에서 음운 변동이 아닌 것은?",o:['축약','탈락','첨가','은유'],a:3,e:'은유는 표현법(비유), 음운 변동 아님.'},
+ ],
+ '수학':[
+  {q:"lim(x→0) sinx/x =",o:['0','1','∞','없음'],a:1,e:'기본 극한 = 1.'},
+  {q:"d/dx(x³) =",o:['x²','3x²','3x','x⁴/4'],a:1,e:'멱함수 미분: 3x².'},
+  {q:"∫2x dx =",o:['x²+C','2+C','x+C','2x²+C'],a:0,e:'역도함수 x²+C.'},
+  {q:"등차수열 첫항2·공차3, 제5항?",o:['11','14','15','17'],a:1,e:'2+3×4=14.'},
+  {q:"log₂8 =",o:['2','3','4','8'],a:1,e:'2³=8 → 3.'},
+ ],
+ '영어':[
+  {q:"'It is the book that I bought.' 강조 대상?",o:['주어','동사','목적어','관계사'],a:2,e:'It~that 강조구문, 목적어 the book.'},
+  {q:"가정법 과거 'If I were ~'의 의미?",o:['현재 사실 반대','과거 사실 반대','미래 확실','명령'],a:0,e:'현재 사실의 반대 가정.'},
+  {q:"'have+p.p.'가 나타내는 것?",o:['완료/경험','단순 과거','미래','명령'],a:0,e:'현재완료 = 완료·경험·계속·결과.'},
+  {q:"관계대명사 that을 쓸 수 없는 경우?",o:['선행사 사람','계속적 용법','선행사 사물','주격'],a:1,e:'계속적 용법(콤마)엔 that 불가.'},
+  {q:"'a number of + 명사'의 수일치?",o:['단수','복수','무관','상황별'],a:1,e:'a number of = 복수 취급.'},
+ ],
+ '탐구':[
+  {q:"칸트 의무론의 핵심은? (이지영 생윤)",o:['결과','동기·의무','쾌락','효용'],a:1,e:'행위의 도덕성은 동기·의무에서.'},
+  {q:"공리주의 판단 기준?",o:['최대다수 최대행복','정언명령','덕','자연법'],a:0,e:'유용성(행복의 양).'},
+  {q:"롤스 정의의 원칙 중 '차등의 원칙'은?",o:['최소수혜자 이익','자유 우선','평등 분배','효율'],a:0,e:'최소수혜자에게 최대 이익.'},
+  {q:"아리스토텔레스 '중용'의 의미?",o:['산술 평균','지나침과 모자람의 중간','무관심','절제 거부'],a:1,e:'과·불급의 중간 = 덕.'},
+  {q:"자연법 윤리의 근거는?",o:['인간 본성·이성','계약','감정','관습'],a:0,e:'인간 본성에 내재한 이성.'},
+ ],
+};
+const SHOP=[
+ {n:'CU 3,000원 교환권',c:1000,i:'🏪'},{n:'GS25 5,000원 교환권',c:1600,i:'🏪'},
+ {n:'인강 10% 할인권',c:800,i:'🎓'},{n:'모의고사 1회 응시권',c:1200,i:'📝'},
+ {n:'스타벅스 아메리카노',c:1400,i:'☕'},{n:'문화상품권 5,000원',c:1700,i:'🎁'},
+];
+const state={xp:320,lvl:4,points:1240,role:'student',
+ done:{}, // 회독 완료 표시 key=date-subj-day-round
+ danwon:[
+  {subj:'국어',c:'반어法 vs 역설',marks:[1,1,1,1,1]},
+  {subj:'수학',c:'삼각함수 극한',marks:[1,1,1,0,0]},
+  {subj:'탐구',c:'칸트 vs 공리주의',marks:[1,1,0,0,0]},
+  {subj:'영어',c:'관계대명사 that 제한',marks:[1,1,1,1,1]},
+  {subj:'수학',c:'등차·등비 일반항',marks:[1,0,0,0,0]},
+  {subj:'국어',c:'음운 변동 4종',marks:[1,1,1,0,0]},
+ ],
+};
+let quizSubj='국어',qi=0,qcorrect=0,qmiss=[];
+function enter(){state.role=document.getElementById('role').value;document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');buildTabs();go(state.role==='admin'?'admin':state.role==='parent'?'parent':'cal');}
+function buildTabs(){const t=state.role==='admin'?[['admin','관리자 대시보드']]:state.role==='parent'?[['parent','학부모 리포트']]:[['cal','학습 달력'],['today','오늘의 복습'],['quiz','AI 퀴즈'],['dan','단권화(소거법)'],['shop','XP 상점'],['parent','학부모 리포트']];
+ document.getElementById('tabs').innerHTML=t.map(x=>`<button class="tab" data-k="${x[0]}" onclick="go('${x[0]}')">${x[1]}</button>`).join('');}
+function go(k){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.k===k));const v=document.getElementById('view');v.innerHTML='';v.appendChild(({cal:Cal,today:Today,quiz:Quiz,dan:Dan,shop:Shop,parent:Parent,admin:Admin}[k])());if(k==='quiz')renderQ();}
+function el(h){const d=document.createElement('div');d.className='panel';d.innerHTML=h;return d;}
+
+function Cal(){
+ let cells='';for(const h of ['일','월','화','수','목','금','토'])cells+=`<div class="h">${h}</div>`;
+ // 35칸(5주), 1~35일. 1일=금요일 가정(offset 5)
+ const off=5;
+ for(let i=0;i<35;i++){const dn=i-off+1;
+   if(dn<1||dn>30){cells+=`<div class="cell" style="background:#fafcfe"></div>`;continue;}
+   const evs=EV.filter(e=>e.date===dn);
+   const evh=evs.map(e=>`<span class="ev" style="background:${COL[e.round-1]}">${e.subj}D${e.day}·${e.round}회</span>`).join('');
+   cells+=`<div class="cell ${dn===TODAY?'today':''}"><div class="dn">${dn}${dn===TODAY?' ·오늘':''}</div>${evh}</div>`;}
+ return el(`<h2 class="sec">학습 달력 <span class="auto">5회독 자동 매핑</span></h2>
+  <p class="subtle">인강(1회독)을 들은 날, 너울이 2·3·4·5회독 복습 날짜를 <b>1·3·7·11·15일 간격으로 자동 고정(FIX)</b>합니다. 예: 국어 DAY-1(P.5~20) 인강 = 2일 → 복습이 4·8·12·16일에 자동 배치.</p>
+  <div class="card"><div class="cal">${cells}</div>
+   <div class="leg">${[1,2,3,4,5].map(r=>`<span><span class="sw" style="background:${COL[r-1]}"></span>${r}회독</span>`).join('')} <span style="margin-left:auto">진도: ${PROG.length}개 DAY · 회독 이벤트 ${EV.length}건</span></div></div>
+  <div class="note"><b>진도 → 복습 자동화:</b> 학생은 ‘인강 1회 + 진도(페이지) 입력’만. 5회독 복습 날짜·과목·범위는 너울이 달력에 FIX합니다.<br/>· 과목은 직접 추가 → <b style="color:#fff">수능뿐 아니라 학교 내신</b>에도 그대로 적용(과목만 바꾸면 동일 기능).</div>`);}
+
+function Today(){const due=EV.filter(e=>e.date<=TODAY).sort((a,b)=>b.date-a.date);
+ const todo=EV.filter(e=>e.date===TODAY);
+ const rows=(todo.length?todo:due.slice(0,4)).map((e,i)=>{const key=`${e.date}-${e.subj}-${e.day}-${e.round}`;const dn=state.done[key];
+   return `<div class="rev"><div class="dot" style="background:${COL[e.round-1]}">${e.round}회<small>독</small></div>
+   <div class="m"><b>${e.subj} DAY-${e.day} (${e.pg})</b><span>${e.round}회독 · ${e.date}일 예정 ${e.date===TODAY?'· 오늘':''}</span></div>
+   <button class="do ${dn?'done':''}" onclick="doRev('${key}','${e.subj}')">${dn?'✓ 완료':'복습 시작'}</button></div>`;}).join('');
+ return el(`<h2 class="sec">오늘의 복습 (${TODAY}일) <span class="auto">달력에서 자동 추출</span></h2>
+  <p class="subtle">오늘 날짜에 FIX된 복습만 띄웁니다. 학생은 ‘무엇을·언제’ 고민하지 않습니다.</p>
+  ${rows||'<div class="card">오늘 예정된 복습이 없습니다.</div>'}
+  <div class="note"><b>누가 관리?</b> 복습 시점·과목·페이지 범위·회독 순서를 전부 너울 AI가 관리합니다. (멘토 질문 답)</div>`);}
+function doRev(key,subj){state.done[key]=true;addXp(20);addPts(50);go('today');toast('+20 XP · +50P · '+subj+' 복습 완료!');}
+
+function Dan(){
+ const items=state.danwon.map(d=>{const cnt=d.marks.reduce((a,b)=>a+b,0);const keep=cnt>=5;
+   const mk=d.marks.map((m,i)=>`<span class="mk" style="background:${m?COL[i]:'#fff'};border-color:${m?COL[i]:'#ddd'}"></span>`).join('');
+   return `<div class="dz"><div class="marks">${mk}</div><div class="t"><b>${d.subj}</b> — ${d.c}<small>${cnt}/5 회독에서 오답 · ${keep?'5번 봐도 모름 → 단권화 대상':'소거 진행('+(5-cnt)+'회 이미 숙달)'}</small></div><span class="tagx ${keep?'keep':'gone'}">${keep?'단권화':'소거중'}</span></div>`;}).join('');
+ const keepN=state.danwon.filter(d=>d.marks.reduce((a,b)=>a+b,0)>=5).length;
+ return el(`<h2 class="sec">단권화 (소거법) <span class="auto">5색 자동 누적</span></h2>
+  <p class="subtle">회독할수록 ‘아는 것’은 소거됩니다. <b>5회독을 모두 틀려 5색이 다 칠해진 개념</b>만 끝까지 남고, 이것이 곧 ‘5번 봐도 모르는 것’ = <b>단권화</b>입니다.</p>
+  ${items}
+  <div class="note"><b>소거법의 결과:</b> 전체 ${state.danwon.length}개 중 <b style="color:#fff">${keepN}개</b>가 5색 완성(단권화 대상). 너울이 이 ${keepN}개를 다음 복습·시험에 집중 배치하고, 한 권으로 묶어 줍니다.</div>`);}
+
+function Quiz(){return el(`<h2 class="sec">AI 퀴즈 <span class="auto">상위 모델 자동 출제·채점</span></h2>
+  <p class="subtle">과목당 5문제 이상. 너울 AI(상위 모델 — Claude Opus·Sonnet / Gemini Pro)가 복습 범위에서 출제하고 약점을 분류합니다.</p>
+  <div class="qsel" id="qsel">${Object.keys(QUIZ).map(s=>`<button class="qs ${s===quizSubj?'on':''}" onclick="pickSubj('${s}')">${s} (${QUIZ[s].length})</button>`).join('')}</div>
+  <div class="card" id="qbox"></div>`);}
+function pickSubj(s){quizSubj=s;qi=0;qcorrect=0;qmiss=[];go('quiz');}
+function renderQ(){const box=document.getElementById('qbox');if(!box)return;const Q=QUIZ[quizSubj];
+ if(qi>=Q.length){box.innerHTML=`<h2 class="sec">${quizSubj} 결과</h2><p style="margin:8px 0">${Q.length}문제 중 <b style="color:var(--deep)">${qcorrect}개</b> 정답.</p>
+   <div style="background:var(--foam);border-left:4px solid var(--mid);padding:12px 14px;border-radius:8px;font-size:.86rem"><b>약점 분류</b><br/>${qmiss.length?qmiss.map(w=>`<span class="pill">${w}</span>`).join(''):'<span class="pill">약점 없음 — 우수</span>'}<br/><span style="color:var(--muted)">→ 단권화·다음 복습에 우선 반영.</span></div>
+   <button class="do" style="margin-top:12px" onclick="pickSubj('${quizSubj}')">다시 풀기</button>`;addXp(qcorrect*10);addPts(qcorrect*20);return;}
+ const q=Q[qi];box.innerHTML=`<div style="font-size:.76rem;color:var(--muted)">${quizSubj} · 문제 ${qi+1}/${Q.length}</div><div class="q">${q.q}</div>${q.o.map((o,i)=>`<button class="opt" onclick="ans(${i})">${o}</button>`).join('')}<div id="fb"></div>`;}
+function ans(i){const q=QUIZ[quizSubj][qi];const opts=document.querySelectorAll('.opt');opts.forEach(o=>o.style.pointerEvents='none');const ok=i===q.a;opts[q.a].classList.add('correct');if(!ok){opts[i].classList.add('wrong');qmiss.push(quizSubj+' '+(qi+1)+'번');}else qcorrect++;
+ document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?'정답! ✓':'오답.'} ${q.e}</div><button class="do" style="margin-top:6px" onclick="qi++;renderQ()">${qi+1>=QUIZ[quizSubj].length?'결과 보기':'다음 문제'}</button>`;}
+
+function Shop(){const items=SHOP.map((s,i)=>`<div class="item"><div class="ico">${s.i}</div><b>${s.n}</b><div class="c">${s.c.toLocaleString()}P</div><button class="redeem" ${state.points<s.c?'disabled':''} onclick="redeem(${i})">${state.points<s.c?'포인트 부족':'교환하기'}</button></div>`).join('');
+ return el(`<h2 class="sec">XP 상점 <span class="auto">동기부여 보상</span></h2>
+  <p class="subtle">복습·퀴즈로 모은 포인트를 실제 보상으로. <b>학습 행동(물방울) → 누적(물결) → 흐름(너울)</b> — 꾸준함이 곧 레벨업.</p>
+  <div class="card" style="background:linear-gradient(135deg,#0A3D62,#1B6CA8);color:#fff;border:none">
+    <div style="font-weight:800;margin-bottom:10px">티어 — 물결에서 너울로</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      ${[['물방울','0',0],['잔물결','500',0],['물결','1,500',0],['너울','3,000',1],['큰너울','6,000',0]].map(t=>`<div style="flex:1;min-width:90px;text-align:center;background:${t[2]?'#fff':'rgba(255,255,255,.12)'};color:${t[2]?'#1A3A5C':'#cfe2f2'};border-radius:11px;padding:9px 6px"><div style="font-size:.92rem;font-weight:800">${t[0]}</div><div style="font-size:.66rem;opacity:.9">${t[1]} XP${t[2]?' · 현재':''}</div></div>`).join('')}
+    </div>
+    <div style="margin-top:11px;font-size:.74rem;color:#bfe0f6">보상 루프: <b style="color:#fff">계기</b>(복습 알림) → <b style="color:#fff">행동</b>(복습·퀴즈) → <b style="color:#fff">가변 보상</b>(XP·물결 상승) → <b style="color:#fff">재동기</b>(다음 회독). 시간경쟁 아님 — 이행률·정답률 '향상'에 보상.</div>
+  </div>
+  <div class="kpi"><div class="k"><b id="kLvl">Lv.${state.lvl}</b><span>레벨</span></div><div class="k"><b id="kPts">${state.points.toLocaleString()}P</b><span>보유 포인트</span></div><div class="k"><b>6일</b><span>연속 학습</span></div></div>
+  <div class="shop">${items}</div>
+  <div class="note" style="margin-top:14px"><b>보상 정책:</b> 편의점 교환권·학습 콘텐츠(인강 할인·모의고사)·문화상품권 등. 복습 +30P · 약점 극복 +25P · 단권화 +15P · 퀴즈 정답 +10P · 5회독 완주 +300P · 연속학습(streak) 가중. <b>보상 원가 = 매출의 2% 상한</b>(BEP 공헌이익 84,000원·BEP 226명에 반영).</div>`);}
+function redeem(i){const s=SHOP[i];if(state.points<s.c)return;state.points-=s.c;document.getElementById('pts').textContent=state.points.toLocaleString()+'P';go('shop');toast('교환 완료: '+s.n+' (-'+s.c.toLocaleString()+'P)');}
+function Admin(){
+ const bar=(n,v,c)=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:3px"><b>${n}</b><span style="color:var(--deep);font-weight:700">${v}%</span></div><div style="height:16px;background:#eef2f6;border-radius:6px;overflow:hidden"><div style="height:100%;width:${v}%;background:linear-gradient(90deg,var(--mid),${c||'#1B6CA8'})"></div></div></div>`;
+ const fb=[['김○현(고3)','복습 알림이 시험범위랑 정확히 맞아서 좋아요','긍정','#2F6B4F','#eef8f1'],['학부모 이○','주간 리포트 수치가 구체적이라 신뢰가 갑니다','긍정','#2F6B4F','#eef8f1'],['박○우(N수)','단권화에 과목 더 추가됐으면','개선','#B26B00','#fff6e8'],['정○(고2)','내신 과목도 되니까 학원 대신 쓸 만해요','긍정','#2F6B4F','#eef8f1'],['최○석','인강 추천이 내 수준이랑 잘 맞음. 가격만 조금…','개선','#B26B00','#fff6e8']];
+ const fbH=fb.map(x=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--border);border-radius:11px;margin-bottom:8px;background:#fff"><span style="flex:none;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px;color:${x[3]};background:${x[4]}">${x[2]}</span><div><b style="font-size:.82rem">${x[0]}</b><div style="font-size:.84rem;color:var(--ink)">${x[1]}</div></div></div>`).join('');
+ return el(`<h2 class="sec">관리자 대시보드 <span class="auto">베타 운영 모니터</span></h2>
+  <p class="subtle">신청자·활성화·리텐션·기능 사용·피드백을 한눈에. <b style="color:var(--c1)">※ 데모 지표(mock 예시)</b> — 실서비스 연동 시 Supabase admin_metrics 집계.</p>
+  <div class="kpi"><div class="k"><b>312</b><span>베타 신청 누적 (오늘 +18)</span></div><div class="k"><b>64%</b><span>신청→활성화 전환</span></div><div class="k"><b>142</b><span>DAU (WAU 248)</span></div></div>
+  <div class="card"><b style="font-size:.92rem">리텐션 (코호트)</b>
+   <div class="kpi" style="margin-top:12px;margin-bottom:0"><div class="k"><b>72%</b><span>D1</span></div><div class="k"><b>51%</b><span>D7</span></div><div class="k"><b>38%</b><span>D30</span></div></div>
+   <div style="font-size:.74rem;color:var(--muted);margin-top:10px">D30 38% = 에듀테크 벤치 상회 가설 — 5회독 복습 알림이 복귀 트리거(투자자 traction 지표).</div></div>
+  <div class="card"><b style="font-size:.92rem">기능별 주간 사용률</b><div style="margin-top:12px">
+   ${bar('5회독 복습 스케줄러',94)}${bar('오늘의 복습',88)}${bar('AI 퀴즈',76)}${bar('소거법 단권화',61)}${bar('AI 인강 추천',58)}${bar('학부모 리포트',42)}</div></div>
+  <div class="card"><b style="font-size:.92rem">최근 피드백</b><div style="margin-top:12px">${fbH}</div>
+   <div style="font-size:.74rem;color:var(--muted)">감성 분류·요약 = AI 자동(상위 모델). 개선 의견은 제품 백로그로 자동 라우팅.</div></div>
+  <div class="foot">너울 NEOUL 관리자 데모 · 신청자·활성·리텐션·기능사용·피드백 모니터 · mock 지표</div>`);}
+
+
+function Parent(){
+ const cmp=[{l:'종합 정답률',p:'58%',n:'72%',d:'+14%p'},{l:'복습 이행률',p:'71%',n:'92%',d:'+21%p'},{l:'주간 학습시간',p:'18시간',n:'27시간',d:'+9시간'},{l:'모의 등급(추정)',p:'4등급',n:'2~3등급',d:'↑ 상승'}];
+ const subj=[{n:'국어',p:58,c:72},{n:'수학',p:52,c:68},{n:'영어',p:64,c:79},{n:'탐구',p:60,c:74}];
+ const cmpH=cmp.map(x=>`<div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px 14px">
+   <div style="font-size:.74rem;color:var(--muted)">${x.l}</div>
+   <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px"><span style="color:#94a3b8;font-size:.9rem;text-decoration:line-through">${x.p}</span><span style="color:var(--muted)">→</span><span style="font-size:1.22rem;font-weight:800;color:var(--deep)">${x.n}</span></div>
+   <div style="color:var(--c3);font-weight:700;font-size:.78rem;margin-top:3px">▲ ${x.d}</div></div>`).join('');
+ const subjH=subj.map(s=>`<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px"><b>${s.n}</b><span style="color:var(--c3);font-weight:700">+${s.c-s.p}%p</span></div>
+   <div style="position:relative;height:20px;background:#eef2f6;border-radius:7px;overflow:hidden">
+     <div style="position:absolute;left:0;top:0;height:100%;width:${s.p}%;background:#cbd5e1"></div>
+     <div style="position:absolute;left:0;top:0;height:100%;width:${s.c}%;background:linear-gradient(90deg,var(--mid),#1B6CA8)"></div>
+   </div>
+   <div style="font-size:.72rem;color:var(--muted);margin-top:4px">4주 전 <b>${s.p}%</b> <span style="color:var(--c3)">→</span> 현재 <b style="color:var(--deep)">${s.c}%</b></div></div>`).join('');
+ return el(`<h2 class="sec">학부모 주간 리포트 <span class="auto">매주 자동 발송</span></h2>
+  <p class="subtle">매주 발송 · 전 주 대비 진단과 4주 추세를 함께 드립니다.</p>
+  <div style="background:#eef6fb;border:1px solid var(--light);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.86rem;line-height:1.6"><b style="color:var(--deep)">📩 이번 주 리포트 (전 주 대비)</b><br/>정답률 69%→<b>72%</b>(+3%p) · 복습 이행률 88%→<b>92%</b>(+4%p) · 학습시간 25h→<b>27h</b>(+2h) · 연속 학습 6일</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px">${cmpH}</div>
+  <div class="card"><b style="font-size:.92rem">과목별 성장 (4주 전 → 현재)</b><div style="margin-top:13px">${subjH}</div>
+    <div style="display:flex;gap:14px;font-size:.72rem;color:var(--muted);margin-top:6px"><span><span style="display:inline-block;width:10px;height:10px;background:#cbd5e1;border-radius:2px;vertical-align:middle"></span> 4주 전</span><span><span style="display:inline-block;width:10px;height:10px;background:var(--mid);border-radius:2px;vertical-align:middle"></span> 현재</span></div></div>
+  <div class="card"><b style="font-size:.92rem">주차별 종합 정답률</b><div class="wk">${[58,63,69,72].map((v,i)=>`<div class="col"><i style="height:${Math.round((v-50)*3.2+22)}px"></i><span style="font-weight:700;color:var(--deep)">${v}%</span><span>${i+1}주</span></div>`).join('')}</div></div>
+  <div class="note"><b>너울 AI 코멘트 (담임 코치)</b><span style="display:block;margin-top:7px;line-height:1.75">이번 주(전 주 대비) 정답률이 +3%p 올랐습니다. 지난 4주 전 자녀분은 국어 58%·수학 52% 수준이었으나, <b style="color:#fff">복습 이행률 92%</b>를 꾸준히 지키며 현재 <b style="color:#fff">국어 72%(+14%p)·수학 68%(+16%p)</b>로 향상되었습니다.<br/>· 특히 ‘문학 표현법’은 5회독에도 단권화에 남아 이번 주 집중 배치했고, ‘미적분 극한’은 4회독에서 정답률이 안정화되었습니다.<br/>· 연속 학습 6일째로 학습 습관이 자리잡는 중입니다. <b style="color:var(--wave)">현재 추세라면 다음 모의고사 2등급 진입이 기대됩니다.</b></span></div>`);
+}
+
+function addXp(n){state.xp+=n;while(state.xp>=500){state.xp-=500;state.lvl++;}document.getElementById('xpv').textContent=state.xp;document.getElementById('xpf').style.width=(state.xp/500*100)+'%';document.getElementById('lvl').textContent='Lv.'+state.lvl;}
+function addPts(n){state.points+=n;document.getElementById('pts').textContent=state.points.toLocaleString()+'P';}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(window._t);window._t=setTimeout(()=>e.classList.remove('show'),1900);}
+</script></body></html>
