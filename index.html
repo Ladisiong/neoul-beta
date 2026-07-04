@@ -137,39 +137,47 @@ function events(){const ev=[];PROG.forEach(p=>{OFF.forEach((o,i)=>{const d=p.lec
 const EV=events();
 const QUIZ={
  '국어':[
-  {q:"'반어法'이 쓰인 것은? (강민철 문학)",o:['나 보기가 역겨워','죽어도 아니 눈물 흘리오리다','산산이 부서진 이름','먼 훗날 당신이'],a:1,e:'속마음과 반대로 표현 = 반어.'},
-  {q:"'설의법'의 효과로 옳은 것은?",o:['의문으로 강조','직접 명령','대상 나열','소리 흉내'],a:0,e:'의문 형식으로 의미를 강조.'},
-  {q:"'수미상관'의 정의는?",o:['처음과 끝 호응','점층 반복','문답 구성','시점 전환'],a:0,e:'첫 연과 끝 연이 호응·반복.'},
-  {q:"'객관적 상관물'에 가까운 것은?",o:['화자의 이름','감정을 투영한 사물','배경 연도','각운'],a:1,e:'감정을 드러내는 외부 사물.'},
-  {q:"'언어와 매체'에서 음운 변동이 아닌 것은?",o:['축약','탈락','첨가','은유'],a:3,e:'은유는 표현법(비유), 음운 변동 아님.'},
+  {q:"'반어法'이 쓰인 것은? (강민철 문학)",o:['나 보기가 역겨워','죽어도 아니 눈물 흘리오리다','산산이 부서진 이름','먼 훗날 당신이','님은 갔습니다'],a:1,e:'속마음과 반대로 표현 = 반어.',lv:'기본'},
+  {q:"'설의법'의 효과로 옳은 것은?",o:['의문 형식으로 의미를 강조','직접 명령','대상 나열','소리 흉내','시간 순서 서술'],a:0,e:'의문 형식으로 의미를 강조.',lv:'기본'},
+  {q:"'수미상관'의 정의는?",o:['처음과 끝 연이 호응·반복','점층적 반복','문답 구성','시점 전환','공간 이동'],a:0,e:'첫 연과 끝 연이 호응·반복.',lv:'기본'},
+  {q:"'객관적 상관물'에 가까운 것은?",o:['화자의 이름','감정을 투영한 외부 사물','배경 연도','각운','반복되는 조사'],a:1,e:'감정을 드러내는 외부 사물.',lv:'심화'},
+  {q:"'언어와 매체'에서 음운 변동이 아닌 것은?",o:['축약','탈락','첨가','은유','교체'],a:3,e:'은유는 표현법(비유), 음운 변동 아님.',lv:'심화'},
+  {q:"'먼 훗날 당신이 찾으시면 그때에 잊었노라'에 나타난 화자의 태도는?",o:['체념적 순응','반어를 통한 그리움 강조','냉소적 조롱','객관적 관찰','미래에 대한 확신'],a:1,e:'반어로 오히려 잊지 못함을 강조.',lv:'심화'},
+  {q:"'낯설게 하기(소격)'로 보기 어려운 것은?",o:['일상 언어의 변형','시점의 의도적 교란','관습적 표현의 반복','대상의 생경한 묘사','친숙한 리듬의 파괴'],a:2,e:'관습적 표현 반복은 익숙하게 만듦 — 낯설게 하기와 반대.',lv:'킬러'},
+  {q:"다음 중 '반영론적 관점'의 비평에 해당하는 것은?",o:['작품의 운율·구조 분석','작가의 생애·창작 의도 추적','작품이 그린 시대 현실과의 대응 검토','독자가 받은 감동의 크기 평가','다른 작품과의 상호텍스트성 비교'],a:2,e:'반영론 = 작품과 현실(시대)의 대응.',lv:'킬러'},
  ],
  '수학':[
-  {q:"lim(x→0) sinx/x =",o:['0','1','∞','없음'],a:1,e:'기본 극한 = 1.'},
-  {q:"d/dx(x³) =",o:['x²','3x²','3x','x⁴/4'],a:1,e:'멱함수 미분: 3x².'},
-  {q:"∫2x dx =",o:['x²+C','2+C','x+C','2x²+C'],a:0,e:'역도함수 x²+C.'},
-  {q:"등차수열 첫항2·공차3, 제5항?",o:['11','14','15','17'],a:1,e:'2+3×4=14.'},
-  {q:"log₂8 =",o:['2','3','4','8'],a:1,e:'2³=8 → 3.'},
+  {q:"lim(x→0) sinx/x =",o:['0','1','∞','없음','1/2'],a:1,e:'기본 극한 = 1.',lv:'기본'},
+  {q:"d/dx(x³) =",o:['x²','3x²','3x','x⁴/4','2x³'],a:1,e:'멱함수 미분: 3x².',lv:'기본'},
+  {q:"∫2x dx =",o:['x²+C','2+C','x+C','2x²+C','x²'],a:0,e:'역도함수 x²+C.',lv:'기본'},
+  {q:"등차수열 첫항 2·공차 3, 제5항은?",o:['11','14','15','17','20'],a:1,e:'2+3×4=14.',lv:'심화'},
+  {q:"f(x)=x² 일 때 x=1에서의 미분계수는?",o:['1','2','0','4','1/2'],a:1,e:"f'(x)=2x, f'(1)=2.",lv:'심화'},
+  {q:"lim(x→2) (x²−4)/(x−2) =",o:['0','2','4','없음','∞'],a:2,e:'분자 인수분해 (x+2)(x−2) → x+2, x→2 = 4.',lv:'심화'},
+  {q:"f(x)=x³−3x 의 극댓값과 극솟값의 합은? (숫자만 입력)",t:'short',ans:'0',e:"f'(x)=3x²−3=0 → x=±1. 극대 f(−1)=2·극소 f(1)=−2, 합 0.",lv:'킬러'},
+  {q:"정적분 ∫₀¹ 3x² dx 의 값은? (숫자만 입력)",t:'short',ans:'1',e:'역도함수 x³ 를 0→1 대입 = 1.',lv:'킬러'},
  ],
  '영어':[
-  {q:"'It is the book that I bought.' 강조 대상?",o:['주어','동사','목적어','관계사'],a:2,e:'It~that 강조구문, 목적어 the book.'},
-  {q:"가정법 과거 'If I were ~'의 의미?",o:['현재 사실 반대','과거 사실 반대','미래 확실','명령'],a:0,e:'현재 사실의 반대 가정.'},
-  {q:"'have+p.p.'가 나타내는 것?",o:['완료/경험','단순 과거','미래','명령'],a:0,e:'현재완료 = 완료·경험·계속·결과.'},
-  {q:"관계대명사 that을 쓸 수 없는 경우?",o:['선행사 사람','계속적 용법','선행사 사물','주격'],a:1,e:'계속적 용법(콤마)엔 that 불가.'},
-  {q:"'a number of + 명사'의 수일치?",o:['단수','복수','무관','상황별'],a:1,e:'a number of = 복수 취급.'},
+  {q:"'It is the book that I bought.' 강조 대상?",o:['주어','동사','목적어','관계사','부사'],a:2,e:'It~that 강조구문, 목적어 the book.',lv:'기본'},
+  {q:"가정법 과거 'If I were ~'의 의미?",o:['현재 사실의 반대','과거 사실의 반대','미래 확실','명령','부탁'],a:0,e:'현재 사실의 반대 가정.',lv:'기본'},
+  {q:"'have+p.p.'가 나타내는 것?",o:['완료·경험·계속·결과','단순 과거','미래','명령','진행'],a:0,e:'현재완료의 용법.',lv:'기본'},
+  {q:"관계대명사 that을 쓸 수 없는 경우?",o:['선행사 사람','계속적 용법(콤마)','선행사 사물','주격','목적격'],a:1,e:'계속적 용법(콤마)엔 that 불가.',lv:'심화'},
+  {q:"'a number of + 명사'의 수일치는?",o:['단수','복수','무관','상황별','불가산'],a:1,e:'a number of = 복수 취급.',lv:'심화'},
+  {q:"'Hardly had he arrived when it started to rain.'의 어법 포인트?",o:['시제 일치 오류','부정어 문두 도치','관계사 생략','가정법','수동태'],a:1,e:'Hardly 문두 → had+주어 도치.',lv:'심화'},
+  {q:"빈칸: 'Not until he left ___ how much she missed him.'",o:['she realized','did she realize','she did realize','realized she','she had realized'],a:1,e:'부정어구 문두 도치: Not until ... did+주어+동사원형.',lv:'킬러'},
+  {q:"빈칸: 'So absurd ___ that everyone laughed.'",o:['was his idea','his idea was','did his idea','his idea did','was idea his'],a:0,e:'So+형용사 문두 → 도치: So absurd was his idea.',lv:'킬러'},
  ],
  '탐구':[
-  {q:"칸트 의무론의 핵심은? (이지영 생윤)",o:['결과','동기·의무','쾌락','효용'],a:1,e:'행위의 도덕성은 동기·의무에서.'},
-  {q:"공리주의 판단 기준?",o:['최대다수 최대행복','정언명령','덕','자연법'],a:0,e:'유용성(행복의 양).'},
-  {q:"롤스 정의의 원칙 중 '차등의 원칙'은?",o:['최소수혜자 이익','자유 우선','평등 분배','효율'],a:0,e:'최소수혜자에게 최대 이익.'},
-  {q:"아리스토텔레스 '중용'의 의미?",o:['산술 평균','지나침과 모자람의 중간','무관심','절제 거부'],a:1,e:'과·불급의 중간 = 덕.'},
-  {q:"자연법 윤리의 근거는?",o:['인간 본성·이성','계약','감정','관습'],a:0,e:'인간 본성에 내재한 이성.'},
+  {q:"칸트 의무론의 핵심은? (이지영 생윤)",o:['결과','동기·의무','쾌락','효용','습관'],a:1,e:'행위의 도덕성은 동기·의무에서.',lv:'기본'},
+  {q:"공리주의 판단 기준은?",o:['최대다수의 최대행복','정언명령','덕','자연법','계약'],a:0,e:'유용성(행복의 양).',lv:'기본'},
+  {q:"아리스토텔레스 '중용'의 의미는?",o:['산술 평균','지나침과 모자람의 중간','무관심','절제 거부','쾌락 추구'],a:1,e:'과·불급의 중간 = 덕.',lv:'기본'},
+  {q:"롤스 정의의 원칙 중 '차등의 원칙'은?",o:['최소수혜자에게 최대 이익','자유 우선','평등 분배','효율','공동선'],a:0,e:'최소수혜자에게 최대 이익.',lv:'심화'},
+  {q:"자연법 윤리의 근거는?",o:['인간 본성·이성','계약','감정','관습','신의 명령만'],a:0,e:'인간 본성에 내재한 이성.',lv:'심화'},
+  {q:"밀의 질적 공리주의가 벤담과 다른 점은?",o:['행복의 양만 계산','쾌락의 질적 차이 인정','의무를 중시','신의 뜻 강조','결과를 무시'],a:1,e:'밀 = 쾌락의 질적 차이 인정.',lv:'심화'},
+  {q:"롤스 '무지의 베일'에서 당사자가 아는 것은?",o:['자신의 사회적 지위','자신의 재능','정의의 원칙·사회 일반','자신의 가치관','자신의 소득'],a:2,e:'개별 정보는 모르되, 정의 원칙·사회 일반 지식은 안다.',lv:'킬러'},
+  {q:"'요나스의 책임 윤리'와 가장 관련 깊은 것은?",o:['현세대 이익 극대화','미래 세대·자연에 대한 책임','계약을 통한 정의','최대다수 행복','정언명령의 보편화'],a:1,e:'요나스 = 미래 세대·자연에 대한 책임.',lv:'킬러'},
  ],
 };
-Object.keys(QUIZ).forEach(s=>QUIZ[s].forEach((q,i)=>{if(!q.lv)q.lv=i<2?'기본':'심화';}));
-QUIZ['국어'].push({q:"'낯설게 하기(소격)'로 보기 어려운 것은?",o:['일상 언어의 변형','시점의 의도적 교란','관습적 표현의 반복','대상의 생경한 묘사'],a:2,e:'관습적 표현 반복은 익숙하게 만듦 — 낯설게 하기와 반대.',lv:'킬러'});
-QUIZ['수학'].push({q:"f(x)=x³-3x 의 극댓값과 극솟값의 합은?",o:['0','-2','2','-4'],a:0,e:"f'(x)=3x²-3=0 → x=±1. 극대 f(-1)=2·극소 f(1)=-2, 합 0.",lv:'킬러'});
-QUIZ['영어'].push({q:"빈칸: 'Not until he left ___ how much she missed him.'",o:['she realized','did she realize','she did realize','realized she'],a:1,e:'부정어구 문두 도치: Not until ... did+주어+동사원형.',lv:'킬러'});
-QUIZ['탐구'].push({q:"롤스 ‘무지의 베일’에서 당사자가 아는 것은?",o:['자신의 사회적 지위','자신의 재능','정의의 원칙·사회 일반','자신의 가치관'],a:2,e:'개별 정보(지위·재능·가치관)는 모르되, 정의 원칙·사회 일반 지식은 안다.',lv:'킬러'});
+
 const SHOP=[
  {n:'CU 3,000원 교환권',c:1000,i:'🏪'},{n:'GS25 5,000원 교환권',c:1600,i:'🏪'},
  {n:'인강 10% 할인권',c:800,i:'🎓'},{n:'모의고사 1회 응시권',c:1200,i:'📝'},
@@ -297,7 +305,7 @@ function Dan(){
   <div class="note"><b>지금 상태:</b> 전체 ${state.danwon.length}개 중 <b style="color:#fff">${keepN}개</b>가 아직 약함(단권화), <b style="color:var(--wave)">${masterN}개</b>는 마스터(소거 완료). 너울이 단권화 ${keepN}개만 다음 복습·시험에 집중 배치하고 한 권으로 묶어 줍니다.</div>`);}
 
 function Quiz(){return el(`<h2 class="sec">AI 퀴즈 <span class="auto">너울 AI 자동 출제·채점</span></h2>
-  <p class="subtle">과목당 6문항(기본·심화·<b style="color:var(--c1)">킬러</b>). 너울 AI가 복습 범위에서 출제하고, 틀린 문제로 약점을 자동 분류합니다.</p>
+  <p class="subtle">과목당 8문항(기본3·심화3·<b style="color:var(--c1)">킬러2</b> · 킬러는 단답형). 너울 AI가 복습 범위에서 출제하고, 틀린 문제로 약점을 자동 분류합니다.</p>
   <div style="background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:12px;padding:11px 13px;margin-bottom:12px">
     <div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem"><b style="color:#9a3412">무료 AI 크레딧 — 오늘 6/10 사용</b><span style="font-size:.72rem;color:#b45309">남은 4문항</span></div>
     <div style="height:9px;background:#fde8d3;border-radius:5px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:60%;background:linear-gradient(90deg,#fb923c,#f97316)"></div></div>
@@ -310,11 +318,12 @@ function renderQ(){const box=document.getElementById('qbox');if(!box)return;cons
  if(qi>=Q.length){box.innerHTML=`<h2 class="sec">${quizSubj} 결과</h2><p style="margin:8px 0">${Q.length}문제 중 <b style="color:var(--deep)">${qcorrect}개</b> 정답.</p>
    <div style="background:var(--foam);border-left:4px solid var(--mid);padding:12px 14px;border-radius:8px;font-size:.86rem"><b>약점 분류</b><br/>${qmiss.length?qmiss.map(w=>`<span class="pill">${w}</span>`).join(''):'<span class="pill">약점 없음 — 우수</span>'}<br/><span style="color:var(--muted)">→ 단권화·다음 복습에 우선 반영.</span></div>
    <button class="do" style="margin-top:12px" onclick="pickSubj('${quizSubj}')">다시 풀기</button>`;addXp(qcorrect*10);addPts(qcorrect*20);return;}
- const q=Q[qi];box.innerHTML=`<div style="font-size:.76rem;color:var(--muted);display:flex;justify-content:space-between"><span>${quizSubj} · 문제 ${qi+1}/${Q.length}</span><span style="font-weight:700;color:${q.lv==='킬러'?'var(--c1)':q.lv==='심화'?'#B26B00':'var(--mid)'}">${q.lv||'기본'}</span></div><div class="q">${q.q}</div>${q.o.map((o,i)=>`<button class="opt" onclick="ans(${i})">${o}</button>`).join('')}<div id="fb"></div>`;}
+ const q=Q[qi];box.innerHTML=`<div style="font-size:.76rem;color:var(--muted);display:flex;justify-content:space-between"><span>${quizSubj} · 문제 ${qi+1}/${Q.length}</span><span style="font-weight:700;color:${q.lv==='킬러'?'var(--c1)':q.lv==='심화'?'#B26B00':'var(--mid)'}">${q.lv||'기본'}</span></div><div class="q">${q.q}</div>${q.t==='short'?`<input id="saInput" placeholder="숫자/단답을 입력하세요" style="width:100%;padding:11px;border:1px solid var(--border);border-radius:9px;font-size:.92rem;margin:6px 0" onkeydown="if(event.key==='Enter')ansShort()"/><button class="opt" style="text-align:center;font-weight:700" onclick="ansShort()">제출</button>`:q.o.map((o,i)=>`<button class="opt" onclick="ans(${i})">${o}</button>`).join('')}<div id="fb"></div>`;}
 function ans(i){const q=QUIZ[quizSubj][qi];const opts=document.querySelectorAll('.opt');opts.forEach(o=>o.style.pointerEvents='none');const ok=i===q.a;opts[q.a].classList.add('correct');if(!ok){opts[i].classList.add('wrong');qmiss.push(quizSubj+' '+(qi+1)+'번');}else qcorrect++;
  if(window.nbQuiz&&state.user)window.nbQuiz(quizSubj,ok);
  document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?'정답! ✓':'오답.'} ${q.e}</div><button class="do" style="margin-top:6px" onclick="qi++;renderQ()">${qi+1>=QUIZ[quizSubj].length?'결과 보기':'다음 문제'}</button>`;}
 
+function ansShort(){const q=QUIZ[quizSubj][qi];const inp=document.getElementById('saInput');if(!inp)return;const norm=v=>(v||'').toString().replace(/[\s,을를]/g,'').toLowerCase();const ok=norm(inp.value)===norm(q.ans);inp.style.pointerEvents='none';inp.style.borderColor=ok?'var(--mid)':'var(--c1)';if(ok)qcorrect++;else qmiss.push(quizSubj+' '+(qi+1)+'번');if(window.nbQuiz&&state.user)window.nbQuiz(quizSubj,ok);document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?'정답! ✓':'오답. 정답: '+q.ans} ${q.e}</div><button class="do" style="margin-top:6px" onclick="qi++;renderQ()">${qi+1>=QUIZ[quizSubj].length?'결과 보기':'다음 문제'}</button>`;}
 function claimMission(id,xp){if(state.claimed[id])return;state.claimed[id]=true;if(window.nbClaim&&state.user)window.nbClaim(id);addXp(xp);addPts(xp);go('shop');toast('미션 완료 +'+xp+' XP · 물결이 차올랐어요');}
 function Shop(){
  const cum=state.lvl*500+state.xp;
@@ -536,14 +545,14 @@ function diagResultHtml(r){
   +'<div style="margin-top:11px"><span style="display:inline-block;font-size:.7rem;font-weight:700;background:#eef8f1;color:var(--c3);padding:2px 9px;border-radius:20px">처방 — 무엇을 어떻게</span><div style="font-size:.87rem;color:var(--ink);line-height:1.6;margin-top:5px">'+sd.rx[band]+'</div></div>'
   +'<div style="display:flex;gap:8px;margin-top:12px"><div style="flex:1;background:var(--foam);border-radius:10px;padding:9px 11px"><div style="font-size:.68rem;color:var(--muted)">목표 경로</div><b style="font-size:.82rem;color:var(--deep)">'+sd.goal[band]+'</b></div></div>'
   +'<div class="note" style="margin-top:11px;font-size:.82rem;background:var(--deep)"><b>너울 5회독 적용</b><br/>'+sd.dok+'</div></div>';
- var cta='<button onclick="diagToCal()" style="margin-top:4px;width:100%;border:none;border-radius:12px;padding:14px;font-weight:800;font-size:.95rem;cursor:pointer;background:var(--mid);color:#fff">이 진단으로 5회독 학습 달력 만들기 →</button><button onclick="diagReset()" style="margin-top:8px;width:100%;border:1px solid var(--border);border-radius:12px;padding:11px;font-weight:600;font-size:.86rem;cursor:pointer;background:#fff;color:var(--muted)">다시 진단</button>';
+ var cta='<div class="card" style="border-left:4px solid var(--wave);margin-top:10px"><b style="font-size:.9rem;color:var(--deep)">📗 지금 듣는 인강이 있나요? (선택)</b><div style="font-size:.76rem;color:var(--muted);margin:3px 0 8px">입력하면 <b>그 강의 진도부터</b> 5회독을 만들어요 · 없으면 추천 기준.</div><input id="enrInstr" placeholder="강사 (예: 현우진)" style="width:100%;padding:9px;border:1px solid var(--border);border-radius:8px;font-size:.85rem;margin-bottom:6px"/><input id="enrCourse" placeholder="강의·커리큘럼 (예: 뉴런 미적분)" style="width:100%;padding:9px;border:1px solid var(--border);border-radius:8px;font-size:.85rem;margin-bottom:6px"/><div style="display:flex;gap:6px"><input id="enrProg" inputmode="numeric" placeholder="현재 진도(강)" style="flex:1;padding:9px;border:1px solid var(--border);border-radius:8px;font-size:.85rem"/><input id="enrTotal" inputmode="numeric" placeholder="총 강수(선택)" style="flex:1;padding:9px;border:1px solid var(--border);border-radius:8px;font-size:.85rem"/></div></div><button onclick="diagToCal()" style="margin-top:4px;width:100%;border:none;border-radius:12px;padding:14px;font-weight:800;font-size:.95rem;cursor:pointer;background:var(--mid);color:#fff">이 진단으로 5회독 학습 달력 만들기 →</button><button onclick="diagReset()" style="margin-top:8px;width:100%;border:1px solid var(--border);border-radius:12px;padding:11px;font-weight:600;font-size:.86rem;cursor:pointer;background:#fff;color:var(--muted)">다시 진단</button>';
  if(naesin){var rn=r.rural.indexOf('대상')>=0?'<b style="color:var(--c3)">농어촌 전형 대상</b> — 지역균형·수시 전략을 함께 설계합니다.':(r.rural.indexOf('모름')>=0?'농어촌 전형 해당 여부 확인을 권장합니다(수시 전략에 영향).':'일반 전형 기준으로 설계합니다.');
   return head+report+'<h3 style="font-size:.95rem;color:var(--deep);margin:14px 0 8px">📚 내신 맞춤 매칭</h3><div class="card" style="border-left:4px solid var(--mid)"><b style="font-size:.95rem;color:var(--deep)">너울 내신모드 — '+r.school+' '+r.grade2+' '+r.worst+' 시험범위 맞춤 5회독</b><div style="font-size:.83rem;color:var(--ink);margin:5px 0">학교 진도·기출·프린트 기반으로 '+r.worst+' 약점을 5회독에 자동 배치합니다. '+r.region+' 지역 내신 난이도를 반영합니다.</div><div style="font-size:.81rem;color:var(--muted)">'+rn+'</div></div>'+cta;}
  var cards=r.insts.map(function(m){return '<div class="card" style="border-left:4px solid var(--mid)"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><b style="font-size:.95rem;color:var(--deep)">'+m[0]+'</b><span style="font-size:.72rem;color:var(--muted)">'+m[2]+'</span></div><div style="font-size:.84rem;color:var(--ink);margin:3px 0">'+m[1]+'</div><div style="font-size:.8rem;color:var(--muted);background:var(--foam);border-radius:8px;padding:6px 9px;margin-top:5px"><b style="color:var(--deep)">매칭 근거</b> · '+(m[3]||'')+'</div></div>';}).join('');
  return head+report+'<h3 style="font-size:.95rem;color:var(--deep);margin:14px 0 8px">📚 추천 인강·강사 매칭 ('+r.cat+')</h3>'+cards+'<div style="font-size:.72rem;color:var(--muted);margin:-2px 2px 8px">강사·강좌는 공개 정보 기반 예시이며, 실서비스는 멘토 검증 + 학생 성적·약점 데이터로 정밀 매칭됩니다.</div>'+cta;
 }
 function diagReset(){state.diag.result=null;go('diag');}
-function diagToCal(){if(window.nbCreatePlan&&state.user){window.nbCreatePlan(state.diag.result);}else{toast('이 강의로 5회독 학습 달력을 생성했어요');go('cal');}}
+function diagToCal(){var r=state.diag.result;var gi=function(id){var e=document.getElementById(id);return e?String(e.value).trim():'';};var ins=gi('enrInstr'),crs=gi('enrCourse');if(ins&&crs){r.enroll={instructor:ins,course:crs,current:parseInt(gi('enrProg')||'0',10)||0,total:parseInt(gi('enrTotal')||'0',10)||null};}if(window.nbCreatePlan&&state.user){window.nbCreatePlan(r);}else{toast((r.enroll?r.enroll.instructor+' '+r.enroll.course+' 진도 기반':'이 강의로')+' 5회독 학습 달력을 생성했어요');go('cal');}}
 function stypeCard(t,desc,ic){return '<button onclick="setStype(\''+t+'\')" style="width:100%;text-align:left;border:1px solid var(--border);background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;display:flex;gap:12px;align-items:center"><span style="font-size:1.6rem">'+ic+'</span><span><b style="font-size:1rem;color:var(--deep);display:block">'+t+'</b><span style="font-size:.82rem;color:var(--muted)">'+desc+'</span></span></button>';}
 function Diag(){
  var d=state.diag;
@@ -594,9 +603,10 @@ window.nbSaveDiagnosis=async(r)=>{const st=window.state;if(!window.NB.user)retur
 window.nbPersistXp=async(n)=>{const st=window.state;if(!window.NB.user)return;const uid=window.NB.user.id;await SB.from('xp_log').insert({student_id:uid,action:'activity',xp:n});await SB.from('gamification').update({xp:st.xp,level:st.lvl,points:st.points,updated_at:new Date().toISOString()}).eq('student_id',uid);};
 window.nbClaim=async(key)=>{if(!window.NB.user)return;await SB.from('missions').upsert({student_id:window.NB.user.id,mission_key:key,claimed:true,for_date:new Date().toISOString().slice(0,10)},{onConflict:'student_id,mission_key,for_date'});};
 window.nbCreatePlan=async(r)=>{if(!window.NB.user)return;const uid=window.NB.user.id;const today=new Date().toISOString().slice(0,10);
-  const {data:si}=await SB.from('study_items').insert({student_id:uid,subject:r.worst,page_range:'진단 약점 범위',lecture_name:(r.insts&&r.insts[0]?r.insts[0][0]:'추천 강의'),lecture_date:today}).select().single();
+  let enrId=null,lecName,pgRange,lecNo=null;if(r.enroll){const {data:en}=await SB.from('enrollments').insert({student_id:uid,subject:r.worst,instructor:r.enroll.instructor,course:r.enroll.course,total_lectures:r.enroll.total,current_lecture:r.enroll.current}).select().single();if(en)enrId=en.id;lecName=r.enroll.instructor+' '+r.enroll.course;lecNo=r.enroll.current||null;pgRange=r.enroll.current?('1~'+r.enroll.current+'강 진도'):'수강 진도';}else{lecName=(r.insts&&r.insts[0]?r.insts[0][0]:'추천 강의');pgRange='진단 약점 범위';}
+  const {data:si}=await SB.from('study_items').insert({student_id:uid,subject:r.worst,page_range:pgRange,lecture_name:lecName,lecture_date:today,enrollment_id:enrId,lecture_no:lecNo}).select().single();
   if(si){try{const {data:ses}=await SB.auth.getSession();await fetch('https://iwrblahmszuthemfrhmy.supabase.co/functions/v1/schedule-reviews',{method:'POST',headers:{'content-type':'application/json','Authorization':'Bearer '+ses.session.access_token},body:JSON.stringify({study_item_id:si.id})});}catch(e){}}
-  await window.nbLoadReviews();await window.nbStats();window.toast('5회독 일정이 DB에 생성됐어요');if(window.go)window.go('cal');};
+  await window.nbLoadReviews();await window.nbStats();window.toast(r.enroll?(lecName+' 진도 기반 5회독이 생성됐어요'):'5회독 일정이 DB에 생성됐어요');if(window.go)window.go('cal');};
 window.nbDoneReview=async(sec)=>{if(!window.NB.user)return;const uid=window.NB.user.id;const today=new Date().toISOString().slice(0,10);
   const {data:rv}=await SB.from('review_events').select('id').eq('student_id',uid).eq('status','scheduled').lte('scheduled_date',today).order('scheduled_date').limit(1);
   if(rv&&rv[0])await SB.from('review_events').update({status:'done',completed_at:new Date().toISOString(),duration_sec:sec}).eq('id',rv[0].id);};
