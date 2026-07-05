@@ -1,1 +1,10 @@
-{ "cleanUrls": true, "trailingSlash": false }
+{
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/free", "destination": "/free/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/free/", "destination": "https://neoul-download.vercel.app/" },
+    { "source": "/free/:path*", "destination": "https://neoul-download.vercel.app/:path*" }
+  ]
+}
