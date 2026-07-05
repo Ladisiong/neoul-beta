@@ -388,30 +388,29 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
 </div></section>
 </main>
 
-<footer><div class="wrap">
-  <div style="display:flex;flex-wrap:wrap;gap:30px 48px;justify-content:space-between;align-items:flex-start">
-    <div style="max-width:340px">
+<footer><style>@media(max-width:640px){.nvFootGrid{grid-template-columns:1fr!important;gap:26px!important}}</style><div class="wrap">
+  <div class="nvFootGrid" style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:34px 40px;align-items:start">
+    <div>
       <div style="font-weight:800;font-size:1.08rem;color:#fff;letter-spacing:-.01em">너울 <span style="opacity:.85">NEOUL</span></div>
-      <p style="margin:9px 0 0;font-size:.85rem;line-height:1.65;color:#9db4cc">AI 수능·내신 학습 매니지먼트.<br/>인강은 1번, 복습은 누적 5번.</p>
-      <span style="display:inline-block;margin-top:12px;font-size:.7rem;font-weight:700;color:#a8c4dd;border:1px solid rgba(168,196,221,.35);border-radius:999px;padding:3px 10px">BETA · 정식 출시 전</span>
+      <p style="margin:10px 0 0;font-size:.85rem;line-height:1.65;color:#9db4cc;max-width:300px">AI 수능·내신 학습 매니지먼트.<br/>인강은 1번, 복습은 누적 5번.</p>
+      <span style="display:inline-block;margin-top:13px;font-size:.7rem;font-weight:700;color:#a8c4dd;border:1px solid rgba(168,196,221,.35);border-radius:999px;padding:3px 10px">BETA · 정식 출시 전</span>
     </div>
-    <div style="display:flex;gap:44px 48px;flex-wrap:wrap">
-      <div>
-        <div style="font-size:.72rem;font-weight:800;letter-spacing:.06em;color:#7f97b0;margin-bottom:11px">둘러보기</div>
-        <a href="#how" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">작동 방식</a>
-        <a href="#features" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">기능</a>
-        <a href="#pricing" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">요금</a>
-        <a href="/free/" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">무료 학습자료</a>
-      </div>
-      <div>
-        <div style="font-size:.72rem;font-weight:800;letter-spacing:.06em;color:#7f97b0;margin-bottom:11px">문의 · 고객센터</div>
-        <a href="mailto:hello@neoulai.com" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">hello@neoulai.com</a>
-        <a href="#" onclick="nvOpenChat();return false" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">💬 AI 고객센터 (실시간)</a>
-        <a href="#login" onclick="return showLogin(event)" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">💻 PC로 너울 시작하기 →</a>
-      </div>
+    <div>
+      <div style="font-size:.72rem;font-weight:800;letter-spacing:.06em;color:#7f97b0;margin-bottom:12px">둘러보기</div>
+      <a href="#how" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:4px 0">작동 방식</a>
+      <a href="#features" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:4px 0">기능</a>
+      <a href="#pricing" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:4px 0">요금</a>
+      <a href="/free/" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:4px 0">무료 학습자료</a>
+      <a href="#appdownload" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:4px 0">앱 다운로드</a>
+    </div>
+    <div>
+      <div style="font-size:.72rem;font-weight:800;letter-spacing:.06em;color:#7f97b0;margin-bottom:12px">문의 · 고객센터</div>
+      <a href="mailto:hello@neoulai.com" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:4px 0">hello@neoulai.com</a>
+      <a href="#" onclick="nvOpenChat();return false" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:4px 0">💬 AI 고객센터 (실시간)</a>
+      <a href="#login" onclick="return showLogin(event)" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:4px 0">💻 PC로 너울 시작하기 →</a>
     </div>
   </div>
-  <div style="border-top:1px solid rgba(255,255,255,.1);margin-top:30px;padding-top:18px;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;align-items:center;font-size:.75rem;color:#7f97b0">
+  <div style="border-top:1px solid rgba(255,255,255,.1);margin-top:32px;padding-top:18px;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;align-items:center;font-size:.75rem;color:#7f97b0">
     <span>© 2026 NEOUL · neoulai.com</span>
     <span>상표 출원 40-2026-0081306 · 40-2026-0081307</span>
   </div>
@@ -1001,8 +1000,8 @@ SB.auth.getSession().then(({data})=>{if(data&&data.session){window.NB.user=data.
 #nvNotice ul{margin:6px 0 2px;padding:0;list-style:none}
 #nvNotice li{position:relative;padding:5px 0 5px 20px}
 #nvNotice li:before{content:'\2713';position:absolute;left:0;color:#2B5F8B;font-weight:800}
-.nvApps{display:flex;gap:10px;margin:15px 0 4px;flex-wrap:wrap}
-.nvApp{flex:1;min-width:150px;display:flex;align-items:center;gap:10px;border:1px solid #e9eef4;border-radius:12px;padding:11px 13px;background:#F5F9FC;cursor:pointer;text-decoration:none}
+.nvApps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0 4px}
+.nvApp{min-width:0;display:flex;align-items:center;gap:10px;border:1px solid #e9eef4;border-radius:12px;padding:12px 14px;background:#F5F9FC;cursor:pointer;text-decoration:none}
 .nvApp:hover{border-color:#A8C4DD}
 .nvApp .ic{font-size:1.35rem;line-height:1}
 .nvApp .t{font-size:.82rem;font-weight:800;color:#1A3A5C}
