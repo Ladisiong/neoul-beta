@@ -375,6 +375,17 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
       </div>
     </div>
   </section>
+<section id="appdownload"><div class="wrap" style="text-align:center;padding:64px 22px">
+  <span class="eyebrow">앱 다운로드</span>
+  <h2 class="sec" style="margin:6px 0 10px">언제 어디서나, 너울 앱으로</h2>
+  <p style="max-width:560px;margin:0 auto;color:var(--muted)">데스크톱·모바일 앱을 준비 중이에요. 지금은 웹으로 바로 시작하고, 폰·태블릿은 홈 화면에 추가하면 앱처럼 쓸 수 있어요.</p>
+  <div class="nvApps" style="max-width:540px;margin:24px auto 0">
+    <a class="nvApp" data-app="win" href="#"><span class="ic">🪟</span><span><span class="t">Windows 앱</span><br/><span class="s">출시 예정</span></span></a>
+    <a class="nvApp" data-app="mac" href="#"><span class="ic">🍎</span><span><span class="t">Mac 앱</span><br/><span class="s">출시 예정</span></span></a>
+    <a class="nvApp" data-app="ios" href="#"><span class="ic">📱</span><span><span class="t">iOS 앱</span><br/><span class="s">출시 예정</span></span></a>
+    <a class="nvApp" data-app="android" href="#"><span class="ic">🤖</span><span><span class="t">Android 앱</span><br/><span class="s">출시 예정</span></span></a>
+  </div>
+</div></section>
 </main>
 
 <footer><div class="wrap">
@@ -1030,11 +1041,13 @@ SB.auth.getSession().then(({data})=>{if(data&&data.session){window.NB.user=data.
     <ul>
       <li>정식 출시 시 <b>유료 구독</b>이 도입될 예정입니다.</li>
       <li>정식 출시 전 <b>무료가입 고객</b>께는 유료 전환 시 <b>혜택</b>을 드립니다.</li>
-      <li>데스크톱 앱(Windows·Mac)은 <b>출시 예정</b>이에요.</li>
+      <li>데스크톱(Windows·Mac)·모바일(iOS·Android) 앱은 <b>출시 예정</b>이에요.</li>
     </ul>
     <div class="nvApps">
       <a class="nvApp" data-app="win" href="#"><span class="ic">🪟</span><span><span class="t">Windows 앱</span><br/><span class="s">출시 예정</span></span></a>
       <a class="nvApp" data-app="mac" href="#"><span class="ic">🍎</span><span><span class="t">Mac 앱</span><br/><span class="s">출시 예정</span></span></a>
+      <a class="nvApp" data-app="ios" href="#"><span class="ic">📱</span><span><span class="t">iOS 앱</span><br/><span class="s">출시 예정</span></span></a>
+      <a class="nvApp" data-app="android" href="#"><span class="ic">🤖</span><span><span class="t">Android 앱</span><br/><span class="s">출시 예정</span></span></a>
     </div>
   </div>
   <div class="nf"><label><input type="checkbox" id="nvNoticeHide"/> 오늘 하루 보지 않기</label><button onclick="nvCloseNotice()">확인</button></div>
@@ -1046,7 +1059,9 @@ SB.auth.getSession().then(({data})=>{if(data&&data.session){window.NB.user=data.
   window.nvCloseNotice=function(){ try{ if(document.getElementById("nvNoticeHide").checked) localStorage.setItem(KEY,String(Date.now()+864e5)); }catch(e){} var w=document.getElementById("nvNoticeWrap"); if(w) w.classList.remove("on"); };
   if(shouldShow()){ setTimeout(function(){ var w=document.getElementById("nvNoticeWrap"); if(w){ w.classList.add("on"); try{sessionStorage.setItem("nv_seen","1");}catch(e){} } }, 950); }
   var nw=document.getElementById("nvNoticeWrap"); if(nw) nw.addEventListener("click",function(e){ if(e.target.id==="nvNoticeWrap") window.nvCloseNotice(); });
-  Array.prototype.forEach.call(document.querySelectorAll(".nvApp"),function(a){ a.addEventListener("click",function(ev){ ev.preventDefault(); alert("데스크톱 앱은 출시 예정입니다. 출시되면 이 버튼에서 바로 다운로드하실 수 있어요!"); }); });
+  window.NV_APPS=window.NV_APPS||{win:"",mac:"",ios:"",android:""}; /* 앱 승인 시 각 URL만 채우면 버튼 자동 활성화 */
+  window.nvApplyApps=function(){ Array.prototype.forEach.call(document.querySelectorAll(".nvApp"),function(a){ var k=a.getAttribute("data-app"); var url=(window.NV_APPS&&window.NV_APPS[k])||""; var s=a.querySelector(".s"); if(url){ a.setAttribute("href",url); a.setAttribute("target","_blank"); a.setAttribute("rel","noopener"); if(s)s.textContent="다운로드 →"; a.onclick=null; } else { a.setAttribute("href","#"); if(s)s.textContent="출시 예정"; a.onclick=function(ev){ ev.preventDefault(); alert("앱은 출시 예정입니다. 출시되면 이 버튼에서 바로 다운로드하실 수 있어요! (Windows·Mac·iOS·Android)"); }; } }); };
+  nvApplyApps();
   var K="sb_publishable_k-WJ3TAhq32b4fyp5EsQhg_Mo8yKGso";
   var EP="https://iwrblahmszuthemfrhmy.supabase.co/functions/v1/support-chat";
   var hist=[],busy=false,greeted=false;
