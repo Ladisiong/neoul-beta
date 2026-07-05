@@ -110,7 +110,9 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
   #home .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
   #home .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.16rem;color:var(--deep)}
   #home .logo svg{width:30px;height:30px}
-  #home .nav-links{display:flex;gap:26px;align-items:center;font-size:.9rem;font-weight:600;color:var(--muted)}
+  #home .nav-links{display:flex;gap:26px;align-items:center;font-size:.9rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.nav-links a{flex-shrink:0;white-space:nowrap}
+@media(max-width:900px){.nav-links a:not(.btn){display:none}}
   #home .nav-links a:not(.btn):hover{color:var(--deep)}
   #home .nav .btn{padding:9px 17px;font-size:.86rem}
   @media(max-width:720px){#home .nav-links a:not(.btn){display:none}}
@@ -349,8 +351,8 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
   </section>
 
   <section id="freebie"><div class="wrap">
-    <div class="sec-head reveal"><span class="eyebrow">무료 학습자료</span><h2 class="sec">탐구부터, 무료 학습자료로 시작하세요.</h2><p>SKY 출신 교과 멘토와 AI가 함께 출제한 탐구(사회·과학) 학습자료를 이틀마다 새 과목으로 무료 제공합니다. <b>이번 주 무료 단원은 회원가입 없이</b> 바로 받고, 전체 자료는 무료 회원가입으로 이어받으세요.</p></div>
-    <div style="text-align:center;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="btn btn-primary" href="/free/">무료 학습자료 전체 보기 →</a><a class="btn btn-ghost" href="#login" onclick="return showLogin(event)">5회독 관리 시작하기</a></div>
+    <div class="sec-head reveal"><span class="eyebrow">무료 학습자료</span><h2 class="sec">이번 주 무료 샘플, 가입 없이 지금 바로.</h2><p>SKY 출신 교과 멘토와 AI가 함께 출제한 전과목 학습자료. <b>이번 주 1단원은 회원가입 없이</b> 즉시 다운로드하고, 마음에 들면 전체 자료는 무료 회원가입으로 매주 이어받으세요.</p></div>
+    <div class="reveal" style="max-width:560px;margin:22px auto 0"><div id="fbSample" style="border:1px solid var(--border);border-radius:16px;padding:22px;background:var(--foam,#F5F9FC);text-align:center"><div style="font-size:.76rem;font-weight:800;color:var(--mid);letter-spacing:.02em">🎁 이번 주 무료 샘플 · 회원가입 불필요</div><div id="fbSampleTitle" style="font-size:1.05rem;font-weight:800;color:var(--deep);margin:9px 0 3px">이번 주 무료 단원</div><div id="fbSampleSub" style="font-size:.82rem;color:var(--muted);margin-bottom:15px">불러오는 중…</div><a id="fbSampleBtn" class="btn btn-primary" href="/free/" style="width:100%;justify-content:center">무료 샘플 바로 받기 ↓</a></div><div style="text-align:center;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px"><a class="btn btn-ghost" href="/free/">전체 무료자료 보기(가입) →</a><a class="btn btn-ghost" href="#login" onclick="return showLogin(event)">5회독 관리 시작</a></div></div>
   </div></section>
 
   <section id="contact" class="form-wrap">
@@ -401,10 +403,6 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
   <button class="btn" id="authBtn" onclick="nbPrimary()">로그인</button>
   <div style="font-size:.82rem;color:var(--muted);margin-top:10px">처음이신가요? <a onclick="nbToggle()" style="color:var(--mid);cursor:pointer;font-weight:700">회원가입</a></div>
   <div id="authMsg" style="font-size:.8rem;color:var(--c1);min-height:18px;margin-top:6px"></div>
-  <div style="border-top:1px solid var(--border);margin:14px 0 11px"></div>
-  <select id="role" style="margin-bottom:8px"><option value="student">학생</option><option value="parent">학부모</option><option value="admin">관리자</option></select>
-  <button class="btn" style="background:#64748b" onclick="enter()">게스트 데모로 둘러보기</button>
-  <div class="demo-note">로그인 = 실제 저장 · 게스트 = 데모(mock)</div>
 </div></div>
 <div id="app" class="hidden">
   <div class="top">
@@ -952,4 +950,5 @@ SB.auth.getSession().then(({data})=>{if(data&&data.session){window.NB.user=data.
 
 })();
 </script>
+<script>(function(){try{fetch('/free/materials.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){var it=(j&&j.items)||[];var s=it.filter(function(x){return x.type==='개념요약';})[0]||it[0];if(!s)return;var t=document.getElementById('fbSampleTitle'),sub=document.getElementById('fbSampleSub'),b=document.getElementById('fbSampleBtn');if(t)t.textContent=s.category+' · '+s.subject+(s.unit?(' · '+s.unit):'');if(sub)sub.textContent=(s.type||'학습자료')+' · PDF · 가입 없이 즉시 다운로드';if(b){b.setAttribute('href','/free/materials/'+encodeURIComponent(s.file));b.setAttribute('download','');}}).catch(function(){});}catch(e){}})();</script>
 </body></html>
