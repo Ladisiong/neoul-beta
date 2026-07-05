@@ -96,7 +96,9 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
   #home{font-family:'Pretendard',system-ui,-apple-system,sans-serif;color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
   #home .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
   #home a{color:inherit;text-decoration:none}
-  #home .btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:12px;padding:13px 22px;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;transition:.18s var(--ease)}
+  #home .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;border-radius:8px;padding:12px 20px;font-weight:600;font-size:.92rem;letter-spacing:-.01em;cursor:pointer;font-family:inherit;transition:.18s var(--ease);width:auto}
+  #home h1{letter-spacing:-.035em}
+  #home h2,#home .sec,#home .sec-head h2{letter-spacing:-.03em}
   #home .btn-primary{background:var(--deep);color:#fff;box-shadow:0 6px 18px rgba(10,61,98,.22)}
   #home .btn-primary:hover{background:var(--mid);transform:translateY(-1px);box-shadow:0 10px 26px rgba(10,61,98,.28)}
   #home .btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--deep)}
@@ -114,7 +116,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
 .nav-links a{flex-shrink:0;white-space:nowrap}
 @media(max-width:900px){.nav-links a:not(.btn){display:none}}
   #home .nav-links a:not(.btn):hover{color:var(--deep)}
-  #home .nav .btn{padding:9px 17px;font-size:.86rem}
+  #home .nav .btn{padding:8px 15px;font-size:.85rem;border-radius:8px}
   @media(max-width:720px){#home .nav-links a:not(.btn){display:none}}
   /* hero */
   #home .hero{position:relative;overflow:hidden;background:radial-gradient(1200px 500px at 50% -120px,#eaf3fb 0%,#fff 60%);padding:84px 0 54px;text-align:center}
@@ -256,7 +258,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
       <h1 class="reveal">인강은 들었는데,<br/>점수는 왜 <span class="hl">그대로</span>일까</h1>
       <p class="sub reveal">이유는 하나예요 — 복습을 안 해서. '다음에 하자'가 결국 안 하게 되죠. 너울은 지금 듣는 <b>인강 진도부터 '언제 뭘 복습할지'를 대신 정해</b> 챙겨줍니다. 강의는 그대로, 복습만 너울이.</p>
       <div class="hero-cta reveal">
-        <a class="btn btn-primary" href="#login" onclick="return showLogin(event)">💻 무료 회원가입</a>
+        <a class="btn btn-primary" href="#login" onclick="return showLogin(event)">무료로 시작하기 →</a>
         <a class="btn btn-ghost" href="#how">어떻게 작동하나요?</a>
       </div>
       <p class="microcopy reveal">이메일·간편가입으로 30초 가입 · PC·노트북 바로 이용 · 태블릿·폰은 홈 화면에 추가하면 앱처럼 · 언제든 해지</p>
