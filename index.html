@@ -15,11 +15,14 @@
 body{font-family:'Malgun Gothic','맑은 고딕','Noto Sans KR',system-ui,sans-serif;background:var(--foam);color:var(--ink);line-height:1.5}
 .hidden{display:none!important}
 button{font-family:inherit;cursor:pointer;border:none}
-#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(155deg,#0A3D62,#1B6CA8);padding:20px}
-.lbox{background:#fff;border-radius:22px;padding:40px 36px;width:380px;max-width:94vw;box-shadow:0 30px 70px -30px rgba(0,0,0,.4);text-align:center}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(1000px 520px at 50% -6%,rgba(43,95,139,.5),rgba(13,31,48,0) 60%),linear-gradient(180deg,#12283d 0%,#0b1b2b 100%);padding:20px}
+.lbox{background:#fff;border-radius:18px;padding:38px 34px;width:380px;max-width:94vw;box-shadow:0 24px 64px -24px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.18);text-align:center}
+.lbox .logo{letter-spacing:-.02em}
+.lbox .btn{border-radius:10px;font-weight:700;letter-spacing:-.01em}
 .logo{font-size:1.7rem;font-weight:800;color:var(--deep)}.logo .n{color:var(--mid)}
 .tag{color:var(--muted);font-size:.9rem;margin:6px 0 24px}
-.lbox input,.lbox select{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:.95rem;margin-bottom:12px}
+.lbox input,.lbox select{width:100%;padding:12px 13px;border:1px solid var(--border);border-radius:10px;font-size:.94rem;margin-bottom:11px;transition:.15s;box-sizing:border-box}
+.lbox input:focus,.lbox select:focus{border-color:var(--mid);outline:none;box-shadow:0 0 0 3px rgba(43,95,139,.13)}
 .btn{background:var(--mid);color:#fff;padding:13px;border-radius:12px;font-weight:700;font-size:.98rem;width:100%}.btn:hover{background:var(--deep)}
 .demo-note{font-size:.78rem;color:var(--muted);margin-top:14px}
 #app{max-width:1000px;margin:0 auto;padding:0 14px 70px}
