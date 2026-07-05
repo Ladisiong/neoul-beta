@@ -431,13 +431,21 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
   <button onclick="nbOAuth('kakao')" style="width:100%;border:none;border-radius:10px;padding:12px;background:#FEE500;color:#191600;font-weight:800;font-size:.92rem;cursor:pointer;margin:14px 0 8px">💬 간편가입 · 3초 시작</button>
   <button onclick="nbOAuth('google')" style="width:100%;border:1px solid #dadce0;border-radius:10px;padding:12px;background:#fff;color:#3c4043;font-weight:700;font-size:.92rem;cursor:pointer;margin-bottom:8px"><b style="font-family:Arial"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></b>로 시작</button>
   <button onclick="nbOAuth('custom:naver')" style="width:100%;border:none;border-radius:10px;padding:12px;background:#03C75A;color:#fff;font-weight:800;font-size:.92rem;cursor:pointer;margin-bottom:6px"><b style="font-family:Arial">N</b> 네이버로 시작</button>
-  <div style="font-size:.72rem;color:var(--muted);text-align:center;margin:2px 0 4px">본인 인증된 계정으로 가입 — 허위가입 차단 · 비밀번호 불필요</div>
+  <div style="font-size:.72rem;color:var(--muted);text-align:center;margin:2px 0 4px">본인 인증된 계정으로 가입 — 허위가입 차단 · 비밀번호 불필요<br/>가입 시 <b>개인정보 수집·이용 및 이용약관</b>에 동의하는 것으로 간주됩니다</div>
   <div style="display:flex;align-items:center;gap:8px;margin:10px 0 12px"><div style="flex:1;border-top:1px solid var(--border)"></div><span style="font-size:.74rem;color:var(--muted)">또는 이메일로</span><div style="flex:1;border-top:1px solid var(--border)"></div></div>
   <input id="email" type="email" placeholder="이메일"/>
-  <input id="pw" type="password" placeholder="비밀번호 (6자 이상)"/>
+  <input id="pw" type="password" placeholder="비밀번호 (가입 시 8자 이상·영문+숫자)"/>
   <div id="signupExtra" class="hidden">
     <input id="uname" type="text" placeholder="이름"/>
     <select id="stype"><option value="repeat">재수·N수</option><option value="highschool">고등학생</option><option value="ged">검정고시</option></select>
+    <div style="text-align:left;margin:10px 0 2px;font-size:.82rem;color:#334155">
+      <label style="display:flex;gap:7px;align-items:flex-start;margin:7px 0;cursor:pointer"><input type="checkbox" id="agAll" onchange="nbAgAll(this)" style="margin-top:2px"/><b>전체 동의 (아래 필수 항목 포함)</b></label>
+      <div style="border-top:1px solid var(--border);margin:6px 0"></div>
+      <label style="display:flex;gap:7px;align-items:flex-start;margin:7px 0;cursor:pointer"><input type="checkbox" class="agReq" id="agPriv" style="margin-top:2px"/><span>[필수] 개인정보 수집·이용 동의</span></label>
+      <details style="margin:0 0 6px 22px"><summary style="cursor:pointer;font-size:.75rem;color:#64748b">수집 항목·목적 보기</summary><ul style="margin:4px 0;padding-left:16px;font-size:.75rem;line-height:1.55"><li>항목: 이메일·이름, 자가진단 학습데이터(등급·과목·학교명)</li><li>목적: 회원 식별·학습관리 서비스 제공</li><li>보유: 회원 탈퇴 시까지(관계법령상 별도 기간이 있으면 그에 따름)</li><li>학교생활기록부(학생부)는 수집·이용하지 않습니다</li></ul></details>
+      <label style="display:flex;gap:7px;align-items:flex-start;margin:7px 0;cursor:pointer"><input type="checkbox" class="agReq" id="agTos" style="margin-top:2px"/><span>[필수] 서비스 이용약관 동의</span></label>
+      <label style="display:flex;gap:7px;align-items:flex-start;margin:7px 0;cursor:pointer"><input type="checkbox" class="agReq" id="agAge" style="margin-top:2px"/><span>[필수] 만 14세 이상입니다 (만 14세 미만은 법정대리인 동의가 필요합니다)</span></label>
+    </div>
   </div>
   <button class="btn" id="authBtn" onclick="nbPrimary()">로그인</button>
   <div style="font-size:.82rem;color:var(--muted);margin-top:10px">처음이신가요? <a onclick="nbToggle()" style="color:var(--mid);cursor:pointer;font-weight:700">회원가입</a></div>
@@ -935,7 +943,8 @@ function msg(t,err){var m=document.getElementById('authMsg');if(m){m.textContent
 window.nbToggle=()=>{mode=mode==='login'?'signup':'login';document.getElementById('signupExtra').classList.toggle('hidden',mode==='login');document.getElementById('authBtn').textContent=mode==='login'?'로그인':'회원가입';msg('');};
 window.nbPrimary=()=>{mode==='login'?nbLogin():nbSignup();};
 async function nbLogin(){const email=val('email'),pw=val('pw');if(!email||!pw){msg('이메일·비밀번호를 입력하세요',1);return;}msg('로그인 중...');const {data,error}=await SB.auth.signInWithPassword({email,password:pw});if(error){msg(error.message,1);return;}window.NB.user=data.user;await bootUser();}
-async function nbSignup(){const email=val('email'),pw=val('pw'),name=val('uname'),stype=val('stype')||'repeat';if(!email||pw.length<6){msg('이메일과 6자 이상 비밀번호를 입력하세요',1);return;}msg('가입 중...');const {data,error}=await SB.auth.signUp({email,password:pw,options:{data:{name}}});if(error){msg(error.message,1);return;}if(!data.session){msg('가입 완료! 이메일 인증 후 로그인하세요(즉시 사용은 Supabase Auth에서 이메일 확인 OFF).');return;}window.NB.user=data.user;await ensureRows(stype);await bootUser();}
+window.nbAgAll=function(cb){document.querySelectorAll('.agReq').forEach(function(x){x.checked=cb.checked;});};
+async function nbSignup(){const email=val('email'),pw=val('pw'),name=val('uname'),stype=val('stype')||'repeat';if(!email||!name){msg('이메일과 이름을 입력하세요',1);return;}if(pw.length<8||!/[A-Za-z]/.test(pw)||!/[0-9]/.test(pw)){msg('비밀번호는 8자 이상, 영문과 숫자를 포함해야 합니다',1);return;}var _req=document.querySelectorAll('.agReq'),_ok=_req.length>0;_req.forEach(function(x){if(!x.checked)_ok=false;});if(!_ok){msg('필수 동의(개인정보·이용약관·연령)에 모두 체크해 주세요',1);return;}msg('가입 중...');const {data,error}=await SB.auth.signUp({email,password:pw,options:{data:{name}}});if(error){msg(error.message,1);return;}if(!data.session){msg('가입 완료! 이메일 인증 후 로그인하세요(즉시 사용은 Supabase Auth에서 이메일 확인 OFF).');return;}window.NB.user=data.user;await ensureRows(stype);await bootUser();}
 window.nbLogout=async()=>{await SB.auth.signOut();location.reload();};
 async function ensureRows(stype){if(!window.NB.user)return;const uid=window.NB.user.id;await SB.from('students').upsert({id:uid,student_type:stype||'repeat',exam_system:'current'},{onConflict:'id'});await SB.from('subscriptions').upsert({student_id:uid,tier:'free',ai_credits_limit:10},{onConflict:'student_id'});await SB.from('gamification').upsert({student_id:uid,xp:0,level:1,points:0,tier:'물방울'},{onConflict:'student_id'});}
 async function bootUser(){const st=window.state;await ensureRows();const uid=window.NB.user.id;
