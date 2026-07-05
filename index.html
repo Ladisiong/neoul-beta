@@ -377,9 +377,33 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
   </section>
 </main>
 
-<footer><div class="wrap foot">
-  <div><b>너울 NEOUL</b><br/>AI 수능·내신 학습 매니지먼트<br/><span style="font-size:.76rem;color:#6d8ba3">상표 출원 40-2026-0081306 · 40-2026-0081307</span></div>
-  <div>문의: <a href="mailto:hello@neoulai.com">hello@neoulai.com</a><br/><a href="#login" onclick="return showLogin(event)">💻 PC로 너울 시작하기 →</a><br/><span style="color:#6d8399">© 2026 NEOUL · neoulai.com</span></div>
+<footer><div class="wrap">
+  <div style="display:flex;flex-wrap:wrap;gap:30px 48px;justify-content:space-between;align-items:flex-start">
+    <div style="max-width:340px">
+      <div style="font-weight:800;font-size:1.08rem;color:#fff;letter-spacing:-.01em">너울 <span style="opacity:.85">NEOUL</span></div>
+      <p style="margin:9px 0 0;font-size:.85rem;line-height:1.65;color:#9db4cc">AI 수능·내신 학습 매니지먼트.<br/>인강은 1번, 복습은 누적 5번.</p>
+      <span style="display:inline-block;margin-top:12px;font-size:.7rem;font-weight:700;color:#a8c4dd;border:1px solid rgba(168,196,221,.35);border-radius:999px;padding:3px 10px">BETA · 정식 출시 전</span>
+    </div>
+    <div style="display:flex;gap:44px 48px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:.72rem;font-weight:800;letter-spacing:.06em;color:#7f97b0;margin-bottom:11px">둘러보기</div>
+        <a href="#how" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">작동 방식</a>
+        <a href="#features" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">기능</a>
+        <a href="#pricing" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">요금</a>
+        <a href="/free/" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">무료 학습자료</a>
+      </div>
+      <div>
+        <div style="font-size:.72rem;font-weight:800;letter-spacing:.06em;color:#7f97b0;margin-bottom:11px">문의 · 고객센터</div>
+        <a href="mailto:hello@neoulai.com" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">hello@neoulai.com</a>
+        <a href="#" onclick="nvOpenChat();return false" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">💬 AI 고객센터 (실시간)</a>
+        <a href="#login" onclick="return showLogin(event)" style="display:block;font-size:.85rem;color:#c4d4e3;text-decoration:none;padding:3px 0">💻 PC로 너울 시작하기 →</a>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:1px solid rgba(255,255,255,.1);margin-top:30px;padding-top:18px;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;align-items:center;font-size:.75rem;color:#7f97b0">
+    <span>© 2026 NEOUL · neoulai.com</span>
+    <span>상표 출원 40-2026-0081306 · 40-2026-0081307</span>
+  </div>
 </div></footer>
 
 <div class="sticky-cta"><a class="btn btn-primary" href="#login" onclick="return showLogin(event)">💻 무료로 너울 시작하기</a></div>
@@ -953,4 +977,83 @@ SB.auth.getSession().then(({data})=>{if(data&&data.session){window.NB.user=data.
 })();
 </script>
 <script>(function(){try{fetch('/free/materials.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){var it=(j&&j.items)||[];var s=it.filter(function(x){return x.type==='개념요약';})[0]||it[0];if(!s)return;var t=document.getElementById('fbSampleTitle'),sub=document.getElementById('fbSampleSub'),b=document.getElementById('fbSampleBtn');if(t)t.textContent=s.category+' · '+s.subject+(s.unit?(' · '+s.unit):'');if(sub)sub.textContent=(s.type||'학습자료')+' · PDF · 가입 없이 즉시 다운로드';if(b){b.setAttribute('href','/free/materials/'+encodeURIComponent(s.file));b.setAttribute('download','');}}).catch(function(){});}catch(e){}})();</script>
+<!-- NEOUL: notice popup + app download + AI support chat -->
+<style>
+#nvNoticeWrap{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(12,28,44,.5);backdrop-filter:blur(3px);padding:18px}
+#nvNoticeWrap.on{display:flex}
+#nvNotice{background:#fff;max-width:440px;width:100%;border-radius:18px;box-shadow:0 24px 60px rgba(12,28,44,.28);overflow:hidden;font-family:inherit;animation:nvpop .22s ease}
+@keyframes nvpop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+#nvNotice .nh{background:linear-gradient(135deg,#1A3A5C,#2B5F8B);color:#fff;padding:20px 22px}
+#nvNotice .nh b{font-size:1.12rem;font-weight:800;letter-spacing:-.02em}
+#nvNotice .nb{padding:19px 22px 6px;font-size:.9rem;line-height:1.62;color:#33475b}
+#nvNotice .nb .tag{display:inline-block;background:#eaf2fb;color:#2B5F8B;font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:999px;margin-bottom:11px}
+#nvNotice ul{margin:6px 0 2px;padding:0;list-style:none}
+#nvNotice li{position:relative;padding:5px 0 5px 20px}
+#nvNotice li:before{content:'\2713';position:absolute;left:0;color:#2B5F8B;font-weight:800}
+.nvApps{display:flex;gap:10px;margin:15px 0 4px;flex-wrap:wrap}
+.nvApp{flex:1;min-width:150px;display:flex;align-items:center;gap:10px;border:1px solid #e9eef4;border-radius:12px;padding:11px 13px;background:#F5F9FC;cursor:pointer;text-decoration:none}
+.nvApp:hover{border-color:#A8C4DD}
+.nvApp .ic{font-size:1.35rem;line-height:1}
+.nvApp .t{font-size:.82rem;font-weight:800;color:#1A3A5C}
+.nvApp .s{font-size:.67rem;color:#8aa2b8}
+#nvNotice .nf{padding:12px 22px 18px;display:flex;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid #eef3f8;margin-top:10px}
+#nvNotice .nf label{font-size:.78rem;color:#6d8399;display:flex;align-items:center;gap:6px;cursor:pointer}
+#nvNotice .nf button{background:#1A3A5C;color:#fff;border:none;border-radius:10px;padding:10px 22px;font-weight:700;font-size:.88rem;cursor:pointer}
+#nvChatFab{position:fixed;right:22px;bottom:22px;z-index:150;background:#1A3A5C;color:#fff;border:none;border-radius:999px;padding:13px 18px;font-weight:700;font-size:.9rem;box-shadow:0 8px 24px rgba(26,58,92,.34);cursor:pointer;display:flex;align-items:center;gap:8px;transition:.18s}
+#nvChatFab:hover{background:#2B5F8B;transform:translateY(-2px)}
+#nvChatPanel{position:fixed;right:22px;bottom:22px;z-index:151;width:362px;max-width:calc(100vw - 28px);height:min(560px,74vh);background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(12,28,44,.3);display:none;flex-direction:column;overflow:hidden}
+#nvChatPanel.on{display:flex}
+#nvChatPanel .ch{background:linear-gradient(135deg,#1A3A5C,#2B5F8B);color:#fff;padding:13px 16px;display:flex;align-items:center;justify-content:space-between}
+#nvChatPanel .ch b{font-size:.95rem;font-weight:800}
+#nvChatPanel .ch .cs{font-size:.7rem;opacity:.85}
+#nvChatPanel .cx{background:transparent;border:none;color:#fff;font-size:1.15rem;cursor:pointer;line-height:1}
+#nvChatLog{flex:1;overflow-y:auto;padding:14px;background:#F5F9FC;display:flex;flex-direction:column;gap:9px}
+.nvMsg{max-width:84%;padding:9px 12px;border-radius:13px;font-size:.86rem;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.nvMsg.u{align-self:flex-end;background:#1A3A5C;color:#fff;border-bottom-right-radius:4px}
+.nvMsg.a{align-self:flex-start;background:#fff;color:#33475b;border:1px solid #e6eef5;border-bottom-left-radius:4px}
+#nvChatForm{display:flex;gap:8px;padding:10px;border-top:1px solid #eef3f8;background:#fff}
+#nvChatForm input{flex:1;border:1px solid #dbe6f0;border-radius:10px;padding:10px 12px;font-size:.86rem;font-family:inherit;outline:none}
+#nvChatForm button{background:#1A3A5C;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800;cursor:pointer;font-size:1rem}
+@media(max-width:720px){#nvChatFab{bottom:78px}#nvChatPanel{bottom:12px;right:12px;left:12px;width:auto;height:72vh}}
+</style>
+<button id="nvChatFab" onclick="nvOpenChat()" aria-label="AI 고객센터">💬 <span>AI 상담</span></button>
+<div id="nvChatPanel" role="dialog" aria-label="너울 AI 고객센터">
+  <div class="ch"><div><b>너울 AI 고객센터</b><div class="cs">실시간 응답 · 베타</div></div><button class="cx" onclick="nvCloseChat()" aria-label="닫기">✕</button></div>
+  <div id="nvChatLog"></div>
+  <form id="nvChatForm" onsubmit="return nvSend(event)"><input id="nvChatInput" placeholder="무엇이든 물어보세요 (예: 지금 유료인가요?)" autocomplete="off"/><button type="submit" aria-label="보내기">↑</button></form>
+</div>
+<div id="nvNoticeWrap"><div id="nvNotice">
+  <div class="nh"><b>🚀 너울 베타 오픈 안내</b></div>
+  <div class="nb">
+    <span class="tag">BETA · 정식 출시 전</span>
+    <p>현재 너울은 <b>정식 출시 전 베타버전</b>입니다. 지금은 <b>무료 회원가입</b>으로 모든 기능을 이용하실 수 있어요.</p>
+    <ul>
+      <li>정식 출시 시 <b>유료 구독</b>이 도입될 예정입니다.</li>
+      <li>정식 출시 전 <b>무료가입 고객</b>께는 유료 전환 시 <b>혜택</b>을 드립니다.</li>
+      <li>데스크톱 앱(Windows·Mac)은 <b>출시 예정</b>이에요.</li>
+    </ul>
+    <div class="nvApps">
+      <a class="nvApp" data-app="win" href="#"><span class="ic">🪟</span><span><span class="t">Windows 앱</span><br/><span class="s">출시 예정</span></span></a>
+      <a class="nvApp" data-app="mac" href="#"><span class="ic">🍎</span><span><span class="t">Mac 앱</span><br/><span class="s">출시 예정</span></span></a>
+    </div>
+  </div>
+  <div class="nf"><label><input type="checkbox" id="nvNoticeHide"/> 오늘 하루 보지 않기</label><button onclick="nvCloseNotice()">확인</button></div>
+</div></div>
+<script>
+(function(){
+  var KEY="neoul_notice_v2";
+  function shouldShow(){ try{ if(sessionStorage.getItem("nv_seen")) return false; var t=localStorage.getItem(KEY); return !t || Date.now()>(+t||0); }catch(e){ return true; } }
+  window.nvCloseNotice=function(){ try{ if(document.getElementById("nvNoticeHide").checked) localStorage.setItem(KEY,String(Date.now()+864e5)); }catch(e){} var w=document.getElementById("nvNoticeWrap"); if(w) w.classList.remove("on"); };
+  if(shouldShow()){ setTimeout(function(){ var w=document.getElementById("nvNoticeWrap"); if(w){ w.classList.add("on"); try{sessionStorage.setItem("nv_seen","1");}catch(e){} } }, 950); }
+  var nw=document.getElementById("nvNoticeWrap"); if(nw) nw.addEventListener("click",function(e){ if(e.target.id==="nvNoticeWrap") window.nvCloseNotice(); });
+  Array.prototype.forEach.call(document.querySelectorAll(".nvApp"),function(a){ a.addEventListener("click",function(ev){ ev.preventDefault(); alert("데스크톱 앱은 출시 예정입니다. 출시되면 이 버튼에서 바로 다운로드하실 수 있어요!"); }); });
+  var K="sb_publishable_k-WJ3TAhq32b4fyp5EsQhg_Mo8yKGso";
+  var EP="https://iwrblahmszuthemfrhmy.supabase.co/functions/v1/support-chat";
+  var hist=[],busy=false,greeted=false;
+  function add(role,text){ var d=document.createElement("div"); d.className="nvMsg "+(role==="user"?"u":"a"); d.textContent=text; var log=document.getElementById("nvChatLog"); log.appendChild(d); log.scrollTop=log.scrollHeight; return d; }
+  window.nvOpenChat=function(){ var p=document.getElementById("nvChatPanel"),f=document.getElementById("nvChatFab"); p.classList.add("on"); f.style.display="none"; if(!greeted){ greeted=true; add("assistant","안녕하세요! 너울 AI 고객센터예요 😊 베타·요금·앱·기능 무엇이든 물어보세요."); } document.getElementById("nvChatInput").focus(); };
+  window.nvCloseChat=function(){ document.getElementById("nvChatPanel").classList.remove("on"); document.getElementById("nvChatFab").style.display="flex"; };
+  window.nvSend=function(e){ e.preventDefault(); if(busy) return false; var inp=document.getElementById("nvChatInput"); var q=(inp.value||"").trim(); if(!q) return false; inp.value=""; add("user",q); hist.push({role:"user",content:q}); busy=true; var wait=add("assistant","…"); fetch(EP,{method:"POST",headers:{"content-type":"application/json","apikey":K,"authorization":"Bearer "+K},body:JSON.stringify({messages:hist})}).then(function(r){return r.json();}).then(function(j){ var t=(j&&j.text)||"죄송해요, 잠시 후 다시 시도해 주세요. 급하시면 hello@neoulai.com으로 문의 주세요."; wait.textContent=t; hist.push({role:"assistant",content:t}); }).catch(function(){ wait.textContent="연결이 원활하지 않아요. 잠시 후 다시 시도하거나 hello@neoulai.com으로 문의 주세요."; }).finally(function(){ busy=false; }); return false; };
+})();
+</script>
 </body></html>
