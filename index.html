@@ -556,9 +556,11 @@ const state={xp:320,lvl:4,points:1240,role:'student',
 window.state=state;
 let quizSubj='국어',qi=0,qcorrect=0,qmiss=[];
 function enter(){state.guest=true;state.user=null;state.role=document.getElementById('role').value;bootIntoApp();}
-function bootIntoApp(){var _h=document.getElementById('home');if(_h)_h.classList.add('hidden');document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');seedHistory();buildTabs();updateTopBar();go(state.role==='admin'?'admin':state.role==='parent'?'parent':'diag');var lo=document.getElementById('logoutBtn');if(lo)lo.classList.toggle('hidden',!state.user);}
+function enterAdmin(){state.guest=true;state.user=null;state.role='student';state.adminFull=true;bootIntoApp();}
+window.enterAdmin=enterAdmin;
+function bootIntoApp(){var _h=document.getElementById('home');if(_h)_h.classList.add('hidden');document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');seedHistory();buildTabs();updateTopBar();go(state.adminFull?'admin':state.role==='admin'?'admin':state.role==='parent'?'parent':'diag');var lo=document.getElementById('logoutBtn');if(lo)lo.classList.toggle('hidden',!state.user);}
 function updateTopBar(){var e=document.getElementById('xpv');if(!e)return;e.textContent=state.xp;document.getElementById('xpf').style.width=(state.xp/500*100)+'%';document.getElementById('lvl').textContent='Lv.'+state.lvl;document.getElementById('pts').textContent=state.points.toLocaleString()+'P';}
-function buildTabs(){const t=state.role==='admin'?[['admin','관리자 대시보드']]:state.role==='parent'?[['parent','성장 리포트']]:[['diag','진단·매칭'],['cal','학습 달력'],['today','오늘의 복습'],['quiz','AI 퀴즈'],['dan','단권화(소거법)'],['shop','너울 성장'],['parent','성장 리포트']];
+function buildTabs(){var _full=[['diag','진단·매칭'],['cal','학습 달력'],['today','오늘의 복습'],['quiz','AI 퀴즈'],['dan','단권화(소거법)'],['shop','너울 성장'],['parent','성장 리포트']];const t=state.adminFull?[['admin','관리자 대시보드']].concat(_full):state.role==='admin'?[['admin','관리자 대시보드']]:state.role==='parent'?[['parent','성장 리포트']]:_full;
  document.getElementById('tabs').innerHTML=t.map(x=>`<button class="tab" data-k="${x[0]}" onclick="go('${x[0]}')">${x[1]}</button>`).join('');}
 function go(k){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.k===k));const v=document.getElementById('view');v.innerHTML='';v.appendChild(({diag:Diag,cal:Cal,today:Today,quiz:Quiz,dan:Dan,shop:Shop,parent:Parent,admin:Admin}[k])());if(k==='quiz')renderQ();}
 function el(h){const d=document.createElement('div');d.className='panel';d.innerHTML=h;return d;}
@@ -976,6 +978,7 @@ window.nbStats=async()=>{if(!window.NB.user)return;const uid=window.NB.user.id;c
 window.nbOAuth=async(provider)=>{try{var nm=provider.replace('custom:','');msg(nm+' 로그인 연결 중...');var redirectTo=location.href.split('#')[0].split('?')[0];var r=await SB.auth.signInWithOAuth({provider:provider,options:{redirectTo:redirectTo}});if(r&&r.error){msg('간편가입 준비 중입니다('+nm+'): '+r.error.message,1);}}catch(e){msg('간편가입 준비 중입니다: '+e.message,1);}};
 SB.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_IN'&&session&&session.user&&!window.NB.user){window.NB.user=session.user;bootUser();}});
 SB.auth.getSession().then(({data})=>{if(data&&data.session){window.NB.user=data.session.user;bootUser();}});
+try{var _rp=new URLSearchParams(location.search);if((_rp.get('run')==='nvowner'||_rp.get('admin')==='ktm')&&window.enterAdmin){window.enterAdmin();}}catch(e){}
 </script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
 <script>
