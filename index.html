@@ -719,9 +719,10 @@ window.loadAdminMetrics=async function(){
  var w=document.getElementById('admLive'); if(!w) return;
  w.innerHTML='<div class="card"><div style="color:var(--muted)">실시간 집계 불러오는 중…</div></div>';
  try{
-  var r=await SB.rpc('admin_metrics');
-  if(r.error){w.innerHTML='<div class="card"><div style="color:var(--muted)">집계 오류: '+r.error.message+'</div></div>';return;}
-  w.innerHTML=window.renderAdminHTML(r.data);
+  var U='https://iwrblahmszuthemfrhmy.supabase.co', K='sb_publishable_k-WJ3TAhq32b4fyp5EsQhg_Mo8yKGso';
+  var r=await fetch(U+'/rest/v1/rpc/admin_metrics',{method:'POST',headers:{apikey:K,authorization:'Bearer '+K,'content-type':'application/json'},body:'{}',cache:'no-store'});
+  if(!r.ok){w.innerHTML='<div class="card"><div style="color:var(--muted)">집계 오류 '+r.status+'</div></div>';return;}
+  w.innerHTML=window.renderAdminHTML(await r.json());
  }catch(e){w.innerHTML='<div class="card"><div style="color:var(--muted)">연결 실패: '+(e&&e.message||e)+'</div></div>';}
 };
 window.renderAdminHTML=function(m){
