@@ -711,24 +711,36 @@ function Shop(){
   <div class="card"><b style="font-size:.92rem">포인트 상점</b><div class="shop" style="margin-top:11px">${items}</div><div style="font-size:.72rem;color:var(--muted);margin-top:10px">제휴형(인강 할인·모의고사) 우선 + 실비형 제한 · 보상 원가 = 매출의 2% 상한.</div></div>`);}
 function redeem(i){const s=SHOP[i];if(state.points<s.c)return;state.points-=s.c;document.getElementById('pts').textContent=state.points.toLocaleString()+'P';go('shop');toast('교환 완료: '+s.n+' (-'+s.c.toLocaleString()+'P)');}
 function Admin(){
- const bar=(n,v,c)=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:3px"><b>${n}</b><span style="color:var(--deep);font-weight:700">${v}%</span></div><div style="height:16px;background:#eef2f6;border-radius:6px;overflow:hidden"><div style="height:100%;width:${v}%;background:linear-gradient(90deg,var(--mid),${c||'#1B6CA8'})"></div></div></div>`;
- const fb=[['김○현(고3)','복습 알림이 시험범위랑 정확히 맞아서 좋아요','긍정','#2F6B4F','#eef8f1'],['학부모 이○','주간 리포트 수치가 구체적이라 신뢰가 갑니다','긍정','#2F6B4F','#eef8f1'],['박○우(N수)','단권화에 과목 더 추가됐으면','개선','#B26B00','#fff6e8'],['정○(고2)','내신 과목도 되니까 학원 대신 쓸 만해요','긍정','#2F6B4F','#eef8f1'],['최○석','인강 추천이 내 수준이랑 잘 맞음. 가격만 조금…','개선','#B26B00','#fff6e8']];
- const fbH=fb.map(x=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--border);border-radius:11px;margin-bottom:8px;background:#fff"><span style="flex:none;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px;color:${x[3]};background:${x[4]}">${x[2]}</span><div><b style="font-size:.82rem">${x[0]}</b><div style="font-size:.84rem;color:var(--ink)">${x[1]}</div></div></div>`).join('');
- return el(`<h2 class="sec">관리자 대시보드 <span class="auto">베타 운영 모니터</span></h2>
-  <p class="subtle">신청·활성·매출·전환·리텐션·과목/학년/지역·AI원가·결제·NPS·피드백을 한 화면에. <b style="color:var(--c1)">※ 데모 지표(mock)</b> — 실서비스 = Supabase admin_metrics 실시간 집계.</p>
-  <div class="kpi"><div class="k"><b>312</b><span>누적 신청 (오늘 +18)</span></div><div class="k"><b>248</b><span>MAU · WAU 186 · DAU 142</span></div><div class="k"><b>86</b><span>유료 구독</span></div></div>
-  <div class="kpi"><div class="k"><b>₩610만</b><span>MRR</span></div><div class="k"><b>₩71,000</b><span>ARPU</span></div><div class="k"><b>27.6%</b><span>유료 전환율</span></div></div>
-  <div class="card"><b style="font-size:.92rem">획득 퍼널</b><div style="margin-top:12px">${bar('신청 312',100)}${bar('활성화 200',64)}${bar('유료 86',28,'#2F8F4E')}</div><div style="font-size:.74rem;color:var(--muted)">단계별 이탈 지점을 모니터링해 온보딩·전환 개선.</div></div>
-  <div class="card"><b style="font-size:.92rem">BEP 진행</b><div style="height:20px;background:#eef2f6;border-radius:8px;overflow:hidden;margin:12px 0 6px"><div style="height:100%;width:${Math.round(86/380*100)}%;background:linear-gradient(90deg,var(--mid),var(--c3))"></div></div><div style="font-size:.78rem;color:var(--muted)">유료 <b style="color:var(--deep)">86</b> / BEP <b>380명</b> (${Math.round(86/380*100)}%) · 흑자까지 <b style="color:var(--c1)">294명</b> · 공헌이익 ₩55,700/인.</div></div>
-  <div class="card"><b style="font-size:.92rem">요금제 분포</b><div style="margin-top:12px">${bar('Free · 226명',72,'#94a3b8')}${bar('Basic ₩34,900 · 56',65)}${bar('Standard ₩99,000 · 22',26)}${bar('Max ₩150,000 · 8',9,'#0A3D62')}</div></div>
-  <div class="card"><b style="font-size:.92rem">리텐션 코호트</b><div class="kpi" style="margin-top:12px;margin-bottom:0"><div class="k"><b>72%</b><span>D1</span></div><div class="k"><b>51%</b><span>D7</span></div><div class="k"><b>38%</b><span>D30</span></div></div><div style="font-size:.74rem;color:var(--muted);margin-top:10px">D30 38% = 5회독 복습 알림이 복귀 트리거(traction).</div></div>
-  <div class="card"><b style="font-size:.92rem">기능별 주간 사용률</b><div style="margin-top:12px">${bar('자가진단·매칭',81)}${bar('5회독 스케줄러',94)}${bar('오늘의 복습',88)}${bar('AI 퀴즈',76)}${bar('단권화',61)}${bar('성장 리포트',42)}</div></div>
-  <div class="card"><b style="font-size:.92rem">과목 분포</b><div style="margin-top:12px">${bar('수학',31)}${bar('국어',28)}${bar('영어',18)}${bar('탐구',16)}${bar('한국사',7)}</div></div>
-  <div class="card"><b style="font-size:.92rem">학년 · 지역 분포</b><div style="margin-top:12px">${bar('고3',34)}${bar('고2',26)}${bar('고1',22)}${bar('N수',18)}</div><div style="margin-top:10px">${bar('수도권',58,'#6B4E9E')}${bar('광역시',24,'#6B4E9E')}${bar('기타 지역',18,'#6B4E9E')}</div></div>
-  <div class="card"><b style="font-size:.92rem">단위경제 · 결제</b><div class="kpi" style="margin-top:12px;margin-bottom:0"><div class="k"><b>₩77만</b><span>월 AI 원가</span></div><div class="k"><b>78%</b><span>공헌이익률</span></div><div class="k"><b>4.1%</b><span>월 Churn</span></div></div><div style="font-size:.74rem;color:var(--muted);margin-top:10px">결제 성공률 98.2% · 환불 1.4% · NPS <b style="color:var(--c3)">+42</b>.</div></div>
-  <div class="card"><b style="font-size:.92rem">주차별 성장 (유료 누적)</b><div class="wk" style="height:120px">${[12,31,58,86].map((v,i)=>`<div class="col"><i style="height:${Math.round(v/86*92+10)}px"></i><span style="font-weight:700;color:var(--deep);font-size:.72rem">${v}</span><span>${i+1}주</span></div>`).join('')}</div></div>
-  <div class="card"><b style="font-size:.92rem">최근 피드백 (AI 감성분류)</b><div style="margin-top:12px">${fbH}</div><div style="font-size:.74rem;color:var(--muted)">개선 의견은 제품 백로그로 자동 라우팅.</div></div>
-  <div class="foot">너울 NEOUL 관리자 데모 · 전 지표 한 화면 모니터 · mock</div>`);}
+ var box=el('<h2 class="sec">관리자 대시보드 <span class="live">● 실시간 LIVE</span></h2><p class="subtle">Supabase 실집계 · 허수 없음. 데이터가 쌓이면 자동 반영됩니다.</p><div id="admLive"><div class="card"><div style="color:var(--muted)">실시간 집계 불러오는 중…</div></div></div>');
+ if(window.loadAdminMetrics)window.loadAdminMetrics();
+ return box;
+}
+window.loadAdminMetrics=async function(){
+ var w=document.getElementById('admLive'); if(!w) return;
+ w.innerHTML='<div class="card"><div style="color:var(--muted)">실시간 집계 불러오는 중…</div></div>';
+ try{
+  var r=await SB.rpc('admin_metrics');
+  if(r.error){w.innerHTML='<div class="card"><div style="color:var(--muted)">집계 오류: '+r.error.message+'</div></div>';return;}
+  w.innerHTML=window.renderAdminHTML(r.data);
+ }catch(e){w.innerHTML='<div class="card"><div style="color:var(--muted)">연결 실패: '+(e&&e.message||e)+'</div></div>';}
+};
+window.renderAdminHTML=function(m){
+ var won=function(n){return '₩'+(Number(n||0)).toLocaleString();};
+ var dist=function(obj){var ks=Object.keys(obj||{});if(!ks.length)return '<div style="color:var(--muted);font-size:.8rem">데이터 없음</div>';var mx=Math.max.apply(null,ks.map(function(k){return obj[k];}))||1;return ks.map(function(k){return '<div style="display:flex;align-items:center;gap:8px;margin:5px 0"><span style="min-width:96px;font-size:.8rem">'+k+'</span><div style="flex:1;height:12px;background:#eef2f6;border-radius:6px;overflow:hidden"><div style="height:100%;width:'+Math.round(obj[k]/mx*100)+'%;background:var(--mid)"></div></div><b style="font-size:.8rem;min-width:30px;text-align:right">'+obj[k]+'</b></div>';}).join('');};
+ var p=m.profiles||{},st=m.students||{},sb=m.subscriptions||{},pay=m.payments||{},ac=m.activity||{},ai=m.ai||{};
+ var t=new Date(m.generated_at||Date.now()); var hhmm=('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2);
+ var qrate=ac.quiz_attempts?Math.round(ac.quiz_correct/ac.quiz_attempts*100):0;
+ var rrate=ac.review_events?Math.round(ac.review_done/ac.review_events*100):0;
+ return '<div class="kpi"><div class="k"><b>'+(p.total||0)+'</b><span>누적 가입 (오늘 +'+(p.today||0)+' · 7일 '+(p.d7||0)+')</span></div><div class="k"><b>'+(st.total||0)+'</b><span>학생</span></div><div class="k"><b>'+(sb.total||0)+'</b><span>구독</span></div></div>'
+ +'<div class="kpi"><div class="k"><b>'+(pay.count||0)+'</b><span>결제 건수</span></div><div class="k"><b>'+won(pay.revenue_month)+'</b><span>이번 달 매출</span></div><div class="k"><b>'+won(pay.revenue_total)+'</b><span>누적 매출</span></div></div>'
+ +'<div class="kpi"><div class="k"><b>'+(ac.diagnoses||0)+'</b><span>자가진단</span></div><div class="k"><b>'+(ac.quiz_attempts||0)+'</b><span>퀴즈 시도 (정답 '+(ac.quiz_correct||0)+' · '+qrate+'%)</span></div><div class="k"><b>'+(ac.review_events||0)+'</b><span>복습 이벤트 (완료 '+(ac.review_done||0)+' · '+rrate+'%)</span></div></div>'
+ +'<div class="card"><b style="font-size:.92rem">요금제 분포 (구독 tier)</b><div style="margin-top:11px">'+dist(sb.by_tier)+'</div></div>'
+ +'<div class="card"><b style="font-size:.92rem">구독 상태</b><div style="margin-top:11px">'+dist(sb.by_status)+'</div></div>'
+ +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="card"><b style="font-size:.92rem">학생 유형</b><div style="margin-top:11px">'+dist(st.by_type)+'</div></div><div class="card"><b style="font-size:.92rem">시험 체계</b><div style="margin-top:11px">'+dist(st.by_system)+'</div></div><div class="card"><b style="font-size:.92rem">학년</b><div style="margin-top:11px">'+dist(st.by_grade)+'</div></div><div class="card"><b style="font-size:.92rem">지역</b><div style="margin-top:11px">'+dist(st.by_region)+'</div></div></div>'
+ +'<div class="card"><b style="font-size:.92rem">AI 사용 (실집계)</b><div class="kpi" style="margin-top:11px;margin-bottom:0"><div class="k"><b>'+(ai.calls_total||0)+'</b><span>총 호출</span></div><div class="k"><b>'+(ai.calls_30d||0)+'</b><span>최근 30일</span></div><div class="k"><b>'+(Number(ai.tokens_in||0)+Number(ai.tokens_out||0)).toLocaleString()+'</b><span>총 토큰 (in '+(Number(ai.tokens_in||0)).toLocaleString()+' / out '+(Number(ai.tokens_out||0)).toLocaleString()+')</span></div></div></div>'
+ +'<div class="card" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="color:var(--c3);font-weight:700;font-size:.82rem">● 실시간 LIVE</span><span style="font-size:.78rem;color:var(--muted)">Supabase admin_metrics · 갱신 '+hhmm+'</span><button class="btn" style="margin-left:auto;padding:5px 12px;font-size:.78rem" onclick="loadAdminMetrics()">새로고침 ↻</button></div>'
+ +'<div class="foot">너울 NEOUL 관리자 · 전 지표 Supabase 실집계 · 허수 없음(라이브)</div>';
+};
 
 
 function realCard(){var d=state.dbStats;return `<div class="card" style="border:2px solid var(--c3)"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><b style="color:var(--c3)">● 실데이터 집계</b><span style="font-size:.72rem;color:var(--muted)">로그인 계정 누적</span></div><div class="kpi" style="margin-bottom:0"><div class="k"><b>${d.quizRate}%</b><span>퀴즈 정답률 (${d.quizCorrect}/${d.quizTotal})</span></div><div class="k"><b>${d.reviewRate}%</b><span>복습 이행률 (${d.reviewDone}/${d.reviewTotal})</span></div><div class="k"><b>${d.reviewDone}</b><span>완료 복습</span></div></div></div>`;}
