@@ -712,7 +712,7 @@ function Shop(){
 function redeem(i){const s=SHOP[i];if(state.points<s.c)return;state.points-=s.c;document.getElementById('pts').textContent=state.points.toLocaleString()+'P';go('shop');toast('교환 완료: '+s.n+' (-'+s.c.toLocaleString()+'P)');}
 function Admin(){
  var box=el('<h2 class="sec">관리자 대시보드 <span class="live">● 실시간 LIVE</span></h2><p class="subtle">Supabase 실집계 · 허수 없음. 데이터가 쌓이면 자동 반영됩니다.</p><div id="admLive"><div class="card"><div style="color:var(--muted)">실시간 집계 불러오는 중…</div></div></div>');
- if(window.loadAdminMetrics)window.loadAdminMetrics();
+ setTimeout(function(){if(window.loadAdminMetrics)window.loadAdminMetrics();},0);
  return box;
 }
 window.loadAdminMetrics=async function(){
