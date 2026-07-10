@@ -883,9 +883,9 @@ function diagSuneung(d){
   var core=['국어','수학','영어','한국사','통합사회','통합과학'].map(function(s){return srow(s,9);}).join('');
   b+='<div class="card"><b style="font-size:.9rem">② 과목별 최근 등급·원점수</b><div style="font-size:.74rem;color:var(--muted);margin:2px 0 6px">2028 수능: 선택과목 없음 · <b>통합사회·통합과학 모두 응시</b></div>'+core+'</div>';
  }else{
-  var core=['국어','수학Ⅰ','수학Ⅱ','영어','한국사'].map(function(s){return srow(s,9);}).join('');
+  var core=['국어','수학','영어','한국사'].map(function(s){return srow(s,9);}).join('');
   var satC=SAT.map(function(s){return chip('sat',s);}).join(''),sciC=SCI.map(function(s){return chip('sci',s);}).join('');
-  b+='<div class="card"><b style="font-size:.9rem">② 과목별 최근 등급·원점수</b><div style="font-size:.74rem;color:var(--muted);margin:2px 0 6px">국어·수학Ⅰ·수학Ⅱ·영어·한국사 필수</div>'+core
+  b+='<div class="card"><b style="font-size:.9rem">② 과목별 최근 등급·원점수</b><div style="font-size:.74rem;color:var(--muted);margin:2px 0 6px">국어·수학·영어·한국사 필수</div>'+core
    +'<div style="margin-top:10px;font-size:.82rem;font-weight:700;color:var(--deep)">국어 선택과목 <span style="font-weight:400;color:var(--muted);font-size:.72rem">화작·언매 중 응시(점수는 국어에 포함)</span></div><div style="display:flex;gap:5px;flex-wrap:wrap;margin:6px 0">'+['화법과 작문','언어와 매체'].map(function(s){return chip('ksel',s);}).join('')+'</div>'
    +'<div style="margin-top:8px;font-size:.82rem;font-weight:700;color:var(--deep)">수학 선택과목 <span style="font-weight:400;color:var(--muted);font-size:.72rem">미적분·기하·확통 중 응시(점수는 수학에 포함)</span></div><div style="display:flex;gap:5px;flex-wrap:wrap;margin:6px 0">'+['미적분','기하','확률과 통계'].map(function(s){return chip('msel',s);}).join('')+'</div>'
    +'<div style="margin-top:8px;font-size:.82rem;font-weight:700;color:var(--deep)">사회탐구</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin:6px 0">'+satC+'</div>'+d.sat.map(function(s){return srow(s,9);}).join('')
@@ -930,6 +930,7 @@ function diagResultHtml(r){
  return head+report+'<h3 style="font-size:.95rem;color:var(--deep);margin:14px 0 8px">📚 추천 인강·강사 매칭 ('+r.cat+')</h3>'+cards+'<div style="font-size:.72rem;color:var(--muted);margin:-2px 2px 8px">강사·강좌는 공개 정보 기반 예시이며, 해당 강사·기관과 제휴·보증 관계가 아닙니다. 실서비스는 멘토 검증 + 학생 성적·약점 데이터로 정밀 매칭됩니다.</div>'+cta;
 }
 function diagReset(){state.diag.result=null;go('diag');}
+function diagBack(){var d=state.diag;if(d.result){d.result=null;go('diag');return;}if(d.stype){d.stype='';go('diag');return;}}
 function diagToCal(){var r=state.diag.result;var gi=function(id){var e=document.getElementById(id);return e?String(e.value).trim():'';};var ins=gi('enrInstr'),crs=gi('enrCourse');if(ins&&crs){r.enroll={instructor:ins,course:crs,current:parseInt(gi('enrProg')||'0',10)||0,total:parseInt(gi('enrTotal')||'0',10)||null};}if(window.nbCreatePlan&&state.user){window.nbCreatePlan(r);}else{toast((r.enroll?r.enroll.instructor+' '+r.enroll.course+' 진도 기반':'이 강의로')+' 5회독 학습 달력을 생성했어요');go('cal');}}
 function stypeCard(t,desc,ic){return '<button onclick="setStype(\''+t+'\')" style="width:100%;text-align:left;border:1px solid var(--border);background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;display:flex;gap:12px;align-items:center"><span style="font-size:1.6rem">'+ic+'</span><span><b style="font-size:1rem;color:var(--deep);display:block">'+t+'</b><span style="font-size:.82rem;color:var(--muted)">'+desc+'</span></span></button>';}
 function Diag(){
@@ -948,7 +949,7 @@ function Diag(){
   top+='<select onchange="diagSys(this.value)" style="'+IST+';padding:6px 9px"><option value="현행" '+(d.sys==='현행'?'selected':'')+'>현행 수능(~2027)</option><option value="2028" '+(d.sys==='2028'?'selected':'')+'>2028 개편~</option></select></div>';
  }
  var body=(d.stype==='고등학생'&&d.mode==='내신')?diagNaesin(d):diagSuneung(d);
- return el('<h2 class="sec">자가진단 · 인강/강사 매칭 <span class="auto">파이프라인 시작점</span></h2><p class="subtle">최근 성적·약점 입력 → 약한 과목 진단 → <b>맞는 인강·강사 매칭</b> → 5회독 달력.</p>'+top+body);
+ return el('<div style="margin-bottom:8px"><button onclick="diagBack()" style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 13px;font-size:.82rem;cursor:pointer;color:var(--muted);font-weight:700">← 뒤로</button></div><h2 class="sec">자가진단 · 인강/강사 매칭 <span class="auto">파이프라인 시작점</span></h2><p class="subtle">최근 성적·약점 입력 → 약한 과목 진단 → <b>맞는 인강·강사 매칭</b> → 5회독 달력.</p>'+top+body);
 }
 
 function addXp(n){state.xp+=n;while(state.xp>=500){state.xp-=500;state.lvl++;}document.getElementById('xpv').textContent=state.xp;document.getElementById('xpf').style.width=(state.xp/500*100)+'%';document.getElementById('lvl').textContent='Lv.'+state.lvl;if(window.nbPersistXp&&state.user)window.nbPersistXp(n);}
