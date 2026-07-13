@@ -1202,7 +1202,7 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
   });
   // ▶ 앱 내부 전용 게이팅: #app 이 표시(hidden 아님)일 때만 노출 — 마케팅 랜딩·로그인 화면엔 숨김
   function inApp(){var a=document.getElementById('app');return !!(a&&!a.classList.contains('hidden'));}
-  function ntSync(){var on=inApp();root.style.display=on?'':'none';if(!on){panel.setAttribute('hidden','');launch.style.display='';}}
+  function ntSync(){var on=inApp();root.style.display=on?'block':'none';if(!on){panel.setAttribute('hidden','');launch.style.display='';}}
   var appEl=document.getElementById('app');
   if(appEl){try{new MutationObserver(ntSync).observe(appEl,{attributes:true,attributeFilter:['class']});}catch(e){}}
   ntSync();setTimeout(ntSync,1200);
