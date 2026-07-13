@@ -1134,7 +1134,8 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
   window.nvSend=function(e){ e.preventDefault(); if(busy) return false; var inp=document.getElementById("nvChatInput"); var q=(inp.value||"").trim(); if(!q) return false; inp.value=""; add("user",q); hist.push({role:"user",content:q}); busy=true; var wait=add("assistant","…"); fetch(EP,{method:"POST",headers:{"content-type":"application/json","apikey":K,"authorization":"Bearer "+K},body:JSON.stringify({messages:hist})}).then(function(r){return r.json();}).then(function(j){ var t=(j&&j.text)||"죄송해요, 잠시 후 다시 시도해 주세요. 급하시면 hello@neoulai.com으로 문의 주세요."; wait.textContent=t; hist.push({role:"assistant",content:t}); }).catch(function(){ wait.textContent="연결이 원활하지 않아요. 잠시 후 다시 시도하거나 hello@neoulai.com으로 문의 주세요."; }).finally(function(){ busy=false; }); return false; };
 })();
 </script>
-<!-- ▼▼ NEOUL AI 학습 튜터 위젯 (learn-tutor 라이브 · 2026-07-05) ▼▼ -->
+
+<!-- ▼▼ NEOUL AI 학습 튜터 위젯 (learn-tutor 라이브 · 앱 내부 전용 · 2026-07-05) ▼▼ -->
 <div id="nt-root">
   <button id="nt-launch" type="button" aria-label="AI 학습 튜터 열기"><span class="nt-ico">✎</span><span class="nt-lab">AI 학습 튜터</span></button>
   <section id="nt-panel" role="dialog" aria-label="너울 AI 학습 튜터" hidden>
@@ -1151,7 +1152,7 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
   </section>
 </div>
 <style>
-#nt-root{--d:#0A3D62;--o:#1B6CA8;--s:#3498DB;--mist:#EAF4FB;--line:#D6E9F5;--ink:#12222f;--muted:#5A7890;position:fixed;right:20px;bottom:20px;z-index:99999;font-family:'Pretendard','Noto Sans KR',system-ui,sans-serif}
+#nt-root{--d:#0A3D62;--o:#1B6CA8;--s:#3498DB;--mist:#EAF4FB;--line:#D6E9F5;--ink:#12222f;--muted:#5A7890;position:fixed;right:20px;bottom:20px;z-index:99999;font-family:'Pretendard','Noto Sans KR',system-ui,sans-serif;display:none}
 #nt-launch{display:flex;align-items:center;gap:8px;border:none;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--d),var(--o));padding:13px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(10,61,98,.32);font-size:.92rem;font-weight:800;font-family:inherit}
 #nt-launch .nt-ico{font-size:1.05rem}
 #nt-launch:hover{filter:brightness(1.06)}
@@ -1199,6 +1200,12 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
     .catch(function(){typing.setAttribute('hidden','');bubble('assistant','연결이 잠시 불안정해요. 다시 한 번 물어봐 주세요.');})
     .finally(function(){busy=false;send.disabled=false;input.focus();});
   });
+  // ▶ 앱 내부 전용 게이팅: #app 이 표시(hidden 아님)일 때만 노출 — 마케팅 랜딩·로그인 화면엔 숨김
+  function inApp(){var a=document.getElementById('app');return !!(a&&!a.classList.contains('hidden'));}
+  function ntSync(){var on=inApp();root.style.display=on?'':'none';if(!on){panel.setAttribute('hidden','');launch.style.display='';}}
+  var appEl=document.getElementById('app');
+  if(appEl){try{new MutationObserver(ntSync).observe(appEl,{attributes:true,attributeFilter:['class']});}catch(e){}}
+  ntSync();setTimeout(ntSync,1200);
 })();
 </script>
 <!-- ▲▲ NEOUL AI 학습 튜터 위젯 끝 ▲▲ -->
