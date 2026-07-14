@@ -563,7 +563,7 @@ const SHOP=[
 const state={xp:320,lvl:4,points:1240,role:'student',
  done:{}, timing:{},
  claimed:{}, guest:false, user:null, dbRev:[], dbStats:null,
- diag:{stype:'',mode:'수능',sys:'현행',examName:'',scores:{},raw:{},sat:[],sci:[],ksel:[],msel:[],region:'',school:'',grade:'고3',rural:'',custom:[],result:null}, // 회독 완료 표시 key=date-subj-day-round
+ diag:{stype:'',mode:'수능',sys:'현행',examName:'',scores:{},raw:{},sat:[],sci:[],ksel:[],msel:[],region:'',school:'',grade:'고3',rural:'',custom:[],result:null,examDate:''}, // 회독 완료 표시 key=date-subj-day-round
  danwon:[
   {subj:'국어',c:'반어법 vs 역설',hist:['X','X','X','X','X']},
   {subj:'수학',c:'삼각함수 극한',hist:['X','X','O','O']},
@@ -601,7 +601,7 @@ function CalDB(){
    const evh=evs.map(e=>{const ok=e.status==='done';if(ok)done++;const late=!ok&&dn<td;return `<span class="ev ${late?'late':''}" style="background:${COL[(e.round-1)%5]}" onclick="openHistDB(${e.id})">${e.subject}·${e.round}회 ${ok?'✓':late?'·':''}</span>`;}).join('');
    const badge=evs.length?`<span class="cbadge ${done===evs.length?'all':''}">${done}/${evs.length}</span>`:'';
    cells+=`<div class="cell ${dn===td?'today':''}"><div class="dn">${dn}${dn===td?' ·오늘':''}${badge}</div>${evh}</div>`;}
- return el(`<h2 class="sec">학습 달력 <span class="auto">${Y}년 ${Mo+1}월 · 실데이터</span></h2>
+ return el(`${ddayBanner()}<h2 class="sec">학습 달력 <span class="auto">${Y}년 ${Mo+1}월 · 실데이터</span></h2>
   <p class="subtle">진단·매칭에서 만든 5회독 일정이 <b>실제 DB(review_events)</b>에서 표시됩니다. 진도 클릭 = 상세 기록.</p>
   <div class="card"><div class="cal">${cells}</div><div class="leg">${[1,2,3,4,5].map(r=>`<span><span class="sw" style="background:${COL[r-1]}"></span>${r}회독</span>`).join('')} <span style="margin-left:auto">DB 이벤트 ${state.dbRev.length}건</span></div></div>
   ${state.dbRev.length?'':'<div class="note">아직 5회독 일정이 없어요. <b>진단·매칭 → ‘5회독 학습 달력 만들기’</b>를 누르면 DB에 생성됩니다.</div>'}`);}
@@ -610,7 +610,7 @@ function TodayDB(){const tS=new Date().toISOString().slice(0,10);
  const doneN=state.dbRev.filter(r=>r.status==='done').length;
  const rows=due.map(e=>{const k='db'+e.id;const run=state.timing[k];const meta=run!=null?'· <b style="color:var(--mid)">복습 중</b> <span class="tmr" id="t-'+k+'">⏱ 0분 0초</span>':'· '+e.scheduled_date+(e.scheduled_date<tS?' <b style="color:var(--c1)">(지남)</b>':'');
    return `<div class="rev"><div class="dot" style="background:${COL[(e.round-1)%5]}">${e.round}회<small>독</small></div><div class="m"><b>${e.subject} (${e.page_range||''})</b><span>${e.round}회독 ${meta}</span></div><button class="do ${run!=null?'run':''}" onclick="doRevDB(${e.id},'${e.subject}')">${run!=null?'■ 복습 종료':'복습 시작'}</button></div>`;}).join('');
- return el(`<h2 class="sec">오늘의 복습 <span class="auto">${tS} · 실데이터</span></h2>
+ return el(`${ddayBanner()}<h2 class="sec">오늘의 복습 <span class="auto">${tS} · 실데이터</span></h2>
   <p class="subtle">DB의 5회독 일정에서 오늘·지난 복습을 띄웁니다. 완료하면 <b>소요 시간이 DB에 기록</b>됩니다.</p>
   ${rows||'<div class="card">예정된 복습이 없어요. 진단·매칭에서 5회독 달력을 만들어 보세요.</div>'}
   <div class="note"><b>누적:</b> 완료 ${doneN}건 (DB). 이 기록이 성장 리포트로 집계됩니다.</div>`);}
@@ -627,7 +627,7 @@ function Cal(){if(state.user)return CalDB();
    const evh=evs.map(e=>{const key=`${e.date}-${e.subj}-${e.day}-${e.round}`;const ok=state.done[key]!=null;if(ok)dDone++;const late=!ok&&e.date<TODAY;return `<span class="ev ${late?'late':''}" style="background:${COL[e.round-1]}" onclick="openHist('${key}')">${e.subj}D${e.day}·${e.round}회 ${ok?'✓':late?'·':''}</span>`;}).join('');
    const badge=evs.length?`<span class="cbadge ${dDone===evs.length?'all':''}">${dDone}/${evs.length}</span>`:'';
    cells+=`<div class="cell ${dn===TODAY?'today':''}"><div class="dn">${dn}${dn===TODAY?' ·오늘':''}${badge}</div>${evh}</div>`;}
- return el(`<h2 class="sec">학습 달력 <span class="auto">${MLABEL}</span></h2>
+ return el(`${ddayBanner()}<h2 class="sec">학습 달력 <span class="auto">${MLABEL}</span></h2>
   <p class="subtle"><b>${MLABEL}</b> · 인강(1회독)을 들은 날, 2·3·4·5회독 복습을 <b>1·3·7·11·15일 간격으로 자동 고정(FIX)</b>. <b>진도를 클릭</b>하면 그날 학습 히스토리(푼 문제·약점·완료 여부)를 봅니다.</p>
   <div class="card"><div class="cal">${cells}</div>
    <div class="leg">${[1,2,3,4,5].map(r=>`<span><span class="sw" style="background:${COL[r-1]}"></span>${r}회독</span>`).join('')} <span><b style="color:var(--c3)">✓</b>완료 <b style="color:var(--c1)">·</b>미완료</span> <span style="margin-left:auto">진도 ${PROG.length}개 · 이벤트 ${EV.length}건</span></div></div>
@@ -659,7 +659,7 @@ function Today(){if(state.user)return TodayDB();
    return `<div class="rev"><div class="dot" style="background:${COL[e.round-1]}">${e.round}회<small>독</small></div>
    <div class="m"><b>${e.subj} DAY-${e.day} (${e.pg})</b><span>${e.round}회독 · ${e.date}일 ${meta}</span></div>
    <button class="do ${dn!=null?'done':run!=null?'run':''}" onclick="doRev('${key}','${e.subj}')">${dn!=null?'✓ 완료':run!=null?'■ 복습 종료':'복습 시작'}</button></div>`;}).join('');
- return el(`<h2 class="sec">오늘의 복습 <span class="auto">${MLABEL} ${TODAY}일 · 자동 추출</span></h2>
+ return el(`${ddayBanner()}<h2 class="sec">오늘의 복습 <span class="auto">${MLABEL} ${TODAY}일 · 자동 추출</span></h2>
   <p class="subtle">오늘 날짜에 FIX된 복습만 띄웁니다. 학생은 ‘무엇을·언제’ 고민하지 않습니다. <b>복습 시작</b>을 누르면 <b>소요 시간이 자동 측정·기록</b>됩니다.</p>
   ${rows||'<div class="card">오늘 예정된 복습이 없습니다.</div>'}
   <div class="note"><b>누가 관리?</b> 복습 시점·과목·페이지 범위·회독 순서를 전부 너울 AI가 관리합니다. (멘토 질문 답)</div>`);}
@@ -777,12 +777,25 @@ function setGView(v){state.gView=v;go('parent');}
 function gTog(){const a=state.gView==='stu';return `<div style="display:flex;gap:6px;margin-bottom:13px;background:#eef2f6;padding:4px;border-radius:11px">
   <button onclick="setGView('stu')" style="flex:1;border:none;cursor:pointer;border-radius:8px;padding:8px;font-size:.82rem;font-weight:700;${a?'background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(0,0,0,.08)':'background:transparent;color:var(--muted)'}">🙌 학생용</button>
   <button onclick="setGView('par')" style="flex:1;border:none;cursor:pointer;border-radius:8px;padding:8px;font-size:.82rem;font-weight:700;${!a?'background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(0,0,0,.08)':'background:transparent;color:var(--muted)'}">📩 학부모용</button></div>`;}
+function wBand(g){g=Number(g)||0;if(!g)return null;return g<=1?['mastered','#2F8F4E']:g<=2?['light','#4E9E7A']:g<=4?['medium','#F2A03D']:g<=6?['heavy','#E8412E']:['critical','#B3261E'];}
+function weaknessCard(){
+ var sc=(state.diag&&state.diag.scores)||{};
+ var subs=Object.keys(sc).filter(function(k){return sc[k];});
+ if(!subs.length)return '<div class="card"><b style="font-size:.92rem">🎯 5색 약점 리포트</b><div class="subtle" style="margin-top:6px">진단·매칭에서 과목 등급을 입력하면 약한 과목을 <b>5색</b>으로 표시하고 복습에 우선 반영해요.</div></div>';
+ subs.sort(function(a,b){return (Number(sc[b])||0)-(Number(sc[a])||0);});
+ var lbl={mastered:'우수',light:'양호',medium:'보통',heavy:'취약',critical:'집중필요'};
+ var bars=subs.map(function(k){var wb=wBand(sc[k]);if(!wb)return '';var g=Number(sc[k]);var w=Math.round(g/9*100);
+   return '<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px"><b>'+k+'</b><span style="color:'+wb[1]+';font-weight:700">'+g+'등급 · '+lbl[wb[0]]+'</span></div><div style="height:18px;background:#eef2f6;border-radius:7px;overflow:hidden"><div style="height:100%;width:'+w+'%;background:'+wb[1]+'"></div></div></div>';}).join('');
+ var worst=subs[0];
+ return '<div class="card" style="border:2px solid var(--mid)"><div style="display:flex;align-items:center;gap:6px;margin-bottom:10px"><b style="color:var(--deep);font-size:.95rem">🎯 5색 약점 리포트</b><span style="font-size:.72rem;color:var(--muted)">진단 기반 · 내 데이터</span></div>'+bars+'<div class="note" style="margin-top:4px">가장 약한 <b>'+worst+'</b>('+sc[worst]+'등급)부터 5회독·복습을 우선 배치해요. 등급이 오르면 색이 초록으로 바뀝니다. 🌊</div></div>';
+}
+function ddayBanner(){var ed=state.examDate||(state.diag&&state.diag.examDate);if(!ed)return '';var dl=Math.ceil((new Date(ed).getTime()-Date.now())/86400000);if(isNaN(dl))return '';return '<div style="background:linear-gradient(135deg,var(--deep),var(--mid));color:#fff;border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between"><span style="font-weight:800">🎯 수능 '+(dl>=0?'D-'+dl:'지남')+'</span><span style="font-size:.78rem;opacity:.9">'+ed+'</span></div>';}
 function Parent(){if(!state.gView)state.gView=state.role==='parent'?'par':'stu';return state.gView==='stu'?growthStudent():growthParent();}
 function growthStudent(){
  const subj=[{n:'국어',p:58,c:72},{n:'수학',p:52,c:68},{n:'영어',p:64,c:79},{n:'탐구',p:60,c:74}];
  const subjH=subj.map(s=>`<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px"><b>${s.n}</b><span style="color:var(--c3);font-weight:700">+${s.c-s.p}%p ▲</span></div>
    <div style="position:relative;height:20px;background:#eef2f6;border-radius:7px;overflow:hidden"><div style="position:absolute;left:0;top:0;height:100%;width:${s.c}%;background:linear-gradient(90deg,var(--mid),#1B6CA8)"></div></div></div>`).join('');
- return el(`<h2 class="sec">성장 리포트 <span class="auto">나의 성장</span></h2>${gTog()}${state.user&&state.dbStats?realCard():''}
+ return el(`<h2 class="sec">성장 리포트 <span class="auto">나의 성장</span></h2>${gTog()}${state.user&&state.dbStats?realCard():''}${weaknessCard()}
   <div style="background:linear-gradient(135deg,#0A3D62,#1B6CA8);color:#fff;border-radius:14px;padding:16px;margin-bottom:12px">
     <div style="font-size:.8rem;opacity:.9">📩 이번 주 리포트 · 지난주 대비</div>
     <div style="font-size:1.7rem;font-weight:800;margin:2px 0">69% <span style="opacity:.7;font-size:1rem">→</span> 72% <span style="background:rgba(255,255,255,.18);font-size:.78rem;padding:2px 8px;border-radius:20px;vertical-align:middle">+3%p</span></div>
@@ -803,7 +816,7 @@ function growthParent(){
      <div style="position:absolute;left:0;top:0;height:100%;width:${s.c}%;background:linear-gradient(90deg,var(--mid),#1B6CA8)"></div>
    </div>
    <div style="font-size:.72rem;color:var(--muted);margin-top:4px">4주 전 <b>${s.p}%</b> <span style="color:var(--c3)">→</span> 현재 <b style="color:var(--deep)">${s.c}%</b></div></div>`).join('');
- return el(`<h2 class="sec">성장 리포트 <span class="auto">매주 자동 발송</span></h2>${gTog()}${state.user&&state.dbStats?realCard():''}
+ return el(`<h2 class="sec">성장 리포트 <span class="auto">매주 자동 발송</span></h2>${gTog()}${state.user&&state.dbStats?realCard():''}${weaknessCard()}
   <p class="subtle">매주 발송 · 전 주 대비 진단과 4주 추세를 함께 드립니다.</p>
   <div style="background:#eef6fb;border:1px solid var(--light);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.86rem;line-height:1.6"><b style="color:var(--deep)">📩 이번 주 리포트 (전 주 대비)</b><br/>정답률 69%→<b>72%</b>(+3%p) · 복습 이행률 88%→<b>92%</b>(+4%p) · 학습시간 25h→<b>27h</b>(+2h) · 연속 학습 6일</div>
   <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px">${cmpH}</div>
@@ -882,7 +895,7 @@ const SDIAG={
 };
 function gradeBand(g,naesin){g=Number(g)||5;if(naesin){return g<=1?'hi':g<=3?'mid':g<=4?'low':'base';}return g<=2?'hi':g<=4?'mid':g<=6?'low':'base';}
 function dval(id){var e=document.getElementById(id);return e?e.value:'';}
-function dCap(){var d=state.diag;document.querySelectorAll('[id^="g-"]').forEach(function(e){d.scores[e.id.slice(2)]=e.value;});document.querySelectorAll('[id^="r-"]').forEach(function(e){if(e.value)d.raw[e.id.slice(2)]=e.value;});var ex=document.getElementById('examName');if(ex)d.examName=ex.value;var sc=document.getElementById('nsSchool');if(sc)d.school=sc.value;
+function dCap(){var d=state.diag;document.querySelectorAll('[id^="g-"]').forEach(function(e){d.scores[e.id.slice(2)]=e.value;});document.querySelectorAll('[id^="r-"]').forEach(function(e){if(e.value)d.raw[e.id.slice(2)]=e.value;});var ex=document.getElementById('examName');if(ex)d.examName=ex.value;var ed=document.getElementById('examDate');if(ed)d.examDate=ed.value;var sc=document.getElementById('nsSchool');if(sc)d.school=sc.value;
  document.querySelectorAll('[id^="cu-s-"]').forEach(function(e){var i=+e.id.split('-')[2];if(d.custom[i])d.custom[i].subj=e.value;});
  document.querySelectorAll('[id^="cu-p-"]').forEach(function(e){var i=+e.id.split('-')[2];if(d.custom[i])d.custom[i].prog=e.value;});}
 function setStype(t){state.diag.stype=t;state.diag.mode='수능';state.diag.result=null;if(t==='고등학생'){state.diag.grade='고3';state.diag.sys='현행';}else{state.diag.sys='현행';}go('diag');}
@@ -898,7 +911,7 @@ function srow(s,mg){var d=state.diag;var g=d.scores[s]||'';var r=d.raw[s]||'';mg
  return '<div style="display:flex;align-items:center;gap:6px;padding:5px 2px;border-bottom:1px dashed var(--border)"><span style="font-size:.85rem;flex:1">'+s+'</span><select id="g-'+s+'" onchange="diagSC()" style="border:1px solid var(--border);border-radius:7px;padding:5px 7px;font-size:.8rem"><option value="">등급</option>'+Array.from({length:mg},function(_,i){return i+1;}).map(function(n){return '<option '+(g==n?'selected':'')+'>'+n+'</option>';}).join('')+'</select><input id="r-'+s+'" value="'+r+'" placeholder="원점수" inputmode="numeric" style="width:62px;border:1px solid var(--border);border-radius:7px;padding:5px 7px;font-size:.8rem"/></div>';}
 function chip(grp,s){var on=state.diag[grp].indexOf(s)>=0;return '<button onclick="diagChip(\''+grp+'\',\''+s+'\')" style="border:1px solid '+(on?'var(--mid)':'var(--border)')+';cursor:pointer;background:'+(on?'var(--mid)':'#fff')+';color:'+(on?'#fff':'var(--muted)')+';border-radius:16px;padding:5px 11px;font-size:.76rem;font-weight:600">'+s+'</button>';}
 function sysBadge(){var s2028=state.diag.sys==='2028';return '<div style="background:'+(s2028?'#eef6ec':'#eef2f6')+';border:1px solid '+(s2028?'#bfe0c0':'var(--border)')+';border-radius:10px;padding:8px 11px;margin-bottom:10px;font-size:.78rem;color:var(--ink)"><b style="color:'+(s2028?'var(--c3)':'var(--deep)')+'">'+(s2028?'2028 개편 체제':'현행 체제(~2027 수능)')+'</b> · '+(s2028?'선택과목 폐지 · 통합사회·통합과학 · 내신 5등급(2022 개정·고교학점제)':'선택과목 · 사탐/과탐 개별 · 9등급')+'</div>';}
-function examBox(){var d=state.diag;return '<div class="card"><b style="font-size:.9rem">① 가장 최근 응시한 모의고사</b><div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap"><select id="examType" onchange="diagSC()" style="'+IST+'">'+['평가원','교육청','사설 모의고사','기타'].map(function(t){return '<option>'+t+'</option>';}).join('')+'</select><input id="examName" value="'+(d.examName||'')+'" placeholder="예: 6월 평가원 / 3월 학평" style="'+IST+';flex:1;min-width:150px"/></div></div>';}
+function examBox(){var d=state.diag;return '<div class="card"><b style="font-size:.9rem">① 가장 최근 응시한 모의고사</b><div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap"><select id="examType" onchange="diagSC()" style="'+IST+'">'+['평가원','교육청','사설 모의고사','기타'].map(function(t){return '<option>'+t+'</option>';}).join('')+'</select><input id="examName" value="'+(d.examName||'')+'" placeholder="예: 6월 평가원 / 3월 학평" style="'+IST+';flex:1;min-width:150px"/></div><div style="margin-top:9px"><b style="font-size:.82rem">② 수능(목표 시험일)</b><input id="examDate" type="date" value="'+(d.examDate||'')+'" onchange="diagSC()" style="'+IST+';margin-top:6px"/></div></div>';}
 function diagSuneung(d){
  var b=sysBadge()+examBox();
  if(d.sys==='2028'){
@@ -1004,11 +1017,11 @@ async function bootUser(){const st=window.state;await ensureRows();const uid=win
   const {data:g}=await SB.from('gamification').select('*').eq('student_id',uid).single();if(g){st.xp=g.xp||0;st.lvl=g.level||1;st.points=g.points||0;}
   const {data:dw}=await SB.from('danwon_items').select('*').eq('student_id',uid);if(dw&&dw.length){st.danwon=dw.map(d=>({subj:d.subject,c:d.concept,hist:d.review_history||['X']}));}
   const today=new Date().toISOString().slice(0,10);const {data:ms}=await SB.from('missions').select('mission_key').eq('student_id',uid).eq('for_date',today);if(ms)ms.forEach(m=>st.claimed[m.mission_key]=true);
-  await window.nbLoadReviews();await window.nbStats();st.guest=false;st.user=uid;st.role='student';window.bootIntoApp();window.toast('환영합니다 — 실시간 저장이 켜졌어요');}
+  try{var _stu=await SB.from('students').select('exam_date').eq('id',uid).single();if(_stu.data&&_stu.data.exam_date)st.examDate=_stu.data.exam_date;}catch(e){}await window.nbLoadReviews();await window.nbStats();st.guest=false;st.user=uid;st.role='student';window.bootIntoApp();window.toast('환영합니다 — 실시간 저장이 켜졌어요');}
 window.nbSaveDiagnosis=async(r)=>{const st=window.state;if(!window.NB.user)return;const uid=window.NB.user.id;const gmap={'고1':'g1','고2':'g2','고3':'g3'};
-  await SB.from('students').update({student_type:st.diag.stype||'repeat',exam_system:st.diag.sys==='2028'?'reform2028':'current',grade:(st.diag.stype==='highschool'?(gmap[st.diag.grade]||null):null),region:st.diag.region||null,school_name:r.school||null,last_exam:r.exam||null,rural:(r.rural||'').indexOf('대상')>=0}).eq('id',uid);
+  await SB.from('students').update({student_type:st.diag.stype||'repeat',exam_system:st.diag.sys==='2028'?'reform2028':'current',grade:(st.diag.stype==='highschool'?(gmap[st.diag.grade]||null):null),region:st.diag.region||null,school_name:r.school||null,last_exam:r.exam||null,rural:(r.rural||'').indexOf('대상')>=0,exam_date:st.diag.examDate||null}).eq('id',uid);st.examDate=st.diag.examDate||st.examDate;
   const {data:dg}=await SB.from('diagnoses').insert({student_id:uid,mode:r.mode==='수능'?'suneung':'naesin',exam_system:st.diag.sys==='2028'?'reform2028':'current',exam_name:r.exam||null,electives:{korean:st.diag.ksel,math:st.diag.msel,social:st.diag.sat,science:st.diag.sci}}).select().single();if(!dg)return;
-  const sc=Object.keys(st.diag.scores).filter(k=>st.diag.scores[k]).map(k=>({diagnosis_id:dg.id,subject:k,grade:+st.diag.scores[k],raw_score:st.diag.raw[k]?+st.diag.raw[k]:null}));if(sc.length)await SB.from('diagnosis_scores').insert(sc);
+  const sc=Object.keys(st.diag.scores).filter(k=>st.diag.scores[k]).map(k=>({diagnosis_id:dg.id,subject:k,grade:+st.diag.scores[k],raw_score:st.diag.raw[k]?+st.diag.raw[k]:null}));if(sc.length)await SB.from('diagnosis_scores').insert(sc);try{await SB.from('weakness_marks').delete().eq('student_id',uid).eq('source','diagnosis');var _wm=Object.keys(st.diag.scores).filter(function(k){return st.diag.scores[k];}).map(function(k){var g=+st.diag.scores[k];var band=g<=1?'mastered':g<=2?'light':g<=4?'medium':g<=6?'heavy':'critical';return{student_id:uid,subject:k,band:band,score:g/9,source:'diagnosis'};});if(_wm.length)await SB.from('weakness_marks').insert(_wm);}catch(e){}
   if(r.insts&&r.insts.length)await SB.from('lecture_matches').insert(r.insts.map(m=>({diagnosis_id:dg.id,weak_subject:r.worst,instructor:m[0],course:m[1],est_lectures:m[2]})));else if(r.mode==='내신')await SB.from('lecture_matches').insert({diagnosis_id:dg.id,weak_subject:r.worst,instructor:'너울 내신모드',course:(r.school||'')+' '+r.worst,reason:'학교 시험범위 맞춤'});
   window.toast('진단·성적·프로필이 DB에 누적됐어요');};
 window.nbPersistXp=async(n)=>{const st=window.state;if(!window.NB.user)return;const uid=window.NB.user.id;await SB.from('xp_log').insert({student_id:uid,action:'activity',xp:n});await SB.from('gamification').update({xp:st.xp,level:st.lvl,points:st.points,updated_at:new Date().toISOString()}).eq('student_id',uid);};
