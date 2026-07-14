@@ -679,9 +679,9 @@ function Dan(){
    const label= keep? (done>=5?'단권화 확정':'단권화 후보') : '소거(마스터)';
    const cls= keep? (done>=5?'keep':'cand') : 'gone';
    return {keep,story,label,cls};};
- const items=state.danwon.map(d=>{const st=stat(d);
+ const items=state.danwon.map((d,di)=>{const st=stat(d);
    const cells=[0,1,2,3,4].map(i=>{if(i<d.hist.length){const ok=d.hist[i]==='O';return `<span class="ox ${ok?'o':'x'}" title="${i+1}회독">${ok?'✓':'✗'}</span>`;}return `<span class="ox n" title="${i+1}회독 미실시">·</span>`;}).join('');
-   return `<div class="dz"><div style="display:flex;flex-direction:column;align-items:center;flex:none;gap:3px"><div style="display:flex">${cells}</div><span style="font-size:.56rem;color:var(--muted)">1·3·7·11·15일</span></div><div class="t" style="margin-left:4px"><b>${d.subj}</b> — ${d.c}<small>${st.story}</small></div><span class="tagx ${st.cls}">${st.label}</span></div>`;}).join('');
+   return `<div class="dz"><div style="display:flex;flex-direction:column;align-items:center;flex:none;gap:3px"><div style="display:flex">${cells}</div><span style="font-size:.56rem;color:var(--muted)">1·3·7·11·15일</span></div><div class="t" style="margin-left:4px"><b>${d.subj}</b> — ${d.c}<small>${st.story}</small><br><button class="do" style="margin-top:6px;font-size:.72rem;padding:5px 9px;background:#EAF4FB;color:#0A3D62;border:1px solid #9FC6E3" onclick="ntAskDan(${di})">🤔 이 개념 물어보기</button></div><span class="tagx ${st.cls}">${st.label}</span></div>`;}).join('');
  const keepN=state.danwon.filter(d=>d.hist[d.hist.length-1]==='X').length;
  const masterN=state.danwon.length-keepN;
  return el(`<h2 class="sec">단권화 (소거법) <span class="auto">나만의 오답노트</span></h2>
@@ -699,6 +699,8 @@ function Quiz(){return el(`<h2 class="sec">AI 퀴즈 <span class="auto">너울 A
   <div class="qsel" id="qsel">${Object.keys(QUIZ).map(s=>`<button class="qs ${s===quizSubj?'on':''}" onclick="pickSubj('${s}')">${s} (${QUIZ[s].length})</button>`).join('')}</div>
   <div class="card" id="qbox"></div>`);}
 function pickSubj(s){quizSubj=s;qi=0;qcorrect=0;qmiss=[];go('quiz');}
+window.ntAskQuiz=function(idx){var Q=QUIZ[quizSubj];if(!Q||!Q[idx])return;var q=Q[idx];window.ntAsk(quizSubj+' — \''+String(q.q).replace(/["<>]/g,'')+'\' 이 문제의 핵심 개념을 처음부터 단계적으로 설명해줘');};
+window.ntAskDan=function(di){var d=state.danwon[di];if(!d)return;window.ntAsk(d.subj+' — \''+String(d.c).replace(/["<>]/g,'')+'\' 개념을 처음부터 단계적으로 설명해줘');};
 function renderQ(){const box=document.getElementById('qbox');if(!box)return;const Q=QUIZ[quizSubj];
  if(qi>=Q.length){box.innerHTML=`<h2 class="sec">${quizSubj} 결과</h2><p style="margin:8px 0">${Q.length}문제 중 <b style="color:var(--deep)">${qcorrect}개</b> 정답.</p>
    <div style="background:var(--foam);border-left:4px solid var(--mid);padding:12px 14px;border-radius:8px;font-size:.86rem"><b>약점 분류</b><br/>${qmiss.length?qmiss.map(w=>`<span class="pill">${w}</span>`).join(''):'<span class="pill">약점 없음 — 우수</span>'}<br/><span style="color:var(--muted)">→ 단권화·다음 복습에 우선 반영.</span></div>
@@ -706,9 +708,9 @@ function renderQ(){const box=document.getElementById('qbox');if(!box)return;cons
  const q=Q[qi];box.innerHTML=`<div style="font-size:.76rem;color:var(--muted);display:flex;justify-content:space-between"><span>${quizSubj} · 문제 ${qi+1}/${Q.length}</span><span style="font-weight:700;color:${q.lv==='킬러'?'var(--c1)':q.lv==='심화'?'#B26B00':'var(--mid)'}">${q.lv||'기본'}</span></div><div class="q">${q.q}</div>${q.t==='short'?`<input id="saInput" placeholder="숫자/단답을 입력하세요" style="width:100%;padding:11px;border:1px solid var(--border);border-radius:9px;font-size:.92rem;margin:6px 0" onkeydown="if(event.key==='Enter')ansShort()"/><button class="opt" style="text-align:center;font-weight:700" onclick="ansShort()">제출</button>`:q.o.map((o,i)=>`<button class="opt" onclick="ans(${i})">${o}</button>`).join('')}<div id="fb"></div>`;}
 function ans(i){const q=QUIZ[quizSubj][qi];const opts=document.querySelectorAll('.opt');opts.forEach(o=>o.style.pointerEvents='none');const ok=i===q.a;opts[q.a].classList.add('correct');if(!ok){opts[i].classList.add('wrong');qmiss.push(quizSubj+' '+(qi+1)+'번');}else qcorrect++;
  if(window.nbQuiz&&state.user)window.nbQuiz(quizSubj,ok);
- document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?'정답! ✓':'오답.'} ${q.e}</div><button class="do" style="margin-top:6px" onclick="qi++;renderQ()">${qi+1>=QUIZ[quizSubj].length?'결과 보기':'다음 문제'}</button>`;}
+ document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?'정답! ✓':'오답.'} ${q.e}</div><button class="do" style="margin-top:6px;background:#EAF4FB;color:#0A3D62;border:1px solid #9FC6E3" onclick="ntAskQuiz(${qi})">🤔 이 개념 물어보기</button><button class="do" style="margin-top:6px" onclick="qi++;renderQ()">${qi+1>=QUIZ[quizSubj].length?'결과 보기':'다음 문제'}</button>`;}
 
-function ansShort(){const q=QUIZ[quizSubj][qi];const inp=document.getElementById('saInput');if(!inp)return;const norm=v=>(v||'').toString().replace(/[\s,을를]/g,'').toLowerCase();const ok=norm(inp.value)===norm(q.ans);inp.style.pointerEvents='none';inp.style.borderColor=ok?'var(--mid)':'var(--c1)';if(ok)qcorrect++;else qmiss.push(quizSubj+' '+(qi+1)+'번');if(window.nbQuiz&&state.user)window.nbQuiz(quizSubj,ok);document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?'정답! ✓':'오답. 정답: '+q.ans} ${q.e}</div><button class="do" style="margin-top:6px" onclick="qi++;renderQ()">${qi+1>=QUIZ[quizSubj].length?'결과 보기':'다음 문제'}</button>`;}
+function ansShort(){const q=QUIZ[quizSubj][qi];const inp=document.getElementById('saInput');if(!inp)return;const norm=v=>(v||'').toString().replace(/[\s,을를]/g,'').toLowerCase();const ok=norm(inp.value)===norm(q.ans);inp.style.pointerEvents='none';inp.style.borderColor=ok?'var(--mid)':'var(--c1)';if(ok)qcorrect++;else qmiss.push(quizSubj+' '+(qi+1)+'번');if(window.nbQuiz&&state.user)window.nbQuiz(quizSubj,ok);document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?'정답! ✓':'오답. 정답: '+q.ans} ${q.e}</div><button class="do" style="margin-top:6px;background:#EAF4FB;color:#0A3D62;border:1px solid #9FC6E3" onclick="ntAskQuiz(${qi})">🤔 이 개념 물어보기</button><button class="do" style="margin-top:6px" onclick="qi++;renderQ()">${qi+1>=QUIZ[quizSubj].length?'결과 보기':'다음 문제'}</button>`;}
 function claimMission(id,xp){if(state.claimed[id])return;state.claimed[id]=true;if(window.nbClaim&&state.user)window.nbClaim(id);addXp(xp);addPts(xp);go('shop');toast('미션 완료 +'+xp+' XP · 물결이 차올랐어요');}
 function Shop(){
  const cum=state.lvl*500+state.xp;
@@ -1206,6 +1208,7 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
   var appEl=document.getElementById('app');
   if(appEl){try{new MutationObserver(ntSync).observe(appEl,{attributes:true,attributeFilter:['class']});}catch(e){}}
   ntSync();setTimeout(ntSync,1200);
+  window.ntAsk=function(q){if(!q)return;if(!inApp())return;toggle(true);setTimeout(function(){input.value=q;try{input.dispatchEvent(new Event('input'));}catch(e){}form.requestSubmit();},220);};
 })();
 </script>
 <!-- ▲▲ NEOUL AI 학습 튜터 위젯 끝 ▲▲ -->
