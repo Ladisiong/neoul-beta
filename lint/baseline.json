@@ -1,17 +1,4 @@
 {
   "note": "승인된 잔여 위반 목록. 근거는 docs/LIVE_EXCEPTIONS.md. 신규 위반은 여기에 없으므로 CI에서 FAIL 한다.",
-  "accepted": [
-    {
-      "key": "8fc1e7eb0e3f",
-      "rule": "R05",
-      "file": "index.html",
-      "msg": "미승인 폰트 \"malgun gothic\""
-    },
-    {
-      "key": "740f3292d0d5",
-      "rule": "R05",
-      "file": "index.html",
-      "msg": "미승인 폰트 \"맑은 고딕\""
-    }
-  ]
+  "accepted": []
 }

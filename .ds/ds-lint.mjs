@@ -67,6 +67,8 @@ const ALLOWED_FONTS = [
   'pretendard', 'inter', 'inter 18pt', 'inter 28pt', 'noto serif kr',
   // 시스템 폴백 허용
   '-apple-system', 'blinkmacsystemfont', 'apple sd gothic neo', 'noto sans kr',
+  // 한글 시스템 폴백 — 웹폰트 로드 실패 시에만 쓰인다. 브랜드 서체가 아니라 안전망이다.
+  'malgun gothic', '맑은 고딕', 'nanum gothic', 'noto sans cjk kr', 'spoqa han sans neo',
   'system-ui', 'sans-serif', 'serif', 'monospace', 'nanum myeongjo', 'georgia',
   'ui-monospace', 'sfmono-regular', 'menlo', 'consolas', 'currentcolor',
   // CSS 전역 키워드 — 폰트명이 아니다 (font-family:inherit 등)
@@ -83,7 +85,17 @@ const HYPE = ['최고의', '최고 수준', '업계 최고', '국내 최고', '�
   '반드시 오릅니다', '성적 보장', '합격 보장'];
 if (PALETTE?.allowedRadii) ALLOWED_RADII = new Set(PALETTE.allowedRadii.concat(['inherit','initial']));
 if (PALETTE?.allowedFonts) ALLOWED_FONTS.push(...PALETTE.allowedFonts.map(f => f.toLowerCase()));
-const EMOJI_RE = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{1F000}-\u{1F2FF}]/u;
+/* 이모지 판정.
+   U+2600–27BF 는 그림 이모지와 **활자 기호**가 섞여 있는 구간이다. 체크·엑스·별·화살표
+   같은 딩뱃은 브랜드 가이드가 말하는 "이모지"가 아니라 활자다(정부제출 표에도 쓴다).
+   따라서 텍스트 표현 딩뱃은 제외하되, 이모지 표현 선택자 U+FE0F 가 붙으면 다시 잡는다. */
+const TEXT_DINGBATS = '✓✔✕✖✗✘★☆☑☐☒'
+  + '※→←↑↓↔•‣▸▪●○─━–—';
+const EMOJI_RE = new RegExp(
+  `(?:[\\u{1F300}-\\u{1FAFF}\\u{1F000}-\\u{1F2FF}])`
+  + `|(?:[\\u{2600}-\\u{27BF}](?<![${TEXT_DINGBATS}]))`
+  + `|(?:[${TEXT_DINGBATS}]\\u{FE0F})`
+  + `|(?:\\u{FE0F})`, 'u');
 
 /* ---------- 규칙 메타 ---------- */
 const RULES = {
@@ -208,8 +220,12 @@ function lintFile(file, root) {
     }
     /* R02 그라디언트 */
     if (check('R02') && /linear-gradient|radial-gradient|conic-gradient/i.test(bare)) {
-      const BRAND_VAR = /--neoul-primary-(deep|mid)|--brand-(deep|mid)|--(deep|mid|light|d|o|s)\b|#1A3A5C|#2B5F8B|#A8C4DD/i;
-      const ok = /1(35|55|60)deg/i.test(bare) && BRAND_VAR.test(bare);
+      // 브랜드 면 판정 — 팔레트 override 가 있으면 그쪽 gradientPair 를 쓴다(다중 시스템 지원).
+      const BRAND_VAR = PALETTE?.gradientPair
+        ? GRADIENT_RE
+        : /--neoul-primary-(deep|mid)|--brand-(deep|mid)|--(deep|mid|light|d|o|s)\b|#1A3A5C|#2B5F8B|#A8C4DD/i;
+      const ANGLES = PALETTE?.gradientAngles || ['135', '155', '160'];
+      const ok = new RegExp(`\\b(${ANGLES.join('|')})deg`, 'i').test(bare) && BRAND_VAR.test(bare);
       // 진행바·미터 전용 축방향 선형 — 가로 90deg · 세로 180deg. 색은 Deep→Mid.
       const isBrandLinear = /\b(90|180)deg/i.test(bare) && BRAND_VAR.test(bare);
       const isHairlineGrid = /1px,\s*transparent\s*1px/.test(bare);  // 그리드 배경
