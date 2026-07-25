@@ -15,7 +15,7 @@
 body{font-family:'Malgun Gothic','맑은 고딕','Noto Sans KR',system-ui,sans-serif;background:var(--foam);color:var(--ink);line-height:1.5}
 .hidden{display:none!important}
 button{font-family:inherit;cursor:pointer;border:none}
-#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(1000px 520px at 50% -6%,rgba(43,95,139,.5),rgba(13,31,48,0) 60%),linear-gradient(180deg,#1F2933 0%,#1A3A5C 100%);padding:20px}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1A3A5C 0%,#2B5F8B 100%);padding:20px}
 .lbox{background:#fff;border-radius:12px;padding:38px 34px;width:380px;max-width:94vw;box-shadow:0 24px 64px -24px rgba(26,58,92,0.16),0 1px 3px rgba(26,58,92,0.08);text-align:center}
 .lbox .logo{letter-spacing:-.02em}
 .lbox .btn{border-radius:8px;font-weight:700;letter-spacing:-.01em}
@@ -84,7 +84,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
 .item{background:#fff;border:1px solid var(--border);border-radius:12px;padding:15px;text-align:center}
 .item .ico{font-size:1.7rem}.item b{display:block;font-size:.9rem;margin:6px 0 2px}.item .c{color:var(--c2);font-weight:700;font-size:.84rem;margin-bottom:9px}
 .redeem{background:var(--deep);color:#fff;padding:8px;border-radius:8px;font-weight:700;font-size:.8rem;width:100%}.redeem:disabled{background:#CBD2D9;cursor:not-allowed}
-.wk{display:flex;align-items:flex-end;gap:8px;height:150px;margin:12px 0;padding-top:6px}.wk .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}.wk .col i{width:100%;background:linear-gradient(180deg,var(--mid),var(--light));border-radius:4px 4px 0 0}.wk .col span{font-size:.7rem;color:var(--muted)}
+.wk{display:flex;align-items:flex-end;gap:8px;height:150px;margin:12px 0;padding-top:6px}.wk .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}.wk .col i{width:100%;background:linear-gradient(180deg,var(--deep),var(--mid));border-radius:4px 4px 0 0}.wk .col span{font-size:.7rem;color:var(--muted)}
 .note{background:var(--deep);color:#D3E2EF;border-radius:12px;padding:15px 17px;font-size:.84rem;line-height:1.55}.note b{color:#fff}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--deep);color:#fff;padding:12px 20px;border-radius:9999px;font-weight:700;font-size:.88rem;opacity:0;transition:.4s;z-index:50}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .foot{text-align:center;color:var(--muted);font-size:.74rem;margin-top:22px}
@@ -124,7 +124,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
   #home .nav .btn{padding:8px 15px;font-size:.85rem;border-radius:8px}
   @media(max-width:720px){#home .nav-links a:not(.btn){display:none}}
   /* hero */
-  #home .hero{position:relative;overflow:hidden;background:radial-gradient(1200px 500px at 50% -120px,#F2F4F6 0%,#fff 60%);padding:84px 0 54px;text-align:center}
+  #home .hero{position:relative;overflow:hidden;background:#fff;padding:84px 0 54px;text-align:center}
   #home .hero .eyebrow{margin-bottom:18px}
   #home .tagline{font-family:'Noto Serif KR',serif;color:var(--mid);font-weight:600;font-size:1.02rem;margin-bottom:12px}
   #home .hero h1{font-size:3.05rem;font-weight:800;letter-spacing:-.035em;color:var(--deep);line-height:1.16}
@@ -691,9 +691,9 @@ function Dan(){
 
 function Quiz(){return el(`<h2 class="sec">AI 퀴즈 <span class="auto">너울 AI 자동 출제·채점</span></h2>
   <p class="subtle">과목당 8문항(기본3·심화3·<b style="color:var(--c1)">킬러2</b> · 킬러는 단답형). 너울 AI가 복습 범위에서 출제하고, 틀린 문제로 약점을 자동 분류합니다.</p>
-  <div style="background:linear-gradient(135deg,#FAFBFC,#FAF3E0);border:1px solid #FAF3E0;border-radius:12px;padding:11px 13px;margin-bottom:12px">
+  <div style="background:#FAFBFC;border:1px solid #FAF3E0;border-radius:12px;padding:11px 13px;margin-bottom:12px">
     <div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem"><b style="color:#952626">무료 AI 크레딧 — 오늘 6/10 사용</b><span style="font-size:.72rem;color:#8C6719">남은 4문항</span></div>
-    <div style="height:9px;background:#FAF3E0;border-radius:4px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:60%;background:linear-gradient(90deg,#D69E2E,#D69E2E)"></div></div>
+    <div style="height:9px;background:#FAF3E0;border-radius:4px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:60%;background:#D69E2E"></div></div>
     <div style="font-size:.74rem;color:#952626;line-height:1.5">Free는 <b>하루 10문항·1과목</b>까지. 약점 정밀 출제·전 과목·성장 리포트는 <b>Basic(₩34,900)</b>부터 — <span style="color:#C53030;font-weight:700">한도에 닿으면 업그레이드</span>.</div>
   </div>
   <div class="qsel" id="qsel">${Object.keys(QUIZ).map(s=>`<button class="qs ${s===quizSubj?'on':''}" onclick="pickSubj('${s}')">${s} (${QUIZ[s].length})</button>`).join('')}</div>
@@ -734,7 +734,7 @@ function Shop(){
   <div class="card"><b style="font-size:.92rem">물결 리그 · 이번 주</b><div style="font-size:.73rem;color:var(--muted);margin:3px 0 10px">또래 그룹과 ‘복습 이행·향상’으로 선의의 경쟁. <b>절대 순위는 노출하지 않습니다</b>(번아웃 차단).</div>
     <div style="display:flex;gap:6px;text-align:center;font-size:.72rem"><div style="flex:1;background:#F2F4F6;color:var(--c3);border-radius:8px;padding:9px 3px"><b>승급권</b><br/>상위 30%</div><div style="flex:1.2;background:var(--mid);color:#fff;border-radius:8px;padding:9px 3px"><b>나의 위치</b><br/>유지권 상단</div><div style="flex:1;background:#F2F4F6;color:var(--muted);border-radius:8px;padding:9px 3px">유지권</div><div style="flex:1;background:#F2F4F6;color:var(--c1);border-radius:8px;padding:9px 3px"><b>강등권</b><br/>하위 20%</div></div></div>
   <div class="card"><b style="font-size:.92rem">XP 적립 규칙</b><div style="margin-top:8px">${XPRULES.map(r=>`<div style="display:flex;justify-content:space-between;gap:8px;padding:5px 0 1px;font-size:.82rem"><span>${r[0]}</span><b style="color:var(--deep);white-space:nowrap">${r[1]}</b></div><div style="font-size:.67rem;color:var(--muted);margin-bottom:4px;border-bottom:1px dashed var(--border);padding-bottom:4px">${r[2]}</div>`).join('')}</div></div>
-  <div class="card" style="background:linear-gradient(135deg,#FAFBFC,#FAF3E0);border:1px solid #FAF3E0"><div style="display:flex;justify-content:space-between;font-size:.84rem"><b style="color:#952626">AI 학습 크레딧 (Free)</b><span style="color:#8C6719;font-size:.74rem">이번 주 8/10</span></div><div style="height:8px;background:#FAF3E0;border-radius:4px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:80%;background:linear-gradient(90deg,#D69E2E,#D69E2E)"></div></div><div style="font-size:.74rem;color:#952626">학습 AI 행동을 크레딧으로 미터링(Anthropic Claude식). 한도가 차면 <b>Basic ₩34,900</b>으로 업그레이드 → 전 과목·무제한.</div></div>
+  <div class="card" style="background:#FAFBFC;border:1px solid #FAF3E0"><div style="display:flex;justify-content:space-between;font-size:.84rem"><b style="color:#952626">AI 학습 크레딧 (Free)</b><span style="color:#8C6719;font-size:.74rem">이번 주 8/10</span></div><div style="height:8px;background:#FAF3E0;border-radius:4px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:80%;background:#D69E2E"></div></div><div style="font-size:.74rem;color:#952626">학습 AI 행동을 크레딧으로 미터링(Anthropic Claude식). 한도가 차면 <b>Basic ₩34,900</b>으로 업그레이드 → 전 과목·무제한.</div></div>
   <div class="kpi"><div class="k"><b>Lv.${state.lvl}</b><span>레벨</span></div><div class="k"><b>${state.points.toLocaleString()}P</b><span>보유 포인트</span></div><div class="k"><b>6일</b><span>연속 학습</span></div></div>
   <div class="card"><b style="font-size:.92rem">포인트 상점</b><div class="shop" style="margin-top:11px">${items}</div><div style="font-size:.72rem;color:var(--muted);margin-top:10px">제휴형(인강 할인·모의고사) 우선 + 실비형 제한 · 보상 원가 = 매출의 2% 상한.</div></div>`);}
 function redeem(i){const s=SHOP[i];if(state.points<s.c)return;state.points-=s.c;document.getElementById('pts').textContent=state.points.toLocaleString()+'P';go('shop');toast('교환 완료: '+s.n+' (-'+s.c.toLocaleString()+'P)');}
