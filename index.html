@@ -9,14 +9,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="너울"/>
 <style>
-:root{--deep:#1A3A5C;--mid:#2B5F8B;--light:#A8C4DD;--foam:#F5F9FC;--wave:#A8C4DD;--ink:#1F2937;--muted:#64748b;--border:#E4E7EB;
+:root{--deep:#1A3A5C;--mid:#2B5F8B;--light:#A8C4DD;--foam:#F5F9FC;--wave:#A8C4DD;--ink:#1F2933;--muted:#616E7C;--border:#E4E7EB;
 --c1:#E8412E;--c2:#F2A03D;--c3:#2F8F4E;--c4:#2B5F8B;--c5:#6B4E9E;}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Malgun Gothic','맑은 고딕','Noto Sans KR',system-ui,sans-serif;background:var(--foam);color:var(--ink);line-height:1.5}
 .hidden{display:none!important}
 button{font-family:inherit;cursor:pointer;border:none}
 #login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(1000px 520px at 50% -6%,rgba(43,95,139,.5),rgba(13,31,48,0) 60%),linear-gradient(180deg,#1F2933 0%,#1A3A5C 100%);padding:20px}
-.lbox{background:#fff;border-radius:12px;padding:38px 34px;width:380px;max-width:94vw;box-shadow:0 24px 64px -24px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.18);text-align:center}
+.lbox{background:#fff;border-radius:12px;padding:38px 34px;width:380px;max-width:94vw;box-shadow:0 24px 64px -24px rgba(26,58,92,0.16),0 1px 3px rgba(26,58,92,0.08);text-align:center}
 .lbox .logo{letter-spacing:-.02em}
 .lbox .btn{border-radius:8px;font-weight:700;letter-spacing:-.01em}
 .logo{font-size:1.7rem;font-weight:800;color:var(--deep)}.logo .n{color:var(--mid)}
@@ -51,9 +51,9 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
 .cell.today .dn{color:var(--mid)}
 .ev{display:block;border-radius:4px;padding:1px 4px;margin-top:2px;color:#fff;font-size:.64rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev{cursor:pointer}.ev.late{opacity:.5;text-decoration:line-through}
-.cbadge{float:right;font-size:.58rem;font-weight:700;background:#E4E7EB;color:#64748b;border-radius:4px;padding:0 4px}.cbadge.all{background:#EAF4EE;color:#2F8F4E}
+.cbadge{float:right;font-size:.58rem;font-weight:700;background:#E4E7EB;color:#616E7C;border-radius:4px;padding:0 4px}.cbadge.all{background:#EAF4EE;color:#2F8F4E}
 .modal{position:fixed;inset:0;background:rgba(10,30,50,.55);display:flex;align-items:center;justify-content:center;z-index:60;padding:18px}
-.mbox{background:#fff;border-radius:12px;max-width:440px;width:100%;max-height:84vh;overflow:auto;padding:22px;box-shadow:0 30px 70px -20px rgba(0,0,0,.5)}
+.mbox{background:#fff;border-radius:12px;max-width:440px;width:100%;max-height:84vh;overflow:auto;padding:22px;box-shadow:0 30px 70px -20px rgba(26,58,92,0.16)}
 .leg{display:flex;gap:10px;flex-wrap:wrap;font-size:.74rem;color:var(--muted);margin:10px 0}
 .sw{display:inline-block;width:10px;height:10px;border-radius:4px;margin-right:4px;vertical-align:middle}
 .rev{display:flex;align-items:center;gap:12px;padding:11px;border:1px solid var(--border);border-radius:12px;margin-bottom:9px;background:#fff}
@@ -92,7 +92,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
 
   #home{
     --deep:#1A3A5C;--mid:#2B5F8B;--blue:#2B5F8B;--wave:#A8C4DD;--light:#A8C4DD;
-    --ink:#1F2937;--muted:#64748b;--faint:#9AA5B1;--foam:#F5F9FC;--line:#E4E7EB;--white:#fff;
+    --ink:#1F2933;--muted:#616E7C;--faint:#9AA5B1;--foam:#F5F9FC;--line:#E4E7EB;--white:#fff;
     --radius:12px;--shadow:0 4px 12px rgba(26,58,92,0.12);--maxw:1200px;
     --ease:cubic-bezier(0.2,0,0,1);
   }
@@ -428,7 +428,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
 </div><!-- /#home -->
 
 <div id="login" class="hidden"><div class="lbox">
-  <a href="#home" onclick="return showHome(event)" style="display:inline-block;color:#64748b;font-size:.82rem;font-weight:700;margin-bottom:8px;cursor:pointer;text-decoration:none">← 홈으로</a>
+  <a href="#home" onclick="return showHome(event)" style="display:inline-block;color:#616E7C;font-size:.82rem;font-weight:700;margin-bottom:8px;cursor:pointer;text-decoration:none">← 홈으로</a>
   <div class="logo">너울<span class="n"> NEOUL</span></div>
   <div class="tag" id="authTag">30초면 끝 · AI가 복습을 대신 관리합니다</div>
   <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:9px 0 15px;font-size:.7rem;color:var(--muted)"><span>🔒 개인정보 안전</span><span style="opacity:.4">|</span><span>🎓 학생부 미수집</span><span style="opacity:.4">|</span><span>🚪 언제든 탈퇴</span></div>
@@ -461,7 +461,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
       <label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:800"><input type="checkbox" id="agAll" onchange="nbAgAll(this)" style="width:16px;height:16px"/> 전체 동의 <span style="font-weight:400;color:var(--muted);font-size:.74rem">(필수+선택 포함)</span></label>
       <div style="border-top:1px solid var(--border);margin:8px 0"></div>
       <label style="display:flex;gap:8px;align-items:flex-start;margin:8px 0;cursor:pointer"><input type="checkbox" class="agReq" id="agPriv" style="margin-top:2px"/><span><b>[필수]</b> 개인정보 수집·이용 동의</span></label>
-      <details style="margin:0 0 6px 24px"><summary style="cursor:pointer;font-size:.74rem;color:#64748b">수집 항목·목적 보기</summary><ul style="margin:4px 0;padding-left:16px;font-size:.74rem;line-height:1.55"><li>항목: 이메일·이름, 자가진단 학습데이터(등급·과목·학교명)</li><li>목적: 회원 식별·AI 학습관리 서비스 제공</li><li>보유: 회원 탈퇴 시까지</li><li><b>학교생활기록부(학생부)는 수집하지 않습니다</b></li></ul></details>
+      <details style="margin:0 0 6px 24px"><summary style="cursor:pointer;font-size:.74rem;color:#616E7C">수집 항목·목적 보기</summary><ul style="margin:4px 0;padding-left:16px;font-size:.74rem;line-height:1.55"><li>항목: 이메일·이름, 자가진단 학습데이터(등급·과목·학교명)</li><li>목적: 회원 식별·AI 학습관리 서비스 제공</li><li>보유: 회원 탈퇴 시까지</li><li><b>학교생활기록부(학생부)는 수집하지 않습니다</b></li></ul></details>
       <label style="display:flex;gap:8px;align-items:flex-start;margin:8px 0;cursor:pointer"><input type="checkbox" class="agReq" id="agTos" style="margin-top:2px"/><span><b>[필수]</b> 서비스 이용약관 동의</span></label>
       <label style="display:flex;gap:8px;align-items:flex-start;margin:8px 0;cursor:pointer"><input type="checkbox" class="agReq" id="agAge" style="margin-top:2px"/><span><b>[필수]</b> 만 14세 이상입니다 <span style="color:var(--muted);font-size:.74rem">(미만은 법정대리인 동의 필요)</span></span></label>
       <label style="display:flex;gap:8px;align-items:flex-start;margin:8px 0;cursor:pointer;color:var(--muted)"><input type="checkbox" id="agMkt" style="margin-top:2px"/><span>[선택] 이벤트·학습 소식 수신 동의</span></label>
@@ -775,8 +775,8 @@ window.renderAdminHTML=function(m){
 function realCard(){var d=state.dbStats;return `<div class="card" style="border:2px solid var(--c3)"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><b style="color:var(--c3)">● 실데이터 집계</b><span style="font-size:.72rem;color:var(--muted)">로그인 계정 누적</span></div><div class="kpi" style="margin-bottom:0"><div class="k"><b>${d.quizRate}%</b><span>퀴즈 정답률 (${d.quizCorrect}/${d.quizTotal})</span></div><div class="k"><b>${d.reviewRate}%</b><span>복습 이행률 (${d.reviewDone}/${d.reviewTotal})</span></div><div class="k"><b>${d.reviewDone}</b><span>완료 복습</span></div></div></div>`;}
 function setGView(v){state.gView=v;go('parent');}
 function gTog(){const a=state.gView==='stu';return `<div style="display:flex;gap:6px;margin-bottom:13px;background:#F2F4F6;padding:4px;border-radius:12px">
-  <button onclick="setGView('stu')" style="flex:1;border:none;cursor:pointer;border-radius:8px;padding:8px;font-size:.82rem;font-weight:700;${a?'background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(0,0,0,.08)':'background:transparent;color:var(--muted)'}">🙌 학생용</button>
-  <button onclick="setGView('par')" style="flex:1;border:none;cursor:pointer;border-radius:8px;padding:8px;font-size:.82rem;font-weight:700;${!a?'background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(0,0,0,.08)':'background:transparent;color:var(--muted)'}">📩 학부모용</button></div>`;}
+  <button onclick="setGView('stu')" style="flex:1;border:none;cursor:pointer;border-radius:8px;padding:8px;font-size:.82rem;font-weight:700;${a?'background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(26,58,92,0.08)':'background:transparent;color:var(--muted)'}">🙌 학생용</button>
+  <button onclick="setGView('par')" style="flex:1;border:none;cursor:pointer;border-radius:8px;padding:8px;font-size:.82rem;font-weight:700;${!a?'background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(26,58,92,0.08)':'background:transparent;color:var(--muted)'}">📩 학부모용</button></div>`;}
 function wBand(g){g=Number(g)||0;if(!g)return null;return g<=1?['mastered','#2F8F4E']:g<=2?['light','#2F855A']:g<=4?['medium','#F2A03D']:g<=6?['heavy','#E8412E']:['critical','#C53030'];}
 function growthSnapCard(){var g=state.dbGrowth;if(!g||!g.summary||!g.summary.subjects||!g.summary.subjects.length)return '';var subs=g.summary.subjects.slice(0,6);var rows=subs.map(function(s){var b=s.grade?(s.grade<=2?'#2F8F4E':s.grade<=4?'#F2A03D':s.grade<=6?'#E8412E':'#C53030'):'#9AA5B1';return '<span style="display:inline-block;background:'+b+';color:#fff;border-radius:12px;padding:3px 10px;font-size:.74rem;margin:2px 3px 2px 0">'+s.subject+(s.grade?' '+s.grade+'등급':'')+'</span>';}).join('');return '<div class="card"><div style="font-size:.82rem;margin-bottom:7px"><b style="color:var(--deep)">📈 이번 주 자동 리포트</b> <span style="color:var(--muted);font-size:.72rem">'+(g.week||'')+' · 매주 자동 갱신</span></div><div>'+rows+'</div></div>';}
 function unitPicker(subj){if(!state.user)return '';var us=(state.units||[]).filter(function(u){return u.subject===subj||u.course===subj;});if(!us.length)return '';var wk=state.weakUnits||{};var chips=us.map(function(u){var on=!!wk[u.id];return '<button onclick="window.nbToggleUnit('+u.id+')" style="border:1px solid '+(on?'#E8412E':'var(--border)')+';background:'+(on?'#E8412E':'#fff')+';color:'+(on?'#fff':'var(--muted)')+';border-radius:12px;padding:4px 10px;font-size:.73rem;font-weight:600;cursor:pointer;margin:2px 3px 2px 0">'+((u.course&&u.course!==subj)?u.course+' · ':'')+u.name+'</button>';}).join('');return '<div style="border-top:1px solid var(--border);margin:12px 0 2px;padding-top:10px"><div style="font-size:.8rem;margin-bottom:7px"><b style="color:var(--deep)">🎯 '+subj+' 취약 단원 선택</b> <span style="color:var(--muted);font-size:.71rem">눌러 표시 → 단원별 리포트·복습 우선</span></div><div>'+chips+'</div></div>';}
@@ -1172,7 +1172,7 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
   </section>
 </div>
 <style>
-#nt-root{--d:#1A3A5C;--o:#2B5F8B;--s:#2B5F8B;--mist:#F5F9FC;--line:#E4E7EB;--ink:#1F2937;--muted:#64748b;position:fixed;right:20px;bottom:20px;z-index:99999;font-family:'Pretendard','Noto Sans KR',system-ui,sans-serif;display:none}
+#nt-root{--d:#1A3A5C;--o:#2B5F8B;--s:#2B5F8B;--mist:#F5F9FC;--line:#E4E7EB;--ink:#1F2933;--muted:#616E7C;position:fixed;right:20px;bottom:20px;z-index:99999;font-family:'Pretendard','Noto Sans KR',system-ui,sans-serif;display:none}
 #nt-launch{display:flex;align-items:center;gap:8px;border:none;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--d),var(--o));padding:13px 18px;border-radius:9999px;box-shadow:0 8px 24px rgba(26,58,92,.32);font-size:.92rem;font-weight:800;font-family:inherit}
 #nt-launch .nt-ico{font-size:1.05rem}
 #nt-launch:hover{filter:brightness(1.06)}
