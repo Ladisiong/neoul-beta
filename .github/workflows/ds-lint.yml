@@ -1,0 +1,39 @@
+name: ds-lint
+
+# NEOUL 디자인시스템 정본 게이트 — 라이브 배포 저장소용.
+# 목적은 "지금 완벽한가"가 아니라 "어제보다 나빠지지 않았는가"다.
+# 이미 승인된 잔여 위반은 lint/baseline.json 에 등재돼 면제되고,
+# 거기 없는 신규 위반만 FAIL 한다(래칫). 근거 문서는 디자인시스템 저장소의
+# docs/LIVE_EXCEPTIONS.md.
+#
+# 잔여 위반을 하나 고쳤으면 baseline 에서 그 항목을 지운다. 다시는 못 들어온다.
+# 새 위반을 부득이 승인해야 하면 LIVE_EXCEPTIONS.md 에 사유를 먼저 쓰고
+#   node .ds/ds-lint.mjs <대상> --write-baseline lint/baseline.json
+# 로 갱신한다. 사유 없는 baseline 갱신은 리뷰에서 반려한다.
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: ds-lint (baseline 래칫)
+        run: node .ds/ds-lint.mjs index.html --baseline lint/baseline.json
+
+      - name: 결과 JSON 아티팩트
+        if: always()
+        run: node .ds/ds-lint.mjs index.html --baseline lint/baseline.json --json > ds-lint.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ds-lint-report
+          path: ds-lint.json
