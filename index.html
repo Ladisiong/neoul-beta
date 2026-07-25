@@ -826,7 +826,7 @@ function growthStudent(){
  const subj=[{n:'국어',p:58,c:72},{n:'수학',p:52,c:68},{n:'영어',p:64,c:79},{n:'탐구',p:60,c:74}];
  const subjH=subj.map(s=>`<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px"><b>${s.n}</b><span style="color:var(--c3);font-weight:700">+${s.c-s.p}%p ▲</span></div>
    <div style="position:relative;height:20px;background:#F2F4F6;border-radius:8px;overflow:hidden"><div style="position:absolute;left:0;top:0;height:100%;width:${s.c}%;background:linear-gradient(90deg,var(--mid),#2B5F8B)"></div></div></div>`).join('');
- return el(`<h2 class="sec">성장 리포트 <span class="auto">나의 성장</span></h2>${gTog()}${state.user&&state.dbStats?realCard():''}${weaknessCard()}${growthSnapCard()}
+ return el(`<h2 class="sec">성장 리포트 <span class="auto">나의 성장</span></h2>${gTog()}${state.user&&state.dbStats?realCard():''}${'<div style="display:flex;align-items:center;gap:8px;background:#FAF3E0;border:1px solid #D69E2E;border-radius:12px;padding:10px 14px;margin:12px 0;font-size:.8rem;color:#8C6719;line-height:1.55"><b style="white-space:nowrap">예시 화면</b><span>아래 수치는 <b>실제 기록이 아닌 예시</b>입니다. 학습 기록이 쌓이면 이 자리에 <b>우리 아이의 실제 집계</b>가 들어갑니다.</span></div>'}${weaknessCard()}${growthSnapCard()}
   <div style="background:linear-gradient(135deg,#1A3A5C,#2B5F8B);color:#fff;border-radius:12px;padding:16px;margin-bottom:12px">
     <div style="font-size:.8rem;opacity:.9">📩 이번 주 리포트 · 지난주 대비</div>
     <div style="font-size:1.7rem;font-weight:800;margin:2px 0">69% <span style="opacity:.7;font-size:1rem">→</span> 72% <span style="background:rgba(255,255,255,.18);font-size:.78rem;padding:2px 8px;border-radius:9999px;vertical-align:middle">+3%p</span></div>
@@ -847,7 +847,7 @@ function growthParent(){
      <div style="position:absolute;left:0;top:0;height:100%;width:${s.c}%;background:linear-gradient(90deg,var(--mid),#2B5F8B)"></div>
    </div>
    <div style="font-size:.72rem;color:var(--muted);margin-top:4px">4주 전 <b>${s.p}%</b> <span style="color:var(--c3)">→</span> 현재 <b style="color:var(--deep)">${s.c}%</b></div></div>`).join('');
- return el(`<h2 class="sec">성장 리포트 <span class="auto">매주 자동 발송</span></h2>${gTog()}${state.user&&state.dbStats?realCard():''}${weaknessCard()}${growthSnapCard()}
+ return el(`<h2 class="sec">성장 리포트 <span class="auto">매주 자동 발송</span></h2>${gTog()}${state.user&&state.dbStats?realCard():''}${'<div style="display:flex;align-items:center;gap:8px;background:#FAF3E0;border:1px solid #D69E2E;border-radius:12px;padding:10px 14px;margin:12px 0;font-size:.8rem;color:#8C6719;line-height:1.55"><b style="white-space:nowrap">예시 화면</b><span>아래 수치는 <b>실제 기록이 아닌 예시</b>입니다. 학습 기록이 쌓이면 이 자리에 <b>우리 아이의 실제 집계</b>가 들어갑니다.</span></div>'}${weaknessCard()}${growthSnapCard()}
   <p class="subtle">매주 발송 · 전 주 대비 진단과 4주 추세를 함께 드립니다.</p>
   <div style="background:#F2F4F6;border:1px solid var(--light);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.86rem;line-height:1.6"><b style="color:var(--deep)">📩 이번 주 리포트 (전 주 대비)</b><br/>정답률 69%→<b>72%</b>(+3%p) · 복습 이행률 88%→<b>92%</b>(+4%p) · 학습시간 25h→<b>27h</b>(+2h) · 연속 학습 6일</div>
   <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px">${cmpH}</div>
