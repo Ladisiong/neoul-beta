@@ -52,7 +52,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
 .ev{display:block;border-radius:4px;padding:1px 4px;margin-top:2px;color:#fff;font-size:.64rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev{cursor:pointer}.ev.late{opacity:.5;text-decoration:line-through}
 .cbadge{float:right;font-size:.58rem;font-weight:700;background:#E4E7EB;color:#3E4C59;border-radius:4px;padding:0 4px}.cbadge.all{background:#EAF4EE;color:#256745}
-.modal{position:fixed;inset:0;background:rgba(10,30,50,.55);display:flex;align-items:center;justify-content:center;z-index:60;padding:18px}
+.modal{position:fixed;inset:0;background:rgba(26,58,92,.5);display:flex;align-items:center;justify-content:center;z-index:60;padding:18px}
 .mbox{background:#fff;border-radius:12px;max-width:440px;width:100%;max-height:84vh;overflow:auto;padding:22px;box-shadow:0 30px 70px -20px rgba(26,58,92,0.16)}
 .leg{display:flex;gap:10px;flex-wrap:wrap;font-size:.74rem;color:var(--muted);margin:10px 0}
 .sw{display:inline-block;width:10px;height:10px;border-radius:4px;margin-right:4px;vertical-align:middle}
@@ -1095,7 +1095,7 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
 <script>(function(){try{fetch('/free/materials.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){var it=(j&&j.items)||[];var s=it.filter(function(x){return x.type==='개념요약';})[0]||it[0];if(!s)return;var t=document.getElementById('fbSampleTitle'),sub=document.getElementById('fbSampleSub'),b=document.getElementById('fbSampleBtn');if(t)t.textContent=s.category+' · '+s.subject+(s.unit?(' · '+s.unit):'');if(sub)sub.textContent=(s.type||'학습자료')+' · PDF · 가입 없이 즉시 다운로드';if(b){b.setAttribute('href','/free/materials/'+encodeURIComponent(s.file));b.setAttribute('download','');}}).catch(function(){});}catch(e){}})();</script>
 <!-- NEOUL: notice popup + app download + AI support chat -->
 <style>
-#nvNoticeWrap{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(12,28,44,.5);backdrop-filter:blur(3px);padding:18px}
+#nvNoticeWrap{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(26,58,92,.5);backdrop-filter:blur(3px);padding:18px}
 #nvNoticeWrap.on{display:flex}
 #nvNotice{background:#fff;max-width:440px;width:100%;border-radius:12px;box-shadow:0 24px 60px rgba(26,58,92,.28);overflow:hidden;font-family:inherit;animation:nvpop .22s ease}
 @keyframes nvpop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
