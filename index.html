@@ -705,18 +705,25 @@ function Dan(){
    const keep=last==='X';
    let story; if(firstO===-1){story=`지금까지 ${done}회독 모두 <b style="color:var(--c1)">✗ 틀림</b>`+(done>=5?' → 5번 봐도 모름':' → 아직 약함');}
    else{story=`${firstO+1}회독부터 <b style="color:var(--c3)">✓ 맞히기 시작</b>`+(keep?' → 다시 틀림, 재복습':' → 이제 알아요');}
-   const label= keep? (done>=5?'단권화 확정':'단권화 후보') : '소거(마스터)';
-   const cls= keep? (done>=5?'keep':'cand') : 'gone';
-   return {keep,story,label,cls};};
+   const full=done>=5;
+   const label= keep? (full?'단권화 확정':'단권화 후보') : '소거(마스터)';
+   const cls= keep? (full?'keep':'cand') : 'gone';
+   return {keep,story,label,cls,full};};
  const items=state.danwon.map((d,di)=>{const st=stat(d);
    const cells=[0,1,2,3,4].map(i=>{if(i<d.hist.length){const ok=d.hist[i]==='O';return `<span class="ox ${ok?'o':'x'}" title="${i+1}회독">${ok?'✓':'✗'}</span>`;}return `<span class="ox n" title="${i+1}회독 미실시">·</span>`;}).join('');
-   return `<div class="dz"><div style="display:flex;flex-direction:column;align-items:center;flex:none;gap:3px"><div style="display:flex">${cells}</div><span style="font-size:.56rem;color:var(--muted)">1·3·7·11·15일</span></div><div class="t" style="margin-left:4px"><b>${d.subj}</b> — ${d.c}<small>${st.story}</small><br><button class="do" style="margin-top:6px;font-size:.72rem;padding:5px 9px;background:#F5F9FC;color:#1A3A5C;border:1px solid #A8C4DD" onclick="ntAskDan(${di})">🤔 이 개념 물어보기</button></div><span class="tagx ${st.cls}">${st.label}</span></div>`;}).join('');
- const keepN=state.danwon.filter(d=>d.hist[d.hist.length-1]==='X').length;
- const masterN=state.danwon.length-keepN;
+   const act= st.full
+     ? (st.keep?`<label style="font-size:.74rem;color:var(--c1);font-weight:700;display:inline-flex;align-items:center;gap:5px;margin-top:6px;cursor:pointer"><input type="checkbox" ${d.fin?'checked':''} onchange="danFinal(${di},this.checked)"> 시험 전 최종 확인</label>`:'')
+     : `<span style="display:inline-flex;gap:5px;margin-top:6px"><button class="do" style="font-size:.72rem;padding:5px 9px;background:#eaf6ef;color:#166534;border:1px solid #bbe3c8" onclick="danMark(${di},'O')">✓ ${d.hist.length+1}회독 맞음</button><button class="do" style="font-size:.72rem;padding:5px 9px;background:#fdecec;color:#b91c1c;border:1px solid #f3c1c1" onclick="danMark(${di},'X')">✗ ${d.hist.length+1}회독 틀림</button></span>`;
+   return `<div class="dz"><div style="display:flex;flex-direction:column;align-items:center;flex:none;gap:3px"><div style="display:flex">${cells}</div><span style="font-size:.56rem;color:var(--muted)">1·3·7·11·15일</span></div><div class="t" style="margin-left:4px;flex:1"><b>${d.subj}</b> — ${d.c}<small>${st.story}</small><input placeholder="왜 틀렸나 · 핵심 한 줄 압축 (압축이 곧 복습)" value="${(d.note||'').replace(/"/g,'&quot;')}" onchange="danNote(${di},this.value)" style="display:block;width:100%;margin-top:6px;font-size:.76rem;padding:6px 8px;border:1px dashed #A8C4DD;border-radius:7px;background:#fbfdff;color:#1A3A5C"/><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${act}<button class="do" style="margin-top:6px;font-size:.72rem;padding:5px 9px;background:#F5F9FC;color:#1A3A5C;border:1px solid #A8C4DD" onclick="ntAskDan(${di})">🤔 이 개념 물어보기</button></div></div><span class="tagx ${st.cls}">${st.label}</span></div>`;}).join('');
+ const fixN=state.danwon.filter(d=>d.hist.length>=5&&d.hist[d.hist.length-1]==='X').length;
+ const candN=state.danwon.filter(d=>d.hist[d.hist.length-1]==='X').length-fixN;
+ const masterN=state.danwon.length-fixN-candN;
+ const finN=state.danwon.filter(d=>d.fin).length;
  return el(`<h2 class="sec">단권화 (소거법) <span class="auto">나만의 오답노트</span></h2>
-  <p class="subtle"><b>단권화 = ‘5번 봐도 모르는 것’만 모은 나만의 오답노트.</b> 같은 개념을 5번 복습하며 회독마다 <b style="color:var(--c3)">✓ 맞음</b> / <b style="color:var(--c1)">✗ 틀림</b>을 기록합니다. 기준은 ‘몇 번 봤나’가 아니라 <b>‘마지막에 맞혔는가’</b> — 최근 회독에서 맞히면 <b style="color:var(--c3)">소거</b>(이제 안 봐도 됨), 끝까지 틀리면 <b style="color:var(--c1)">단권화</b>(시험 직전 집중).</p>
+  <p class="subtle"><b>“이 복습법을 완주하면 내가 정말 모르는 개념·문제만 남게 되고, 그것이 단권화다.”</b> 같은 개념을 5번 복습하며 회독마다 <b style="color:var(--c3)">✓ 맞음</b> / <b style="color:var(--c1)">✗ 틀림</b>을 직접 기록하세요. 최근 회독에서 맞히면 <b style="color:var(--c3)">소거</b>(이제 안 봐도 됨), 5회독을 완주하고도 틀리면 <b style="color:var(--c1)">단권화 확정</b> — <b>시험장에는 확정된 것만 들고 갑니다.</b></p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="do" style="font-size:.8rem" onclick="danAdd()">＋ 모르는 개념 추가</button><button class="do" style="font-size:.8rem;background:#1A3A5C;color:#fff" onclick="danExam()">📗 시험장 모드 — 확정 ${fixN}개만 한 권으로</button></div>
   ${items}
-  <div class="note"><b>지금 상태:</b> 전체 ${state.danwon.length}개 중 <b style="color:#fff">${keepN}개</b>가 아직 약함(단권화), <b style="color:var(--wave)">${masterN}개</b>는 마스터(소거 완료). 너울이 단권화 ${keepN}개만 다음 복습·시험에 집중 배치하고 한 권으로 묶어 줍니다.</div>`);}
+  <div class="note"><b>지금 상태:</b> <b style="color:#fff">단권화 확정 ${fixN}개</b> · 후보 ${candN}개 · <b style="color:var(--wave)">소거(마스터) ${masterN}개</b> · 시험 전 최종 확인 ${finN}/${fixN}. 회독을 완주할수록 시험장에 가져갈 양이 줄어듭니다 — 확정 항목의 ‘시험 전 최종 확인’까지 채우면 준비 끝.</div>`);}
 
 function Quiz(){return el(`<h2 class="sec">AI 퀴즈 <span class="auto">너울 AI 자동 출제·채점</span></h2>
   <p class="subtle">과목당 8문항(기본3·심화3·<b style="color:var(--c1)">킬러2</b> · 킬러는 단답형). 너울 AI가 복습 범위에서 출제하고, 틀린 문제로 약점을 자동 분류합니다.</p>
@@ -730,6 +737,13 @@ function Quiz(){return el(`<h2 class="sec">AI 퀴즈 <span class="auto">너울 A
 function pickSubj(s){quizSubj=s;qi=0;qcorrect=0;qmiss=[];go('quiz');}
 window.ntAskQuiz=function(idx){var Q=QUIZ[quizSubj];if(!Q||!Q[idx])return;var q=Q[idx];window.ntAsk(quizSubj+' — \''+String(q.q).replace(/["<>]/g,'')+'\' 이 문제의 핵심 개념을 처음부터 단계적으로 설명해줘');};
 window.ntAskDan=function(di){var d=state.danwon[di];if(!d)return;window.ntAsk(d.subj+' — \''+String(d.c).replace(/["<>]/g,'')+'\' 개념을 처음부터 단계적으로 설명해줘');};
+window.danMark=function(di,v){var d=state.danwon[di];if(!d||d.hist.length>=5)return;d.hist.push(v);addXp(v==='O'?25:5);danPush(d);go('dan');toast(v==='O'?'✓ 기록 — 맞았습니다! 소거에 한 걸음':'✗ 기록 — 다음 회독에서 다시 만납니다');};
+window.danNote=function(di,t){var d=state.danwon[di];if(!d)return;d.note=String(t).replace(/[<>]/g,'').slice(0,120);danPush(d);};
+window.danFinal=function(di,c){var d=state.danwon[di];if(!d)return;d.fin=!!c;if(c)addXp(15);danPush(d);go('dan');toast(c?'📗 시험 전 최종 확인 완료':'최종 확인 해제');};
+window.danAdd=function(){var s=prompt('과목 (예: 수학)');if(!s)return;var c=prompt('모르는 개념·문제 — 출처까지 (예: 수열의 극한, 교재 p.126)');if(!c)return;var d={subj:String(s).replace(/[<>"]/g,'').trim().slice(0,20),c:String(c).replace(/[<>"]/g,'').trim().slice(0,80),hist:['X'],note:'',fin:false};state.danwon.push(d);danPush(d);go('dan');toast('단권화에 추가 — 회독마다 ✓/✗를 기록하세요');};
+window.danExam=function(){var keep=state.danwon.filter(function(d){return d.hist.length>=5&&d.hist[d.hist.length-1]==='X';});if(!keep.length){toast('단권화 확정 항목이 없습니다 — 전부 소거, 완벽합니다!');return;}var w=window.open('','_blank');if(!w){toast('팝업을 허용해 주세요');return;}
+ w.document.write('<html><head><meta charset="UTF-8"><title>단권화 — 시험장 한 권</title><style>body{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;padding:30px;color:#1A3A5C;max-width:760px;margin:0 auto}h1{font-size:22px;border-bottom:3px solid #1A3A5C;padding-bottom:9px}p.s{color:#5b6b7a;font-size:13px;line-height:1.6}div.i{border:1px solid #A8C4DD;border-left:4px solid #2B5F8B;border-radius:9px;padding:12px 15px;margin:10px 0;page-break-inside:avoid}div.i b{font-size:15px}div.i small{display:block;color:#44586b;margin-top:5px;font-size:13px;line-height:1.65}span.f{float:right;font-size:11px;color:#166534;border:1px solid #bbe3c8;border-radius:5px;padding:2px 7px}@media print{button{display:none}}</style></head><body><h1>📗 단권화 — 시험장 한 권 ('+keep.length+'개)</h1><p class="s">5회독을 완주하고도 남은 것만 모았습니다. <b>시험 전날과 시험장에서는 이 한 권만 봅니다.</b></p>'+keep.map(function(d,i){return '<div class="i">'+(d.fin?'<span class="f">최종 확인 ✓</span>':'')+'<b>'+(i+1)+'. ['+d.subj+'] '+d.c+'</b><small>'+((d.note||'').trim()||'— 핵심 한 줄을 적어 두면 여기에 함께 인쇄됩니다')+'</small></div>';}).join('')+'<button onclick="print()" style="margin-top:16px;padding:11px 20px;background:#1A3A5C;color:#fff;border:0;border-radius:8px;font-size:14px;cursor:pointer">🖨 인쇄 / PDF 저장</button></body></html>');w.document.close();};
+window.danPush=async function(d){try{if(!window.NB||!window.NB.user||!window.SB)return;var row={student_id:window.NB.user.id,subject:d.subj,concept:d.c,review_history:d.hist,note:d.note||null,final_check:!!d.fin,updated_at:new Date().toISOString()};if(d.id){await SB.from('danwon_items').update(row).eq('id',d.id);}else{var r=await SB.from('danwon_items').insert(row).select('id').single();if(r&&r.data)d.id=r.data.id;}}catch(e){}};
 function renderQ(){const box=document.getElementById('qbox');if(!box)return;const Q=QUIZ[quizSubj];
  if(qi>=Q.length){box.innerHTML=`<h2 class="sec">${quizSubj} 결과</h2><p style="margin:8px 0">${Q.length}문제 중 <b style="color:var(--deep)">${qcorrect}개</b> 정답.</p>
    <div style="background:var(--foam);border-left:4px solid var(--mid);padding:12px 14px;border-radius:8px;font-size:.86rem"><b>약점 분류</b><br/>${qmiss.length?qmiss.map(w=>`<span class="pill">${w}</span>`).join(''):'<span class="pill">약점 없음 — 우수</span>'}<br/><span style="color:var(--muted)">→ 단권화·다음 복습에 우선 반영.</span></div>
@@ -1046,7 +1060,7 @@ window.nbLogout=async()=>{await SB.auth.signOut();location.reload();};
 async function ensureRows(stype){if(!window.NB.user)return;const uid=window.NB.user.id;await SB.from('students').upsert({id:uid,student_type:stype||'repeat',exam_system:'current'},{onConflict:'id'});await SB.from('subscriptions').upsert({student_id:uid,tier:'free',ai_credits_limit:10},{onConflict:'student_id'});await SB.from('gamification').upsert({student_id:uid,xp:0,level:1,points:0,tier:'물방울'},{onConflict:'student_id'});}
 async function bootUser(){const st=window.state;await ensureRows();const uid=window.NB.user.id;
   const {data:g}=await SB.from('gamification').select('*').eq('student_id',uid).single();if(g){st.xp=g.xp||0;st.lvl=g.level||1;st.points=g.points||0;}
-  const {data:dw}=await SB.from('danwon_items').select('*').eq('student_id',uid);if(dw&&dw.length){st.danwon=dw.map(d=>({subj:d.subject,c:d.concept,hist:d.review_history||['X']}));}
+  const {data:dw}=await SB.from('danwon_items').select('*').eq('student_id',uid);if(dw&&dw.length){st.danwon=dw.map(d=>({id:d.id,subj:d.subject,c:d.concept,hist:d.review_history||['X'],note:d.note||'',fin:!!d.final_check}));}
   const today=new Date().toISOString().slice(0,10);const {data:ms}=await SB.from('missions').select('mission_key').eq('student_id',uid).eq('for_date',today);if(ms)ms.forEach(m=>st.claimed[m.mission_key]=true);
   try{var _stu=await SB.from('students').select('exam_date').eq('id',uid).single();if(_stu.data&&_stu.data.exam_date)st.examDate=_stu.data.exam_date;}catch(e){}await window.nbLoadReviews();await window.nbStats();await window.nbLoadGrowth();await window.nbLoadUnits();st.guest=false;st.user=uid;st.role='student';window.bootIntoApp();window.toast('환영합니다 — 실시간 저장이 켜졌어요');}
 window.nbSaveDiagnosis=async(r)=>{const st=window.state;if(!window.NB.user)return;const uid=window.NB.user.id;const gmap={'고1':'g1','고2':'g2','고3':'g3'};
