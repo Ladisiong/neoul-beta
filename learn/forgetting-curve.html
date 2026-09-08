@@ -1,0 +1,124 @@
+<!doctype html><html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>에빙하우스 망각곡선, 학습에 어떻게 쓰는가 | 너울(NEOUL)</title>
+<meta name="description" content="망각곡선은 '하루 뒤 67%를 잊는다'는 숫자를 외우는 이론이 아닙니다. 복습 시점을 정하는 도구로 쓰는 법과, 흔한 오해 세 가지."/>
+<link rel="canonical" href="https://www.neoulai.com/learn/forgetting-curve"/>
+<meta name="theme-color" content="#1A3A5C"/>
+<link rel="icon" href="/favicon.ico" sizes="any"/>
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"/>
+<link rel="apple-touch-icon" href="/icon-192.png"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="너울(NEOUL)"/>
+<meta property="og:locale" content="ko_KR"/>
+<meta property="og:url" content="https://www.neoulai.com/learn/forgetting-curve"/>
+<meta property="og:title" content="에빙하우스 망각곡선, 학습에 어떻게 쓰는가 | 너울(NEOUL)"/>
+<meta property="og:description" content="망각곡선은 '하루 뒤 67%를 잊는다'는 숫자를 외우는 이론이 아닙니다. 복습 시점을 정하는 도구로 쓰는 법과, 흔한 오해 세 가지."/>
+<meta property="og:image" content="https://www.neoulai.com/og-image.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="너울(NEOUL) — AI 학습 매니지먼트"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="에빙하우스 망각곡선, 학습에 어떻게 쓰는가 | 너울(NEOUL)"/>
+<meta name="twitter:description" content="망각곡선은 '하루 뒤 67%를 잊는다'는 숫자를 외우는 이론이 아닙니다. 복습 시점을 정하는 도구로 쓰는 법과, 흔한 오해 세 가지."/>
+<meta name="twitter:image" content="https://www.neoulai.com/og-image.png"/>
+<script type="application/ld+json">{"@type":"Article","headline":"에빙하우스 망각곡선, 학습에 어떻게 쓰는가 | 너울(NEOUL)","description":"망각곡선은 '하루 뒤 67%를 잊는다'는 숫자를 외우는 이론이 아닙니다. 복습 시점을 정하는 도구로 쓰는 법과, 흔한 오해 세 가지.","url":"https://www.neoulai.com/learn/forgetting-curve","inLanguage":"ko","image":"https://www.neoulai.com/og-image.png","datePublished":"2026-09-08","dateModified":"2026-09-08","author":{"@type":"Organization","name":"BHTM Holdings","url":"https://bhtm100.com","sameAs":["https://bhtm100.com","https://blog.naver.com/ktm610","https://www.instagram.com/bhtm100_/","https://www.threads.com/@bhtm100_"]},"publisher":{"@type":"Organization","name":"BHTM Holdings","url":"https://bhtm100.com","sameAs":["https://bhtm100.com","https://blog.naver.com/ktm610","https://www.instagram.com/bhtm100_/","https://www.threads.com/@bhtm100_"]},"isPartOf":{"@type":"WebSite","name":"너울(NEOUL)","url":"https://www.neoulai.com/"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.neoulai.com/learn/forgetting-curve"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://www.neoulai.com/"},{"@type":"ListItem","position":2,"name":"학습법 가이드","item":"https://www.neoulai.com/learn"},{"@type":"ListItem","position":3,"name":"망각곡선","item":"https://www.neoulai.com/learn/forgetting-curve"}]},"@context":"https://schema.org"}</script>
+<script>
+/* GA4 - dataLayer now, 115KB library at idle. Same policy as the landing page. */
+(function(){
+  var MID='G-C6PGT89864', loaded=false;
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){window.dataLayer.push(arguments);};
+  gtag('js',new Date()); gtag('config',MID);
+  function load(){ if(loaded){return;} loaded=true;
+    var s=document.createElement('script'); s.async=true;
+    s.src='https://www.googletagmanager.com/gtag/js?id='+MID;
+    document.head.appendChild(s); }
+  if('requestIdleCallback' in window){ requestIdleCallback(load,{timeout:3500}); }
+  else { setTimeout(load,2500); }
+  ['pointerdown','keydown','scroll','touchstart'].forEach(function(e){
+    window.addEventListener(e,load,{once:true,passive:true}); });
+})();
+</script>
+<style>
+:root{--deep:#1A3A5C;--mid:#2B5F8B;--light:#A8C4DD;--foam:#F5F9FC;--ink:#1F2933;
+--muted:#616E7C;--border:#E4E7EB;--c1:#E8412E;--c2:#F2A03D;--c3:#2F8F4E;--c5:#6B4E9E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Noto Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+background:var(--foam);color:var(--ink);line-height:1.75;-webkit-text-size-adjust:100%}
+a{color:var(--mid)}
+.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;background:#fff;padding:10px 14px;border-radius:8px;z-index:99}
+header.site{background:linear-gradient(135deg,var(--deep) 0%,var(--mid) 100%);color:#fff}
+header.site .wrap{max-width:820px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header.site a{color:#fff;text-decoration:none}
+.brand{font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.brand .n{color:var(--light)}
+nav.top{margin-left:auto;display:flex;gap:16px;font-size:.88rem;font-weight:600}
+main{max-width:820px;margin:0 auto;padding:0 20px 72px}
+.crumb{font-size:.8rem;color:var(--muted);padding:18px 0 6px}
+.crumb a{color:var(--muted)}
+h1{font-size:1.75rem;line-height:1.35;color:var(--deep);letter-spacing:-.02em;margin:10px 0 12px}
+.lede{font-size:1.02rem;color:var(--ink);background:#fff;border:1px solid var(--border);
+border-left:4px solid var(--mid);border-radius:12px;padding:16px 18px;margin:0 0 26px}
+h2{font-size:1.22rem;color:var(--deep);letter-spacing:-.01em;margin:34px 0 10px;padding-top:6px;border-top:1px solid var(--border)}
+h3{font-size:1.02rem;color:var(--deep);margin:22px 0 6px}
+p{margin:0 0 14px}
+ul,ol{margin:0 0 16px 20px}li{margin-bottom:7px}
+table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:.92rem;background:#fff}
+th,td{border:1px solid var(--border);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#EDF3F8;color:var(--deep);font-weight:700}
+.scroll{overflow-x:auto;margin:0 0 18px}
+.note{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:0 0 18px;font-size:.92rem}
+.note b{color:var(--deep)}
+.src{font-size:.82rem;color:var(--muted);margin:0 0 18px}
+.steps{counter-reset:s;list-style:none;margin-left:0}
+.steps li{counter-increment:s;position:relative;padding-left:38px;margin-bottom:14px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;
+background:var(--deep);color:#fff;font-weight:700;font-size:.82rem;display:flex;align-items:center;justify-content:center}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 18px}
+.chip{font-size:.83rem;font-weight:700;color:var(--ink);background:#fff;border:1px solid var(--border);
+border-radius:9999px;padding:5px 13px 5px 10px;display:inline-flex;align-items:center;gap:7px}
+.chip i{width:11px;height:11px;border-radius:50%;flex:none}
+.cta{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px;margin:34px 0 0;text-align:center;
+box-shadow:0 12px 30px -22px rgba(26,58,92,.5)}
+.cta h2{border:none;margin:0 0 8px;padding:0;font-size:1.1rem}
+.cta p{color:var(--muted);font-size:.92rem}
+.btn{display:inline-block;background:var(--mid);color:#fff;text-decoration:none;font-weight:700;
+padding:13px 28px;border-radius:12px;margin-top:6px}
+.btn:hover{background:var(--deep)}
+.rel{margin:34px 0 0}
+.rel h2{margin-top:0}
+.rel ul{list-style:none;margin-left:0}
+.rel li{border-bottom:1px solid var(--border);padding:11px 0}
+.rel a{font-weight:600;text-decoration:none}
+.rel small{display:block;color:var(--muted);font-size:.85rem;font-weight:400}
+footer.site{background:var(--deep);color:#C6D4E2;margin-top:56px}
+footer.site .wrap{max-width:820px;margin:0 auto;padding:26px 20px;font-size:.85rem}
+footer.site a{color:#C6D4E2}
+footer.site .links{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+@media(max-width:600px){h1{font-size:1.42rem}main{padding:0 16px 60px}}
+</style>
+</head><body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="site"><div class="wrap">
+<a class="brand" href="/">너울<span class="n">NEOUL</span></a>
+<nav class="top" aria-label="주요">
+<a href="/learn/">학습법</a><a href="/free/">무료자료</a><a href="/">시작하기</a>
+</nav>
+</div></header>
+<main id="main">
+<p class="crumb"><a href="/">홈</a> &rsaquo; <a href="/learn">학습법 가이드</a> &rsaquo; 망각곡선</p>
+<h1>에빙하우스 망각곡선, 학습에 어떻게 쓰는가</h1>
+<p class="lede">망각곡선은 <b>결론이 아니라 도구</b>입니다. 중요한 것은 곡선의 정확한 수치가 아니라, <b>기억이 흐려지기 직전에 다시 만나면 다음까지 더 오래 간다</b>는 성질입니다.</p><h2>곡선이 말하는 것과 말하지 않는 것</h2><p>헤르만 에빙하우스(Hermann Ebbinghaus)는 19세기 말, 자기 자신을 대상으로 무의미 철자를 외우고 시간이 지나며 얼마나 남는지를 측정했습니다. 결과는 <b>초반에 급격히 떨어지고 이후 완만해지는 곡선</b>이었습니다.</p><p>여기서 조심할 점이 있습니다. 그 실험은 <b>의미 없는 철자</b>를, <b>한 사람</b>이 외운 기록입니다. 개념·맥락이 있는 학습 내용에 그 감소율을 그대로 대입할 수는 없습니다. 인터넷에 도는 '1시간 뒤 56%, 하루 뒤 67% 망각' 같은 숫자를 수능 개념 학습에 그대로 적용하는 것은 과잉 해석입니다.</p><div class="note"><b>그래도 곡선이 유용한 이유.</b> 정확한 감소율이 아니라 <b>모양</b>이 중요하기 때문입니다. 초반에 급하게 떨어진다면 첫 복습은 빨라야 하고, 뒤로 갈수록 완만해진다면 간격은 벌려도 됩니다. 이 두 문장이 복습 설계에 필요한 전부입니다.</div><h2>그래서 간격을 어떻게 잡는가</h2><p>곡선의 모양에서 나오는 배치 원칙은 셋입니다.</p><ol><li><b>첫 복습은 하루 안에.</b> 가장 많이 떨어지는 구간을 지나기 전에 한 번 붙잡습니다.</li><li><b>간격은 점점 벌린다.</b> 1일 → 3일 → 7일 → 11일 → 15일처럼, 복습할 때마다 다음까지의 거리를 늘립니다.</li><li><b>같은 간격을 반복하지 않는다.</b> 매일 복습은 시간 대비 효율이 낮고, 매주 복습은 첫 구간을 놓칩니다.</li></ol><p>너울이 쓰는 <a href="/learn/5hoedok">1·3·7·11·15일</a>은 이 세 원칙을 수능·내신 단원 진도(대략 보름 주기)에 맞춰 떨어뜨린 배치입니다.</p><h2>흔한 오해 세 가지</h2><div class="scroll"><table><thead><tr><th>오해</th><th>실제</th></tr></thead><tbody><tr><td>복습은 많이 할수록 좋다</td><td>같은 날 세 번 보는 것보다, 사흘에 걸쳐 세 번 보는 편이 오래 갑니다. 총 시간이 같아도 결과가 다릅니다.</td></tr><tr><td>다시 읽으면 복습이다</td><td>읽기는 <i>익숙함</i>을 만들지 <i>인출 능력</i>을 만들지 않습니다. 덮고 떠올리는 과정이 있어야 복습입니다.</td></tr><tr><td>망각곡선 숫자를 지켜야 한다</td><td>숫자는 실험 조건에 묶여 있습니다. 지켜야 하는 것은 숫자가 아니라 <b>짧게 시작해 점점 벌린다</b>는 형태입니다.</td></tr></tbody></table></div><h2>덮고 떠올리기 — 인출 연습</h2><p>복습을 '다시 보기'가 아니라 '덮고 떠올리기'로 바꾸면 같은 시간에 남는 양이 달라집니다. 방법은 단순합니다.</p><ol class="steps"><li>교재를 덮고, 그 단원에서 기억나는 것을 백지에 적는다.</li><li>적지 못한 부분만 펴서 확인한다.</li><li>확인한 부분에 색을 남긴다. 다음 회차에는 그 색부터 본다.</li></ol><p>세 번째 단계가 <a href="/learn/5color-marking">5색 마킹</a>이고, 그 기록이 쌓이면 <a href="/learn/dangwonhwa">단권화</a>가 됩니다.</p><p class="src">참고: Ebbinghaus, H. (1885), <i>Über das Gedächtnis</i>. 본 문서는 곡선의 정량 수치를 학습 성과 예측에 사용하지 않으며, 복습 간격 설계의 정성적 근거로만 인용합니다.</p>
+<section class="cta"><h2>복습 일정, 너울이 대신 짭니다</h2><p>인강 진도를 넣으면 1·3·7·11·15일 복습이 자동으로 배치됩니다. 무료로 시작할 수 있습니다.</p><a class="btn" href="/">너울 무료로 시작하기</a></section>
+<section class="rel"><h2>이어서 읽기</h2><ul><li><a href="/learn/5hoedok">5회독 누적복습법 — 1·3·7·11·15일 간격의 정체</a><small>같은 내용을 다섯 번 보되, 회차마다 목적을 바꾼다. 1·3·7·11·15일 간격으로 복습을 배치하는 5회독법의 구조와, 실제로 굴러가게 만드는 방법.</small></li><li><a href="/learn/lecture-review">인강 복습법 — 진도는 나갔는데 남지 않는 이유</a><small>인강은 이해를 만들지만 기억을 만들지 않습니다. 배속·필기·완강률의 함정과, 한 강을 끝낸 뒤 24시간 안에 해야 하는 것.</small></li><li><a href="/learn/5color-marking">5색 마킹 학습법 — 모르는 것을 눈에 보이게</a><small>약점을 다섯 단계 색으로 남기면, 다음 복습에 무엇을 볼지 고민할 필요가 없어집니다. 등급에 고정된 색 기준과 운영 규칙, 그리고 흔한 실패 패턴.</small></li></ul></section>
+</main>
+<footer class="site"><div class="wrap">
+<div class="links">
+<a href="/">너울 홈</a><a href="/learn/">학습법 가이드</a><a href="/free/">무료 학습자료</a>
+<a href="https://blog.naver.com/ktm610" rel="noopener">네이버 블로그</a>
+<a href="https://bhtm100.com" rel="noopener">BHTM Holdings</a>
+</div>
+<p>너울(NEOUL) — BHTM Holdings. 인강 진도에 맞춰 1&middot;3&middot;7&middot;11&middot;15일 복습을 대신 배치하는 AI 학습 매니지먼트.</p>
+</div></footer>
+</body></html>

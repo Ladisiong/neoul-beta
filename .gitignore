@@ -1,1 +1,6 @@
 .vercel
+
+# patch backups produced by the build/patch scripts (save-then-delete keeps the
+# newest one on disk only; they must never reach the repository)
+*.pre_*
+*.danwon_workcopy
