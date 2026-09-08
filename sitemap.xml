@@ -11,4 +11,6 @@
   <url><loc>https://www.neoulai.com/exam/2028-social</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.neoulai.com/exam/2028-science</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.neoulai.com/exam/suneung-d30</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.neoulai.com/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.neoulai.com/terms</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
 </urlset>
