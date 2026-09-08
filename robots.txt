@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://neoul-beta.vercel.app/sitemap.xml
+Sitemap: https://www.neoulai.com/sitemap.xml

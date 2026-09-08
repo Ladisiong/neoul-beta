@@ -1,10 +1,37 @@
 {
   "cleanUrls": true,
   "redirects": [
-    { "source": "/free", "destination": "/free/", "permanent": false }
+    {
+      "source": "/free",
+      "destination": "/free/",
+      "permanent": false
+    }
   ],
   "rewrites": [
-    { "source": "/free/", "destination": "https://neoul-download.vercel.app/" },
-    { "source": "/free/:path*", "destination": "https://neoul-download.vercel.app/:path*" }
+    {
+      "source": "/free/",
+      "destination": "https://neoul-download.vercel.app/"
+    },
+    {
+      "source": "/free/:path*",
+      "destination": "https://neoul-download.vercel.app/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "neoul-beta.vercel.app"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
   ]
 }
