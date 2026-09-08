@@ -303,6 +303,12 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
     <a class="btn btn-primary" href="#login" onclick="return showLogin(event)">무료 회원가입 →</a>
   </nav>
 </div></header>
+<div id="nvBetaBar" role="note">
+  <span><b>BETA</b> 정식 출시 전이에요. 지금 <b>무료 회원가입</b>하면 유료 전환 시 혜택을 드립니다.</span>
+  <button type="button" class="more" onclick="nvOpenNotice()">자세히</button>
+  <button type="button" class="x" onclick="nvHideBetaBar()" aria-label="베타 안내 닫기">&#10005;</button>
+</div>
+<script>(function(){try{var t=localStorage.getItem("neoul_notice_v2");if(t&&Date.now()<(+t||0)){var b=document.getElementById("nvBetaBar");if(b)b.style.display="none";}}catch(e){}})();</script>
 
 <main>
   <section class="hero">
@@ -1172,6 +1178,13 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
 <script>(function(){try{fetch('/free/materials.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){var it=(j&&j.items)||[];var s=it.filter(function(x){return x.type==='개념요약';})[0]||it[0];if(!s)return;var t=document.getElementById('fbSampleTitle'),sub=document.getElementById('fbSampleSub'),b=document.getElementById('fbSampleBtn');if(t)t.textContent=s.category+' · '+s.subject+(s.unit?(' · '+s.unit):'');if(sub)sub.textContent=(s.type||'학습자료')+' · PDF · 가입 없이 즉시 다운로드';if(b){b.setAttribute('href','/free/materials/'+encodeURIComponent(s.file));b.setAttribute('download','');}}).catch(function(){});}catch(e){}})();</script>
 <!-- NEOUL: notice popup + app download + AI support chat -->
 <style>
+#nvBetaBar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#1A3A5C,#2B5F8B);color:#F5F9FC;padding:9px 16px;font-size:.82rem;line-height:1.5;text-align:center}
+#nvBetaBar b{font-weight:800;color:#fff}
+#nvBetaBar .more{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.34);border-radius:9999px;padding:4px 13px;font:inherit;font-weight:700;cursor:pointer}
+#nvBetaBar .more:hover{background:rgba(255,255,255,.26)}
+#nvBetaBar .x{background:none;border:none;color:#A8C4DD;font-size:.95rem;cursor:pointer;padding:2px 6px;line-height:1}
+#nvBetaBar .x:hover{color:#fff}
+@media(max-width:560px){#nvBetaBar{font-size:.76rem;gap:8px;padding:8px 12px}}
 #nvNoticeWrap{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(26,58,92,.5);backdrop-filter:blur(3px);padding:18px}
 #nvNoticeWrap.on{display:flex}
 #nvNotice{background:#fff;max-width:440px;width:100%;border-radius:12px;box-shadow:0 24px 60px rgba(26,58,92,.28);overflow:hidden;font-family:inherit;animation:nvpop .22s ease}
@@ -1239,7 +1252,12 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
   var KEY="neoul_notice_v2";
   function shouldShow(){ try{ if(sessionStorage.getItem("nv_seen")) return false; var t=localStorage.getItem(KEY); return !t || Date.now()>(+t||0); }catch(e){ return true; } }
   window.nvCloseNotice=function(){ try{ if(document.getElementById("nvNoticeHide").checked) localStorage.setItem(KEY,String(Date.now()+864e5)); }catch(e){} var w=document.getElementById("nvNoticeWrap"); if(w) w.classList.remove("on"); };
-  if(shouldShow()){ setTimeout(function(){ var w=document.getElementById("nvNoticeWrap"); if(w){ w.classList.add("on"); try{sessionStorage.setItem("nv_seen","1");}catch(e){} } }, 950); }
+  /* 진입 시 자동 노출하지 않는다 - 검색 유입을 가로막는 인터스티셜은 구글의
+     intrusive-interstitial 가이던스 대상이고, 첫 행동이 "닫기"가 되어 전환도 깎인다.
+     안내는 상단 배너가 상시 전달하고, 전체 내용은 사용자가 눌렀을 때만 연다. */
+  window.nvOpenNotice=function(){ var w=document.getElementById("nvNoticeWrap"); if(w){ w.classList.add("on"); try{sessionStorage.setItem("nv_seen","1");}catch(e){} } };
+  window.nvHideBetaBar=function(){ try{ localStorage.setItem(KEY,String(Date.now()+864e5)); }catch(e){} var b=document.getElementById("nvBetaBar"); if(b) b.style.display="none"; };
+  if(!shouldShow()){ var _bb=document.getElementById("nvBetaBar"); if(_bb) _bb.style.display="none"; }
   var nw=document.getElementById("nvNoticeWrap"); if(nw) nw.addEventListener("click",function(e){ if(e.target.id==="nvNoticeWrap") window.nvCloseNotice(); });
   window.NV_APPS=window.NV_APPS||{win:"",mac:"",ios:"",android:""}; /* 앱 승인 시 각 URL만 채우면 버튼 자동 활성화 */
   window.nvApplyApps=function(){ Array.prototype.forEach.call(document.querySelectorAll(".nvApp"),function(a){ var k=a.getAttribute("data-app"); var url=(window.NV_APPS&&window.NV_APPS[k])||""; var s=a.querySelector(".s"); if(url){ a.setAttribute("href",url); a.setAttribute("target","_blank"); a.setAttribute("rel","noopener"); if(s)s.textContent="다운로드 →"; a.onclick=null; } else { a.setAttribute("href","#"); if(s)s.textContent="출시 예정"; a.onclick=function(ev){ ev.preventDefault(); alert("앱은 출시 예정입니다. 출시되면 이 버튼에서 바로 다운로드하실 수 있어요! (Windows·Mac·iOS·Android)"); }; } }); };
