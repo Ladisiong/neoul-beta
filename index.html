@@ -540,7 +540,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
     </div>
   </div>
   <button class="btn" id="authBtn" onclick="nbPrimary()" style="width:100%;margin-top:8px;font-size:.95rem;padding:13px">로그인</button>
-  <div style="font-size:.82rem;color:var(--muted);margin-top:11px" id="authSwitch">처음이신가요? <a onclick="nbToggle()" style="color:var(--mid);cursor:pointer;font-weight:800">회원가입</a></div>
+  <div style="font-size:.82rem;color:var(--muted);margin-top:11px" id="authSwitch">처음이신가요? <button type="button" onclick="nbToggle()" style="background:none;border:none;padding:0;font:inherit;color:var(--mid);cursor:pointer;font-weight:800">회원가입</button></div>
   <div id="authMsg" style="font-size:.8rem;color:var(--c1);min-height:18px;margin-top:8px"></div>
 </div></div>
 <div id="app" class="hidden">
@@ -1094,7 +1094,7 @@ window.NB = { sb: SB, user: null };
 let mode='login';
 function val(id){var e=document.getElementById(id);return e?e.value.trim():'';}
 function msg(t,err){var m=document.getElementById('authMsg');if(m){m.textContent=t;m.style.color=err?'var(--c1)':'var(--c3)';}}
-window.nbToggle=()=>{mode=mode==='login'?'signup':'login';var su=mode!=='login';document.getElementById('signupExtra').classList.toggle('hidden',!su);var pwrap=document.getElementById('pwWrap');if(pwrap)pwrap.classList.toggle('hidden',!su);document.getElementById('authBtn').textContent=su?'무료로 시작하기':'로그인';var tag=document.getElementById('authTag');if(tag)tag.textContent=su?'30초면 끝 · AI가 복습을 대신 관리합니다':'다시 오셨네요 · 로그인';var sw=document.getElementById('authSwitch');if(sw)sw.innerHTML=su?'이미 회원이신가요? <a onclick="nbToggle()" style="color:var(--mid);cursor:pointer;font-weight:800">로그인</a>':'처음이신가요? <a onclick="nbToggle()" style="color:var(--mid);cursor:pointer;font-weight:800">회원가입</a>';msg('');if(su)pwChk();};
+window.nbToggle=()=>{mode=mode==='login'?'signup':'login';var su=mode!=='login';document.getElementById('signupExtra').classList.toggle('hidden',!su);var pwrap=document.getElementById('pwWrap');if(pwrap)pwrap.classList.toggle('hidden',!su);document.getElementById('authBtn').textContent=su?'무료로 시작하기':'로그인';var tag=document.getElementById('authTag');if(tag)tag.textContent=su?'30초면 끝 · AI가 복습을 대신 관리합니다':'다시 오셨네요 · 로그인';var sw=document.getElementById('authSwitch');if(sw)sw.innerHTML=su?'이미 회원이신가요? <button type="button" onclick="nbToggle()" style="background:none;border:none;padding:0;font:inherit;color:var(--mid);cursor:pointer;font-weight:800">로그인</button>':'처음이신가요? <button type="button" onclick="nbToggle()" style="background:none;border:none;padding:0;font:inherit;color:var(--mid);cursor:pointer;font-weight:800">회원가입</button>';msg('');if(su)pwChk();};
 window.pwToggle=function(id,b){var e=document.getElementById(id);if(!e)return;if(e.type==='password'){e.type='text';b.textContent='숨김';}else{e.type='password';b.textContent='보기';}};
 window.setGrade=function(b){document.getElementById('grade').value=b.getAttribute('data-v');document.querySelectorAll('.grb').forEach(function(x){var on=x===b;x.style.background=on?'var(--deep)':'#fff';x.style.color=on?'#fff':'var(--muted)';x.style.borderColor=on?'var(--deep)':'var(--border)';});};
 window.setCGrade=function(b){document.getElementById('cgrade').value=b.getAttribute('data-v');document.querySelectorAll('.cgb').forEach(function(x){var on=x===b;x.style.background=on?'var(--deep)':'#fff';x.style.color=on?'#fff':'var(--muted)';x.style.borderColor=on?'var(--deep)':'var(--border)';});};
@@ -1208,7 +1208,7 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
 #nvChatForm button{background:#1A3A5C;color:#fff;border:none;border-radius:8px;padding:0 16px;font-weight:800;cursor:pointer;font-size:1rem}
 @media(max-width:720px){#nvChatFab{bottom:78px}#nvChatPanel{bottom:12px;right:12px;left:12px;width:auto;height:72vh}}
 </style>
-<button id="nvChatFab" onclick="nvOpenChat()" aria-label="AI 고객센터">💬 <span>AI 상담</span></button>
+<button id="nvChatFab" onclick="nvOpenChat()" aria-label="AI 상담 고객센터">💬 <span>AI 상담</span></button>
 <div id="nvChatPanel" role="dialog" aria-label="너울 AI 고객센터">
   <div class="ch"><div><b>너울 AI 고객센터</b><div class="cs">실시간 응답 · 베타</div></div><button class="cx" onclick="nvCloseChat()" aria-label="닫기">✕</button></div>
   <div id="nvChatLog"></div>
