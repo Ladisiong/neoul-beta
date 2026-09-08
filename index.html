@@ -10,8 +10,31 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="너울"/>
 <meta name="google-site-verification" content="UrFWDGoDVbyUoLKavZhS2fThz9AXxM-Xa063CwWDSYM"/>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-C6PGT89864"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C6PGT89864');</script>
+<script>
+/* GA4 - 큐는 즉시, 라이브러리는 유휴 시점에.
+   gtag.js 를 곧바로 받으면 모바일 성능이 86 -> 46, TBT 0 -> 930ms 로 무너진다.
+   dataLayer 는 지금 채워 두고 115KB 라이브러리만 뒤로 미룬다. 라이브러리가
+   로드되면 큐에 쌓인 config/page_view 가 그대로 처리되므로 히트는 유실되지 않는다.
+   사용자가 먼저 움직이면 즉시 당겨 로드해 짧은 세션도 놓치지 않는다. */
+(function(){
+  var MID='G-C6PGT89864', loaded=false;
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){window.dataLayer.push(arguments);};
+  gtag('js',new Date());
+  gtag('config',MID);
+  function load(){
+    if(loaded){return;} loaded=true;
+    var s=document.createElement('script');
+    s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id='+MID;
+    document.head.appendChild(s);
+  }
+  if('requestIdleCallback' in window){ requestIdleCallback(load,{timeout:3500}); }
+  else { setTimeout(load,2500); }
+  ['pointerdown','keydown','scroll','touchstart'].forEach(function(e){
+    window.addEventListener(e,load,{once:true,passive:true});
+  });
+})();
+</script>
 <link rel="canonical" href="https://www.neoulai.com/"/>
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"/>
