@@ -3,16 +3,14 @@
    실패 시에만 캐시로 폴백한다. 외부 출처(esm.sh·Supabase)와 비 GET 요청은
    서비스 워커가 건드리지 않고 그대로 통과시킨다. 낡은 화면을 강제로
    보여주는 사고를 구조적으로 차단하기 위한 설계다. */
-var CACHE = 'neoul-v1';
-var OFFLINE_URLS = ['/', '/manifest.json', '/favicon.ico', '/icon-192.png', '/icon-512.png'];
+var CACHE = 'neoul-v2';
 
+/* 프리캐시(install 단계 addAll)는 의도적으로 하지 않는다.
+   첫 방문 때 문서를 한 번 더 받아 대역폭을 뺏고 LCP·Speed Index를 악화시킨다
+   (실측: 프리캐시 5건일 때 모바일 성능 85 -> 80, Speed Index 3.4 -> 5.0초).
+   캐시는 아래 fetch 핸들러가 실제로 쓰인 응답만 담는다 — 추가 요청 0건. */
 self.addEventListener('install', function (e) {
-  // 설치 즉시 활성화 — 배포 직후 새 버전이 바로 반영되게 한다.
-  e.waitUntil(
-    caches.open(CACHE).then(function (c) {
-      return c.addAll(OFFLINE_URLS).catch(function () { /* 개별 실패는 무시 */ });
-    }).then(function () { return self.skipWaiting(); })
-  );
+  e.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener('activate', function (e) {
