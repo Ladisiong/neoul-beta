@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.neoulai.app",
+      "sha256_cert_fingerprints": [
+        "0D:A8:DA:7C:7C:C6:3C:FA:74:3C:30:3B:15:43:76:85:47:8C:C7:C7:55:DA:CB:EE:02:9D:2E:57:55:C2:31:9C"
+      ]
+    }
+  }
+]
