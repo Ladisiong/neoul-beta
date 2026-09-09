@@ -1414,5 +1414,210 @@ html.nv-fab #nvAiFab{display:flex}
 })();
 </script>
 <!-- ▲▲ 앱 내부 AI 도우미 통합 버튼 끝 ▲▲ -->
+<!-- ▼▼ 앱 셸 v1 — 폰/태블릿 하단 탭 5 + 집중 타이머 + 주간 스트립 (열품타 기준, 2026-09-09). 데스크톱 무변경: 전 규칙 html.nv-appshell 가드 ▼▼ -->
+<style>
+/* 앱 셸은 네이티브(TWA/Capacitor)·홈화면 설치(standalone)·좁은 폰 화면·미리보기(?shell=1)에서만 켜진다. 데스크톱 웹은 절대 건드리지 않는다. */
+html.nv-appshell #tabs{display:none}
+html.nv-appshell #app{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+html.nv-appshell .top{padding-top:calc(12px + env(safe-area-inset-top))}
+html.nv-appshell.nv-inapp #nvAiFab{bottom:calc(80px + env(safe-area-inset-bottom))}
+
+/* 하단 탭바 — 5개, 각 탭 타깃 ≥44px, 중앙 '집중' 강조 */
+#nvNav{position:fixed;left:0;right:0;bottom:0;z-index:99997;display:none;justify-content:space-around;align-items:stretch;
+  background:rgba(245,249,252,.96);backdrop-filter:blur(10px);border-top:1px solid #E4E7EB;
+  padding:6px 6px calc(6px + env(safe-area-inset-bottom));font-family:inherit}
+html.nv-appshell.nv-inapp #nvNav{display:flex}
+#nvNav button{flex:1;min-height:48px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:#616E7C;font-family:inherit;font-size:.68rem;font-weight:600;padding:4px 2px;border-radius:12px;transition:color 160ms cubic-bezier(0.2,0,0,1)}
+#nvNav button svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#nvNav button.on{color:#1A3A5C}
+#nvNav button:active{color:#2B5F8B}
+#nvNav .nvNavFocus{position:relative}
+#nvNav .nvNavFocus .nvNavDisc{width:48px;height:48px;border-radius:9999px;background:#1A3A5C;color:#F5F9FC;display:flex;align-items:center;justify-content:center;margin-top:-16px;box-shadow:0 6px 18px rgba(26,58,92,.28)}
+#nvNav .nvNavFocus .nvNavDisc svg{width:24px;height:24px;stroke:#F5F9FC}
+#nvNav .nvNavFocus.on{color:#1A3A5C}
+#nvNav .nvNavFocus.on .nvNavDisc{background:#2B5F8B}
+
+/* 집중 화면 — 전체 오버레이 (열품타식 대형 타이머) */
+#nvFocus{position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;background:#F5F9FC;color:#1F2933;font-family:inherit;overflow-y:auto;
+  padding:calc(14px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom))}
+html.nv-focus-on #nvFocus{display:flex}
+html.nv-focus-on #nvNav,html.nv-focus-on #nvAiFab{display:none!important}
+#nvFocus .nvFcTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+#nvFocus .nvFcTitle{font-weight:800;font-size:1.1rem;color:#1A3A5C}
+#nvFocus .nvFcClose{width:44px;height:44px;border:none;background:#EDF1F5;border-radius:12px;cursor:pointer;font-size:1.1rem;color:#1F2933;font-family:inherit}
+#nvFocus .nvFcClose:active{background:#E4E7EB}
+#nvFcClock{font-variant-numeric:tabular-nums;font-weight:800;font-size:4.4rem;line-height:1.05;text-align:center;color:#1A3A5C;letter-spacing:-.02em;margin:26px 0 4px}
+#nvFocus .nvFcHint{text-align:center;color:#616E7C;font-size:.82rem;margin-bottom:20px}
+#nvFocus .nvFcBtns{display:flex;gap:10px;justify-content:center;margin-bottom:8px}
+#nvFocus .nvFcBtns button{min-height:48px;padding:0 22px;border-radius:12px;border:1px solid #E4E7EB;background:#FFFFFF;color:#1F2933;font-weight:700;font-size:.92rem;cursor:pointer;font-family:inherit}
+#nvFocus .nvFcBtns .nvGo{background:#2B5F8B;color:#F5F9FC;border-color:#2B5F8B}
+#nvFocus .nvFcBtns .nvGo:active{background:#1A3A5C}
+#nvFocus .nvFcBtns .nvStop{background:#C53030;color:#F5F9FC;border-color:#C53030}
+#nvFcTotal{text-align:center;color:#616E7C;font-size:.8rem;margin:6px 0 24px}
+#nvFcTotal b{color:#1A3A5C}
+#nvFocus .nvCard{background:#FFFFFF;border:1px solid #E4E7EB;border-radius:12px;padding:16px;margin-bottom:14px}
+#nvFocus .nvCard h3{margin:0 0 4px;font-size:.96rem;color:#1A3A5C}
+#nvFocus .nvCard p{margin:0 0 12px;font-size:.8rem;color:#616E7C;line-height:1.5}
+#nvFocus .nvReviewGo{width:100%;min-height:48px;border:none;border-radius:12px;background:#1A3A5C;color:#F5F9FC;font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit}
+#nvFocus .nvReviewGo:active{background:#2B5F8B}
+/* 주간 학습 스트립 */
+#nvWeek{display:flex;gap:6px;justify-content:space-between}
+#nvWeek .nvWd{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+#nvWeek .nvBar{width:100%;max-width:34px;height:64px;background:#EDF1F5;border-radius:8px;position:relative;overflow:hidden;display:flex;align-items:flex-end}
+#nvWeek .nvBarFill{width:100%;background:#2B5F8B;border-radius:8px;min-height:3px;transition:height 220ms cubic-bezier(0.2,0,0,1)}
+#nvWeek .nvBar.nvToday .nvBarFill{background:#1A3A5C}
+#nvWeek .nvWdL{font-size:.66rem;color:#616E7C}
+#nvWeek .nvWdN{font-size:.66rem;color:#1A3A5C;font-weight:700}
+</style>
+<script>
+/* 앱 셸 v1 — 데스크톱 웹은 절대 변경하지 않고, 폰/태블릿 앱 문맥에서만 하단 탭·집중 타이머를 얹는다.
+   기존 go()·doRevDB()·state 를 그대로 재사용한다(새 학습 루프를 만들지 않는다). */
+(function () {
+  var root = document.documentElement;
+
+  /* 앱 셸 활성 판정: 네이티브 클래스 / standalone / 좁은 폰폭 / ?shell=1 */
+  function isAppPath() { try { return location.pathname === '/app' || location.pathname.indexOf('/app/') === 0 || location.search.indexOf('app=1') !== -1; } catch (e) { return false; } }
+  function shellWanted() {
+    try {
+      if (root.classList.contains('neoul-native')) { return true; }
+      if (isAppPath()) { return true; }
+      if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) { return true; }
+      if (location.search.indexOf('shell=1') !== -1) { return true; }
+      if (window.innerWidth <= 560) { return true; }
+    } catch (e) { }
+    return false;
+  }
+  function applyShell() { root.classList.toggle('nv-appshell', shellWanted()); }
+  applyShell();
+  try {
+    window.addEventListener('resize', function () { clearTimeout(window._nvSz); window._nvSz = setTimeout(applyShell, 200); }, { passive: true });
+    if (window.matchMedia) { window.matchMedia('(display-mode: standalone)').addEventListener('change', applyShell); }
+  } catch (e) { }
+
+  /* ── 하단 탭바 ── */
+  var IC = {
+    today: '<svg viewBox="0 0 24 24"><path d="M3 9l9-6 9 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 13l2 2 4-4"/></svg>',
+    cal: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>',
+    focus: '<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M9 2h6"/></svg>',
+    quiz: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.2a2.8 2.8 0 1 1 3.8 2.6c-.8.3-1 .8-1 1.6"/><path d="M12 17h.01"/></svg>',
+    me: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>'
+  };
+  var NAV = [['today', '오늘', IC.today], ['cal', '달력', IC.cal], ['focus', '집중', IC.focus], ['quiz', '퀴즈', IC.quiz], ['shop', '나', IC.me]];
+  var nav = document.createElement('nav'); nav.id = 'nvNav'; nav.setAttribute('aria-label', '앱 하단 메뉴');
+  nav.innerHTML = NAV.map(function (x) {
+    if (x[0] === 'focus') { return '<button type="button" class="nvNavFocus" data-k="focus" aria-label="집중"><span class="nvNavDisc">' + x[2] + '</span><span>' + x[1] + '</span></button>'; }
+    return '<button type="button" data-k="' + x[0] + '" aria-label="' + x[1] + '">' + x[2] + '<span>' + x[1] + '</span></button>';
+  }).join('');
+  document.body.appendChild(nav);
+
+  function inApp() { var a = document.getElementById('app'); return !!(a && !a.classList.contains('hidden')); }
+  function syncInApp() { root.classList.toggle('nv-inapp', inApp()); }
+  function syncNav(k) {
+    var cur = k || (document.querySelector('.tab.on') ? document.querySelector('.tab.on').dataset.k : '');
+    Array.prototype.forEach.call(nav.querySelectorAll('button'), function (b) {
+      b.classList.toggle('on', b.dataset.k === cur);
+    });
+  }
+  nav.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) { return; }
+    var k = b.dataset.k;
+    if (k === 'focus') { openFocus(); return; }
+    if (window.go) { window.go(k); }
+  });
+
+  /* go()를 감싸 탭 전환 시 하단 탭 하이라이트를 맞추고, 이동하면 집중 화면을 닫는다. */
+  function wrapGo() {
+    if (typeof window.go === 'function' && !window.go.__nvWrapped) {
+      var orig = window.go;
+      var wrapped = function (k) { var r = orig.apply(this, arguments); try { closeFocus(); syncNav(k); } catch (e) { } return r; };
+      wrapped.__nvWrapped = true; window.go = wrapped; return true;
+    }
+    return false;
+  }
+  if (!wrapGo()) { var gt = 0, gi = setInterval(function () { if (wrapGo() || ++gt > 150) { clearInterval(gi); } }, 100); }
+
+  /* ── 집중 화면 (열품타식 대형 타이머) ── */
+  var focus = document.createElement('div'); focus.id = 'nvFocus'; focus.setAttribute('role', 'dialog'); focus.setAttribute('aria-label', '집중');
+  focus.innerHTML =
+    '<div class="nvFcTop"><span class="nvFcTitle">집중</span><button type="button" class="nvFcClose" id="nvFcClose" aria-label="닫기">✕</button></div>'
+    + '<div id="nvFcClock">00:00</div>'
+    + '<div class="nvFcHint">자유 집중 — 이 시간은 <b>이 기기</b>에 저장됩니다(서버 학습 기록 아님).</div>'
+    + '<div class="nvFcBtns"><button type="button" class="nvGo" id="nvFcStart">시작</button><button type="button" id="nvFcReset">초기화</button></div>'
+    + '<div id="nvFcTotal"></div>'
+    + '<div class="nvCard"><h3>오늘 복습으로 집중</h3><p>복습을 시작하면 소요 시간이 <b>학습 기록(DB)</b>에 남고 XP가 올라갑니다. 여기 자유 집중과 달리 성장 리포트에 반영됩니다.</p><button type="button" class="nvReviewGo" id="nvFcReview">오늘의 복습 열기</button></div>'
+    + '<div class="nvCard"><h3>최근 7일</h3><p>완료한 복습 수입니다.</p><div id="nvWeek"></div></div>';
+  document.body.appendChild(focus);
+
+  var clock = focus.querySelector('#nvFcClock'), startBtn = focus.querySelector('#nvFcStart');
+  var running = false, base = 0, elapsed = 0, tick = null, wakeLock = null;
+
+  /* Wake Lock — 집중 중에는 화면이 꺼지지 않게 한다(열품타 핵심). 미지원 브라우저는 조용히 무시. */
+  function acquireWake() { try { if (navigator.wakeLock && navigator.wakeLock.request) { navigator.wakeLock.request('screen').then(function (w) { wakeLock = w; }).catch(function () { }); } } catch (e) { } }
+  function releaseWake() { try { if (wakeLock) { wakeLock.release().catch(function () { }); wakeLock = null; } } catch (e) { } }
+  try { document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && running) { acquireWake(); } }); } catch (e) { }
+  function todayKey() { return 'neoul_focus_' + new Date().toISOString().slice(0, 10); }
+  function readTotal() { try { return parseInt(localStorage.getItem(todayKey()) || '0', 10) || 0; } catch (e) { return 0; } }
+  function writeTotal(sec) { try { localStorage.setItem(todayKey(), String(sec)); } catch (e) { } }
+  function fmtClock(s) { var m = Math.floor(s / 60), ss = s % 60; return (m < 10 ? '0' : '') + m + ':' + (ss < 10 ? '0' : '') + ss; }
+  function fmtTotal(s) { var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60); return (h ? h + '시간 ' : '') + m + '분'; }
+  function renderTotal() { document.getElementById('nvFcTotal').innerHTML = '오늘 자유 집중 <b>' + fmtTotal(readTotal()) + '</b> · 이 기기'; }
+  function renderClock() { clock.textContent = fmtClock(elapsed); }
+  function startF() { if (running) { return; } running = true; base = Date.now() - elapsed * 1000; startBtn.textContent = '멈춤'; startBtn.classList.remove('nvGo'); startBtn.classList.add('nvStop'); acquireWake(); tick = setInterval(function () { elapsed = Math.round((Date.now() - base) / 1000); renderClock(); }, 1000); }
+  function pauseF() { if (!running) { return; } running = false; clearInterval(tick); tick = null; releaseWake(); startBtn.textContent = '계속'; startBtn.classList.remove('nvStop'); startBtn.classList.add('nvGo'); writeTotal(readTotal() + elapsed); elapsed = 0; renderClock(); renderTotal(); }
+  startBtn.addEventListener('click', function () { if (running) { pauseF(); } else { startF(); } });
+  focus.querySelector('#nvFcReset').addEventListener('click', function () { running = false; if (tick) { clearInterval(tick); tick = null; } releaseWake(); elapsed = 0; renderClock(); startBtn.textContent = '시작'; startBtn.classList.remove('nvStop'); startBtn.classList.add('nvGo'); });
+  focus.querySelector('#nvFcReview').addEventListener('click', function () { closeFocus(); if (window.go) { window.go('today'); } });
+  focus.querySelector('#nvFcClose').addEventListener('click', closeFocus);
+
+  /* 주간 스트립: 실계정이면 state.dbRev(completed_at) 집계, 아니면 안내 */
+  function renderWeek() {
+    var wrap = document.getElementById('nvWeek'); if (!wrap) { return; }
+    var days = [], now = new Date();
+    for (var i = 6; i >= 0; i--) { var d = new Date(now); d.setDate(now.getDate() - i); days.push(d); }
+    var counts = days.map(function (d) {
+      var key = d.toISOString().slice(0, 10), c = 0;
+      try {
+        var rev = (window.state && window.state.dbRev) || [];
+        c = rev.filter(function (r) { return r.status === 'done' && String(r.completed_at || '').slice(0, 10) === key; }).length;
+      } catch (e) { }
+      return c;
+    });
+    var max = Math.max(1, Math.max.apply(null, counts));
+    var L = ['일', '월', '화', '수', '목', '금', '토'];
+    wrap.innerHTML = days.map(function (d, i) {
+      var isToday = i === 6, h = Math.round(counts[i] / max * 100);
+      return '<div class="nvWd"><div class="nvBar' + (isToday ? ' nvToday' : '') + '"><div class="nvBarFill" style="height:' + (counts[i] ? h : 0) + '%"></div></div>'
+        + '<span class="nvWdN">' + (counts[i] || '') + '</span><span class="nvWdL">' + L[d.getDay()] + '</span></div>';
+    }).join('');
+  }
+
+  function openFocus() { renderTotal(); renderClock(); renderWeek(); root.classList.add('nv-focus-on'); syncNav('focus'); }
+  function closeFocus() { root.classList.remove('nv-focus-on'); if (running) { pauseF(); } syncNav(); }
+  window.nvOpenFocus = openFocus; window.nvCloseFocus = closeFocus;
+
+  /* #app 표시 여부를 관찰해 하단 탭 노출을 맞춘다(마케팅 홈·로그인에서는 숨김). */
+  function watch(id, attr) { var el = document.getElementById(id); if (!el) { return; } try { new MutationObserver(function () { syncInApp(); syncNav(); }).observe(el, { attributes: true, attributeFilter: [attr] }); } catch (e) { } }
+  watch('app', 'class');
+  syncInApp(); syncNav();
+  setTimeout(function () { syncInApp(); syncNav(); }, 1200);
+
+  /* /app 진입점: 앱으로 바로 들어오는 URL. 세션이 있으면 부트되어 #app이 뜨고,
+     로그인 안 된 상태로 마케팅 홈만 떠 있으면 로그인 화면으로 보낸다(마케팅 랜딩 건너뜀). */
+  if (isAppPath()) {
+    var tries = 0;
+    var appTimer = setInterval(function () {
+      var app = document.getElementById('app'), login = document.getElementById('login'), home = document.getElementById('home');
+      var inApp = app && !app.classList.contains('hidden');
+      var onLogin = login && !login.classList.contains('hidden');
+      var user = window.state && window.state.user;
+      if (inApp || onLogin || user) { clearInterval(appTimer); return; }
+      if (home && !home.classList.contains('hidden') && window.showLogin) { window.showLogin(); clearInterval(appTimer); return; }
+      if (++tries > 40) { clearInterval(appTimer); }
+    }, 150);
+  }
+})();
+</script>
+<!-- ▲▲ 앱 셸 v1 끝 ▲▲ -->
 <script src="/native-bridge.js" defer></script>
 </body></html>

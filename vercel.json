@@ -9,6 +9,14 @@
   ],
   "rewrites": [
     {
+      "source": "/app",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/app/:path*",
+      "destination": "/index.html"
+    },
+    {
       "source": "/free/",
       "destination": "https://neoul-download.vercel.app/"
     },
