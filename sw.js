@@ -50,3 +50,20 @@ self.addEventListener('fetch', function (e) {
     })
   );
 });
+
+/* 웹 푸시 — 서버(push-send)가 보낸 알림을 표시하고, 클릭하면 해당 화면으로 이동한다. */
+self.addEventListener('push', function (e) {
+  var d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (err) { d = { body: e.data ? e.data.text() : '' }; }
+  var title = d.title || '너울';
+  var opts = { body: d.body || '', icon: '/icon-192.png', badge: '/icon-192.png', data: { url: d.url || '/app' } };
+  e.waitUntil(self.registration.showNotification(title, opts));
+});
+self.addEventListener('notificationclick', function (e) {
+  e.notification.close();
+  var url = (e.notification.data && e.notification.data.url) || '/app';
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (list) {
+    for (var i = 0; i < list.length; i++) { if (list[i].url.indexOf(url) >= 0 && 'focus' in list[i]) { return list[i].focus(); } }
+    if (self.clients.openWindow) { return self.clients.openWindow(url); }
+  }));
+});

@@ -1545,6 +1545,7 @@ html.nv-focus-on #nvNav,html.nv-focus-on #nvAiFab{display:none!important}
     + '<div class="nvFcHint">자유 집중 — 이 시간은 <b>이 기기</b>에 저장됩니다(서버 학습 기록 아님).</div>'
     + '<div class="nvFcBtns"><button type="button" class="nvGo" id="nvFcStart">시작</button><button type="button" id="nvFcReset">초기화</button></div>'
     + '<div id="nvFcTotal"></div>'
+    + '<div class="nvCard" id="nvPushCard"><h3>복습 알림 받기</h3><p id="nvPushDesc">오늘 할 복습을 폰 알림으로 받아요. 브라우저 알림 권한이 필요합니다.</p><button type="button" class="nvReviewGo" id="nvPushBtn">알림 켜기</button><div id="nvPushState" style="margin-top:8px;font-size:.78rem;color:#616E7C;line-height:1.5"></div></div>'
     + '<div class="nvCard"><h3>오늘 복습으로 집중</h3><p>복습을 시작하면 소요 시간이 <b>학습 기록(DB)</b>에 남고 XP가 올라갑니다. 여기 자유 집중과 달리 성장 리포트에 반영됩니다.</p><button type="button" class="nvReviewGo" id="nvFcReview">오늘의 복습 열기</button></div>'
     + '<div class="nvCard"><h3>최근 7일</h3><p>완료한 복습 수입니다.</p><div id="nvWeek"></div></div>';
   document.body.appendChild(focus);
@@ -1592,7 +1593,43 @@ html.nv-focus-on #nvNav,html.nv-focus-on #nvAiFab{display:none!important}
     }).join('');
   }
 
-  function openFocus() { renderTotal(); renderClock(); renderWeek(); root.classList.add('nv-focus-on'); syncNav('focus'); }
+  /* ── 웹 푸시 구독 (복습 알림) ── */
+  var pushBtn = focus.querySelector('#nvPushBtn'), pushState = focus.querySelector('#nvPushState'), pushDesc = focus.querySelector('#nvPushDesc');
+  function isIOS() { try { return /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); } catch (e) { return false; } }
+  function standalone() { try { return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; } catch (e) { return false; } }
+  function pushSupported() { return ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window); }
+  function b64ToU8(s) { var pad = '='.repeat((4 - s.length % 4) % 4); var b = (s + pad).replace(/-/g, '+').replace(/_/g, '/'); var raw = atob(b); var a = new Uint8Array(raw.length); for (var i = 0; i < raw.length; i++) { a[i] = raw.charCodeAt(i); } return a; }
+  function setPush(msg, on) { if (pushState) { pushState.textContent = msg || ''; } if (pushBtn && on != null) { pushBtn.textContent = on ? '알림 켜짐' : '알림 켜기'; pushBtn.disabled = !!on; pushBtn.style.opacity = on ? '0.6' : ''; } }
+  async function refreshPushState() {
+    if (!pushBtn) { return; }
+    if (!pushSupported()) { setPush('이 브라우저는 알림을 지원하지 않아요.'); return; }
+    if (isIOS() && !standalone()) { if (pushDesc) { pushDesc.textContent = '아이폰은 먼저 홈 화면에 추가한 뒤(공유 → 홈 화면에 추가) 알림을 켤 수 있어요.'; } return; }
+    try { var reg = await navigator.serviceWorker.getRegistration(); if (reg) { var sub = await reg.pushManager.getSubscription(); if (sub) { setPush('이 기기에서 복습 알림이 켜져 있어요.', true); } } } catch (e) { }
+  }
+  async function enablePush() {
+    if (!pushSupported()) { setPush('이 브라우저는 알림을 지원하지 않아요.'); return; }
+    if (isIOS() && !standalone()) { setPush('아이폰은 먼저 홈 화면에 추가한 뒤(공유 → 홈 화면에 추가) 알림을 켤 수 있어요.'); return; }
+    if (typeof NB === 'undefined' || !NB || !NB.user) { setPush('로그인 후 알림을 켤 수 있어요.'); return; }
+    if (typeof SB === 'undefined') { setPush('잠시 후 다시 시도해 주세요.'); return; }
+    setPush('알림을 켜는 중…');
+    try {
+      var perm = await Notification.requestPermission();
+      if (perm !== 'granted') { setPush('알림 권한이 꺼져 있어요. 브라우저 설정에서 허용해 주세요.'); return; }
+      var reg = await navigator.serviceWorker.ready;
+      var keyResp = await SB.functions.invoke('push-key');
+      var pub = keyResp && keyResp.data && keyResp.data.publicKey;
+      if (!pub) { setPush('알림 키를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.'); return; }
+      var sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(pub) });
+      var j = sub.toJSON();
+      var row = { student_id: NB.user.id, endpoint: sub.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, ua: String(navigator.userAgent).slice(0, 180), last_seen: new Date().toISOString() };
+      var ins = await SB.from('push_subscriptions').upsert(row, { onConflict: 'endpoint' });
+      if (ins.error) { setPush('구독 저장에 실패했어요: ' + ins.error.message); return; }
+      setPush('알림을 켰어요. 오늘 복습이 있으면 폰으로 알려드릴게요.', true);
+    } catch (e) { setPush('알림을 켜지 못했어요: ' + (e && e.message || e)); }
+  }
+  if (pushBtn) { pushBtn.addEventListener('click', enablePush); }
+
+  function openFocus() { renderTotal(); renderClock(); renderWeek(); refreshPushState(); root.classList.add('nv-focus-on'); syncNav('focus'); }
   function closeFocus() { root.classList.remove('nv-focus-on'); if (running) { pauseF(); } syncNav(); }
   window.nvOpenFocus = openFocus; window.nvCloseFocus = closeFocus;
 
