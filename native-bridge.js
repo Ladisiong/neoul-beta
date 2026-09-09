@@ -1,4 +1,4 @@
-/* 너울(NEOUL) 네이티브 앱 브릿지 v1 — iOS(Capacitor) 전용.
+/* 너울(NEOUL) 네이티브 앱 브릿지 v1.1 — Android(TWA) 표시 + iOS(Capacitor) 로그인 브릿지.
    일반 웹 브라우저·Android TWA(Chrome)에서는 첫 줄에서 즉시 종료되어 아무 동작도 하지 않는다.
 
    해결하는 문제: iOS 앱은 WKWebView로 사이트를 표시하는데, 구글 OAuth는 임베디드 웹뷰를
@@ -10,6 +10,12 @@
    com.neoulai.app://auth/callback 이 등록되어 있어야 한다. */
 (function () {
   'use strict';
+  /* Android 앱(TWA)에서 열린 경우도 네이티브로 표시한다 — 첫 진입의 referrer(android-app://)를 세션에 기억.
+     스토어 결제 정책 대응: html.neoul-native 에서는 앱 내 업셀 문구(.nv-upsell)를 숨긴다. */
+  try {
+    var twa = (document.referrer || '').indexOf('android-app://com.neoulai.app') === 0 || sessionStorage.getItem('neoul_twa') === '1';
+    if (twa) { sessionStorage.setItem('neoul_twa', '1'); document.documentElement.classList.add('neoul-native', 'neoul-twa'); }
+  } catch (e) { /* 저장소 차단 환경 */ }
   var C = window.Capacitor;
   if (!C || typeof C.isNativePlatform !== 'function' || !C.isNativePlatform()) { return; }
 

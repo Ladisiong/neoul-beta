@@ -331,7 +331,7 @@ h2.sec{font-size:1.12rem;color:var(--deep);margin:4px 0 3px}
 <div id="nvBetaBar" role="note">
   <span><b>BETA</b> 정식 출시 전이에요. 지금 <b>무료 회원가입</b>하면 유료 전환 시 혜택을 드립니다.</span>
   <button type="button" class="more" onclick="nvOpenNotice()">자세히</button>
-  <button type="button" class="x" onclick="nvHideBetaBar()" aria-label="베타 안내 닫기">&#10005;</button>
+  <button type="button" class="x" onclick="nvHideBetaBar()" aria-label="베타 안내 닫기">✕</button>
 </div>
 <script>(function(){try{var t=localStorage.getItem("neoul_notice_v2");if(t&&Date.now()<(+t||0)){var b=document.getElementById("nvBetaBar");if(b)b.style.display="none";}}catch(e){}})();</script>
 
@@ -789,8 +789,8 @@ function Dan(){
    const cells=[0,1,2,3,4].map(i=>{if(i<d.hist.length){const ok=d.hist[i]==='O';return `<span class="ox ${ok?'o':'x'}" title="${i+1}회독">${ok?'✓':'✗'}</span>`;}return `<span class="ox n" title="${i+1}회독 미실시">·</span>`;}).join('');
    const act= st.full
      ? (st.keep?`<label style="font-size:.74rem;color:var(--c1);font-weight:700;display:inline-flex;align-items:center;gap:5px;margin-top:6px;cursor:pointer"><input type="checkbox" ${d.fin?'checked':''} onchange="danFinal(${di},this.checked)"> 시험 전 최종 확인</label>`:'')
-     : `<span style="display:inline-flex;gap:5px;margin-top:6px"><button class="do" style="font-size:.72rem;padding:5px 9px;background:#eaf6ef;color:#166534;border:1px solid #bbe3c8" onclick="danMark(${di},'O')">✓ ${d.hist.length+1}회독 맞음</button><button class="do" style="font-size:.72rem;padding:5px 9px;background:#fdecec;color:#b91c1c;border:1px solid #f3c1c1" onclick="danMark(${di},'X')">✗ ${d.hist.length+1}회독 틀림</button></span>`;
-   return `<div class="dz"><div style="display:flex;flex-direction:column;align-items:center;flex:none;gap:3px"><div style="display:flex">${cells}</div><span style="font-size:.56rem;color:var(--muted)">1·3·7·11·15일</span></div><div class="t" style="margin-left:4px;flex:1"><b>${d.subj}</b> — ${d.c}<small>${st.story}</small><input placeholder="왜 틀렸나 · 핵심 한 줄 압축 (압축이 곧 복습)" value="${(d.note||'').replace(/"/g,'&quot;')}" onchange="danNote(${di},this.value)" style="display:block;width:100%;margin-top:6px;font-size:.76rem;padding:6px 8px;border:1px dashed #A8C4DD;border-radius:7px;background:#fbfdff;color:#1A3A5C"/><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${act}<button class="do" style="margin-top:6px;font-size:.72rem;padding:5px 9px;background:#F5F9FC;color:#1A3A5C;border:1px solid #A8C4DD" onclick="ntAskDan(${di})">🤔 이 개념 물어보기</button></div></div><span class="tagx ${st.cls}">${st.label}</span></div>`;}).join('');
+     : `<span style="display:inline-flex;gap:5px;margin-top:6px"><button class="do" style="font-size:.72rem;padding:5px 9px;background:#EAF4EE;color:#256745;border:1px solid #256745" onclick="danMark(${di},'O')">✓ ${d.hist.length+1}회독 맞음</button><button class="do" style="font-size:.72rem;padding:5px 9px;background:#FBEAEA;color:#952626;border:1px solid #952626" onclick="danMark(${di},'X')">✗ ${d.hist.length+1}회독 틀림</button></span>`;
+   return `<div class="dz"><div style="display:flex;flex-direction:column;align-items:center;flex:none;gap:3px"><div style="display:flex">${cells}</div><span style="font-size:.56rem;color:var(--muted)">1·3·7·11·15일</span></div><div class="t" style="margin-left:4px;flex:1"><b>${d.subj}</b> — ${d.c}<small>${st.story}</small><input placeholder="왜 틀렸나 · 핵심 한 줄 압축 (압축이 곧 복습)" value="${(d.note||'').replace(/"/g,'&quot;')}" onchange="danNote(${di},this.value)" style="display:block;width:100%;margin-top:6px;font-size:.76rem;padding:6px 8px;border:1px dashed #A8C4DD;border-radius:8px;background:#FAFBFC;color:#1A3A5C"/><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${act}<button class="do" style="margin-top:6px;font-size:.72rem;padding:5px 9px;background:#F5F9FC;color:#1A3A5C;border:1px solid #A8C4DD" onclick="ntAskDan(${di})">🤔 이 개념 물어보기</button></div></div><span class="tagx ${st.cls}">${st.label}</span></div>`;}).join('');
  const fixN=state.danwon.filter(d=>d.hist.length>=5&&d.hist[d.hist.length-1]==='X').length;
  const candN=state.danwon.filter(d=>d.hist[d.hist.length-1]==='X').length-fixN;
  const masterN=state.danwon.length-fixN-candN;
@@ -801,12 +801,12 @@ function Dan(){
   ${items}
   <div class="note"><b>지금 상태:</b> <b style="color:#fff">단권화 확정 ${fixN}개</b> · 후보 ${candN}개 · <b style="color:var(--wave)">소거(마스터) ${masterN}개</b> · 시험 전 최종 확인 ${finN}/${fixN}. 회독을 완주할수록 시험장에 가져갈 양이 줄어듭니다 — 확정 항목의 ‘시험 전 최종 확인’까지 채우면 준비 끝.</div>`);}
 
-function Quiz(){return el(`<h2 class="sec">AI 퀴즈 <span class="auto">너울 AI 자동 출제·채점</span></h2>
-  <p class="subtle">과목당 8문항(기본3·심화3·<b style="color:var(--c1)">킬러2</b> · 킬러는 단답형). 너울 AI가 복습 범위에서 출제하고, 틀린 문제로 약점을 자동 분류합니다.</p>
+function Quiz(){var _lim=10,_used=(state.user&&state.dbStats)?(state.dbStats.quizToday||0):(state.sampleMode?6:0),_left=Math.max(0,_lim-_used),_pct=Math.min(100,Math.round(_used/_lim*100));/* 크레딧은 실계정이면 오늘 quiz_attempts 집계, 데모면 예시 */return el(`<h2 class="sec">AI 퀴즈 <span class="auto">복습 범위 문제은행 · 자동 채점</span></h2>
+  <p class="subtle">과목당 8문항(기본3·심화3·<b style="color:var(--c1)">킬러2</b> · 킬러는 단답형). 복습 범위의 문제은행에서 출제하고 자동 채점합니다. 틀린 문제는 약점으로 기록돼 복습·단권화에 반영됩니다. 진단 약점 맞춤 AI 출제는 준비 중입니다.</p>
   <div style="background:#FAFBFC;border:1px solid #FAF3E0;border-radius:12px;padding:11px 13px;margin-bottom:12px">
-    <div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem"><b style="color:#952626">무료 AI 크레딧 — 오늘 6/10 사용</b><span style="font-size:.72rem;color:#8C6719">남은 4문항</span></div>
-    <div style="height:9px;background:#FAF3E0;border-radius:4px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:60%;background:#D69E2E"></div></div>
-    <div style="font-size:.74rem;color:#952626;line-height:1.5">Free는 <b>하루 10문항·1과목</b>까지. 약점 정밀 출제·전 과목·성장 리포트는 <b>Basic(₩34,900)</b>부터 — <span style="color:#C53030;font-weight:700">한도에 닿으면 업그레이드</span>.</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:.82rem"><b style="color:#952626">무료 퀴즈 — 오늘 ${_used}/${_lim} 문항 사용${state.user?'':' (예시)'}</b><span style="font-size:.72rem;color:#8C6719">남은 ${_left}문항</span></div>
+    <div style="height:9px;background:#FAF3E0;border-radius:4px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:${_pct}%;background:#D69E2E"></div></div>
+    <div style="font-size:.74rem;color:#952626;line-height:1.5">Free는 <b>하루 10문항·1과목</b>까지.<span class="nv-upsell"> 약점 정밀 출제·전 과목·성장 리포트는 <b>Basic(₩34,900)</b>부터 — <span style="color:#C53030;font-weight:700">한도에 닿으면 업그레이드</span>.</span></div>
   </div>
   <div class="qsel" id="qsel">${Object.keys(QUIZ).map(s=>`<button class="qs ${s===quizSubj?'on':''}" onclick="pickSubj('${s}')">${s} (${QUIZ[s].length})</button>`).join('')}</div>
   <div class="card" id="qbox"></div>`);}
@@ -819,10 +819,10 @@ window.danFinal=function(di,c){var d=state.danwon[di];if(!d)return;d.fin=!!c;if(
 window.danAdd=function(){var s=prompt('과목 (예: 수학)');if(!s)return;var c=prompt('모르는 개념·문제 — 출처까지 (예: 수열의 극한, 교재 p.126)');if(!c)return;var d={subj:String(s).replace(/[<>"]/g,'').trim().slice(0,20),c:String(c).replace(/[<>"]/g,'').trim().slice(0,80),hist:['X'],note:'',fin:false};state.danwon.push(d);danPush(d);go('dan');toast('단권화에 추가 — 회독마다 ✓/✗를 기록하세요');};
 window.danExamWrite=function(w,keep){
  var rows=keep.map(function(d,i){var a=d.ai||null;var body=a&&a.core?('<div class="r"><span>핵심</span>'+a.core+'</div><div class="r t"><span>함정</span>'+(a.trap||'')+'</div><div class="r k"><span>암기</span>'+(a.key||'')+'</div>'):'<small>'+((d.note||'').trim()||'— [📘 너울이 내 단권화 만들기]를 누르면 AI가 핵심 엑기스를 채워 드립니다')+'</small>';return '<div class="i">'+(d.fin?'<span class="f">최종 확인 ✓</span>':'')+'<b>'+(i+1)+'. ['+d.subj+'] '+d.c+'</b>'+body+'</div>';}).join('');
- w.document.open();w.document.write('<html><head><meta charset="UTF-8"><title>단권화 — 시험장 한 권</title><style>body{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;padding:30px;color:#1A3A5C;max-width:760px;margin:0 auto}h1{font-size:22px;border-bottom:3px solid #1A3A5C;padding-bottom:9px}p.s{color:#5b6b7a;font-size:13px;line-height:1.6}div.i{border:1px solid #A8C4DD;border-left:4px solid #2B5F8B;border-radius:9px;padding:12px 15px;margin:10px 0;page-break-inside:avoid}div.i b{font-size:15px}div.i small{display:block;color:#44586b;margin-top:5px;font-size:13px;line-height:1.65}div.r{margin-top:6px;font-size:13px;line-height:1.6;color:#22374a}div.r span{display:inline-block;background:#1A3A5C;color:#fff;font-size:10px;border-radius:4px;padding:1px 7px;margin-right:7px;vertical-align:1px}div.r.t span{background:#b91c1c}div.r.k span{background:#166534}span.f{float:right;font-size:11px;color:#166534;border:1px solid #bbe3c8;border-radius:5px;padding:2px 7px}@media print{button{display:none}}</style></head><body><h1>📘 단권화 — 시험장 한 권 ('+keep.length+'개)</h1><p class="s"><b>5번을 봐도 모르면, 그게 시험문제입니다.</b> 내가 진짜 모르는 것만 압축한 핵심 엑기스 — 시험 전날과 시험장에서는 <b>이 한 권만</b> 봅니다.</p>'+rows+'<button onclick="print()" style="margin-top:16px;padding:11px 20px;background:#1A3A5C;color:#fff;border:0;border-radius:8px;font-size:14px;cursor:pointer">🖨 인쇄 / PDF 저장 — 이것만 들고 시험장으로</button></body></html>');w.document.close();};
+ w.document.open();w.document.write('<html><head><meta charset="UTF-8"><title>단권화 — 시험장 한 권</title><style>body{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;padding:30px;color:#1A3A5C;max-width:760px;margin:0 auto}h1{font-size:22px;border-bottom:3px solid #1A3A5C;padding-bottom:9px}p.s{color:#616E7C;font-size:13px;line-height:1.6}div.i{border:1px solid #A8C4DD;border-left:4px solid #2B5F8B;border-radius:8px;padding:12px 15px;margin:10px 0;page-break-inside:avoid}div.i b{font-size:15px}div.i small{display:block;color:#3E4C59;margin-top:5px;font-size:13px;line-height:1.65}div.r{margin-top:6px;font-size:13px;line-height:1.6;color:#1F2933}div.r span{display:inline-block;background:#1A3A5C;color:#fff;font-size:10px;border-radius:4px;padding:1px 7px;margin-right:7px;vertical-align:1px}div.r.t span{background:#952626}div.r.k span{background:#256745}span.f{float:right;font-size:11px;color:#256745;border:1px solid #256745;border-radius:4px;padding:2px 7px}@media print{button{display:none}}</style></head><body><h1>📘 단권화 — 시험장 한 권 ('+keep.length+'개)</h1><p class="s"><b>5번을 봐도 모르면, 그게 시험문제입니다.</b> 내가 진짜 모르는 것만 압축한 핵심 엑기스 — 시험 전날과 시험장에서는 <b>이 한 권만</b> 봅니다.</p>'+rows+'<button onclick="print()" style="margin-top:16px;padding:11px 20px;background:#1A3A5C;color:#fff;border:0;border-radius:8px;font-size:14px;cursor:pointer">🖨 인쇄 / PDF 저장 — 이것만 들고 시험장으로</button></body></html>');w.document.close();};
 window.danBuild=async function(){var keep=state.danwon.filter(function(d){return d.hist.length>=5&&d.hist[d.hist.length-1]==='X';});if(!keep.length){toast('아직 확정 항목이 없어요 — 5회독을 완주하면 너울이 자동으로 모아 만들어 드립니다');return;}
  var w=window.open('','_blank');
- if(w){w.document.write('<html><head><meta charset="UTF-8"><title>단권화 생성 중…</title></head><body style="font-family:\'Malgun Gothic\',sans-serif;padding:44px;color:#1A3A5C"><h2>📘 너울이 단권화를 만드는 중…</h2><p style="color:#5b6b7a;line-height:1.7">5번을 봐도 모르는 것만 골라 핵심 엑기스로 압축하고 있습니다.<br>약 10초 — 이 창에 결과가 열립니다.</p></body></html>');}
+ if(w){w.document.write('<html><head><meta charset="UTF-8"><title>단권화 생성 중…</title></head><body style="font-family:Pretendard,Malgun Gothic,sans-serif;padding:44px;color:#1A3A5C"><h2>📘 너울이 단권화를 만드는 중…</h2><p style="color:#616E7C;line-height:1.7">5번을 봐도 모르는 것만 골라 핵심 엑기스로 압축하고 있습니다.<br>약 10초 — 이 창에 결과가 열립니다.</p></body></html>');}
  toast('📘 너울이 단권화를 만드는 중… 진짜 모르는 것만 압축합니다');
  try{var r=await fetch('https://iwrblahmszuthemfrhmy.supabase.co/functions/v1/danwon-digest',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:keep.map(function(d){return {subject:d.subj,concept:d.c,note:d.note||''};})})});var j=await r.json();
  if(j&&Array.isArray(j.digests)&&j.digests.length){j.digests.forEach(function(g){var d=keep[g.i];if(d){d.ai={core:g.core||'',trap:g.trap||'',key:g.key||''};danPush(d);}});toast('📘 단권화 완성');if(w)danExamWrite(w,keep);go('dan');}
@@ -862,7 +862,7 @@ function Shop(){
   <div class="card"><b style="font-size:.92rem">물결 리그 · 이번 주</b><div style="font-size:.73rem;color:var(--muted);margin:3px 0 10px">또래 그룹과 ‘복습 이행·향상’으로 선의의 경쟁. <b>절대 순위는 노출하지 않습니다</b>(번아웃 차단).</div>
     <div style="display:flex;gap:6px;text-align:center;font-size:.72rem"><div style="flex:1;background:#F2F4F6;color:var(--c3);border-radius:8px;padding:9px 3px"><b>승급권</b><br/>상위 30%</div><div style="flex:1.2;background:var(--mid);color:#fff;border-radius:8px;padding:9px 3px"><b>나의 위치</b><br/>유지권 상단</div><div style="flex:1;background:#F2F4F6;color:var(--muted);border-radius:8px;padding:9px 3px">유지권</div><div style="flex:1;background:#F2F4F6;color:var(--c1);border-radius:8px;padding:9px 3px"><b>강등권</b><br/>하위 20%</div></div></div>
   <div class="card"><b style="font-size:.92rem">XP 적립 규칙</b><div style="margin-top:8px">${XPRULES.map(r=>`<div style="display:flex;justify-content:space-between;gap:8px;padding:5px 0 1px;font-size:.82rem"><span>${r[0]}</span><b style="color:var(--deep);white-space:nowrap">${r[1]}</b></div><div style="font-size:.67rem;color:var(--muted);margin-bottom:4px;border-bottom:1px dashed var(--border);padding-bottom:4px">${r[2]}</div>`).join('')}</div></div>
-  <div class="card" style="background:#FAFBFC;border:1px solid #FAF3E0"><div style="display:flex;justify-content:space-between;font-size:.84rem"><b style="color:#952626">AI 학습 크레딧 (Free)</b><span style="color:#8C6719;font-size:.74rem">이번 주 8/10</span></div><div style="height:8px;background:#FAF3E0;border-radius:4px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:80%;background:#D69E2E"></div></div><div style="font-size:.74rem;color:#952626">학습 AI 행동을 크레딧으로 미터링(Anthropic Claude식). 한도가 차면 <b>Basic ₩34,900</b>으로 업그레이드 → 전 과목·무제한.</div></div>
+  <div class="card" style="background:#FAFBFC;border:1px solid #FAF3E0"><div style="display:flex;justify-content:space-between;font-size:.84rem"><b style="color:#952626">AI 학습 크레딧 (Free)</b><span style="color:#8C6719;font-size:.74rem">이번 주 8/10</span></div><div style="height:8px;background:#FAF3E0;border-radius:4px;overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:80%;background:#D69E2E"></div></div><div style="font-size:.74rem;color:#952626">학습 AI 행동을 크레딧으로 미터링(Anthropic Claude식).<span class="nv-upsell"> 한도가 차면 <b>Basic ₩34,900</b>으로 업그레이드 → 전 과목·무제한.</span></div></div>
   <div class="kpi"><div class="k"><b>Lv.${state.lvl}</b><span>레벨</span></div><div class="k"><b>${state.points.toLocaleString()}P</b><span>보유 포인트</span></div><div class="k"><b>6일</b><span>연속 학습</span></div></div>
   <div class="card"><b style="font-size:.92rem">포인트 상점</b><div class="shop" style="margin-top:11px">${items}</div><div style="font-size:.72rem;color:var(--muted);margin-top:10px">제휴형(인강 할인·모의고사) 우선 + 실비형 제한 · 보상 원가 = 매출의 2% 상한.</div></div>`);}
 function redeem(i){const s=SHOP[i];if(state.points<s.c)return;state.points-=s.c;document.getElementById('pts').textContent=state.points.toLocaleString()+'P';go('shop');toast('교환 완료: '+s.n+' (-'+s.c.toLocaleString()+'P)');}
@@ -1174,7 +1174,7 @@ window.nbLoadUnits=async()=>{if(!window.NB.user)return;const {data:u}=await SB.f
 window.nbToggleUnit=async(id)=>{if(!window.NB.user)return;var u=(window.state.units||[]).find(function(x){return x.id===id;});if(!u)return;var wk=window.state.weakUnits||(window.state.weakUnits={});var uid=window.NB.user.id;if(wk[id]){delete wk[id];await SB.from('weakness_marks').delete().eq('student_id',uid).eq('unit_id',id);}else{wk[id]=true;await SB.from('weakness_marks').insert({student_id:uid,subject:u.subject,unit_id:id,unit_label:u.name,band:'heavy',score:0.8,source:'unit'});}if(window.go)window.go('parent');};
 window.nbLoadReviews=async()=>{if(!window.NB.user)return;const {data}=await SB.from('review_events').select('id,round,scheduled_date,status,duration_sec,study_items(subject,page_range)').eq('student_id',window.NB.user.id).order('scheduled_date');window.state.dbRev=(data||[]).map(r=>({id:r.id,round:r.round,scheduled_date:r.scheduled_date,status:r.status,duration_sec:r.duration_sec,subject:r.study_items?r.study_items.subject:'',page_range:r.study_items?r.study_items.page_range:''}));};
 window.nbCompleteReview=async(id,sec)=>{if(!window.NB.user)return;await SB.from('review_events').update({status:'done',completed_at:new Date().toISOString(),duration_sec:sec}).eq('id',id);await window.nbLoadReviews();await window.nbStats();if(window.go)window.go('today');};
-window.nbStats=async()=>{if(!window.NB.user)return;const uid=window.NB.user.id;const {data:re}=await SB.from('review_events').select('status').eq('student_id',uid);const {data:qa}=await SB.from('quiz_attempts').select('correct').eq('student_id',uid);const rd=(re||[]).filter(x=>x.status==='done').length;const qc=(qa||[]).filter(x=>x.correct).length;window.state.dbStats={reviewRate:re&&re.length?Math.round(rd/re.length*100):0,quizRate:qa&&qa.length?Math.round(qc/qa.length*100):0,reviewDone:rd,reviewTotal:(re||[]).length,quizTotal:(qa||[]).length,quizCorrect:qc};};
+window.nbStats=async()=>{if(!window.NB.user)return;const uid=window.NB.user.id;const {data:re}=await SB.from('review_events').select('status').eq('student_id',uid);const {data:qa}=await SB.from('quiz_attempts').select('correct,attempted_at').eq('student_id',uid);const rd=(re||[]).filter(x=>x.status==='done').length;const qc=(qa||[]).filter(x=>x.correct).length;const _td=new Date().toISOString().slice(0,10);const _qt=(qa||[]).filter(x=>String(x.attempted_at||'').slice(0,10)===_td).length;window.state.dbStats={reviewRate:re&&re.length?Math.round(rd/re.length*100):0,quizRate:qa&&qa.length?Math.round(qc/qa.length*100):0,reviewDone:rd,reviewTotal:(re||[]).length,quizTotal:(qa||[]).length,quizCorrect:qc,quizToday:_qt};};
 window.nbOAuth=async(provider)=>{try{var nm=provider.replace('custom:','');msg(nm+' 로그인 연결 중...');var redirectTo=location.href.split('#')[0].split('?')[0];var r=await SB.auth.signInWithOAuth({provider:provider,options:{redirectTo:redirectTo}});if(r&&r.error){msg('간편가입 준비 중입니다('+nm+'): '+r.error.message,1);}}catch(e){msg('간편가입 준비 중입니다: '+e.message,1);}};
 SB.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_IN'&&session&&session.user&&!window.NB.user){window.NB.user=session.user;bootUser();}});
 SB.auth.getSession().then(({data})=>{if(data&&data.session){window.NB.user=data.session.user;bootUser();}});
@@ -1375,5 +1375,44 @@ try{var _rp=new URLSearchParams(location.search);if(_rp.get('demo')==='1')state.
 </script>
 <!-- ▲▲ NEOUL AI 학습 튜터 위젯 끝 ▲▲ -->
 
+<!-- ▼▼ 앱 내부 AI 도우미 통합 버튼 — AI 상담·AI 학습 튜터 두 버튼을 하나로 접어 시야를 확보한다 (2026-09-09) ▼▼ -->
+<style>
+html.nv-fab #nvChatFab,html.nv-fab #nt-launch{display:none!important}
+html.nv-fab #app{padding-bottom:96px}
+html.neoul-native .nv-upsell{display:none}
+#nvAiFab{position:fixed;right:16px;bottom:16px;z-index:99998;display:none;flex-direction:column;align-items:flex-end;gap:8px;font-family:inherit;transition:opacity 160ms cubic-bezier(0.2,0,0,1)}
+html.nv-fab #nvAiFab{display:flex}
+#nvAiFab.nv-hide{opacity:0;pointer-events:none}
+#nvAiFab.nv-off{display:none!important}
+#nvAiFabBtn{width:48px;height:48px;border-radius:9999px;border:none;background:#1A3A5C;color:#F5F9FC;font-weight:800;font-size:.86rem;letter-spacing:.02em;box-shadow:0 6px 18px rgba(26,58,92,.28);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+#nvAiFabBtn:active{background:#2B5F8B}
+#nvAiMenu{display:none;flex-direction:column;gap:6px;background:#FFFFFF;border:1px solid #E4E7EB;border-radius:12px;padding:8px;box-shadow:0 12px 32px rgba(26,58,92,.22);min-width:216px}
+#nvAiMenu.on{display:flex}
+#nvAiMenu button{border:none;background:#F5F9FC;border-radius:8px;padding:10px 12px;text-align:left;cursor:pointer;font-family:inherit;color:#1F2933;font-size:.86rem;display:flex;flex-direction:column;gap:2px;min-height:44px}
+#nvAiMenu button:active{background:#EDF1F5}
+#nvAiMenu b{font-size:.9rem;color:#1A3A5C}
+#nvAiMenu small{color:#616E7C;font-size:.74rem}
+</style>
+<script>
+(function(){
+  var root=document.documentElement;
+  var fab=document.createElement('div');fab.id='nvAiFab';
+  fab.innerHTML='<div id="nvAiMenu" role="menu"><button type="button" role="menuitem" data-k="tutor"><b>AI 학습 튜터</b><small>모르는 개념을 단계별로 물어보기</small></button><button type="button" role="menuitem" data-k="chat"><b>AI 상담</b><small>이용·계정 문의</small></button></div><button id="nvAiFabBtn" type="button" aria-label="AI 도우미 열기" aria-expanded="false">AI</button>';
+  document.body.appendChild(fab);
+  var menu=fab.querySelector('#nvAiMenu'),btn=fab.querySelector('#nvAiFabBtn');
+  function inApp(){var a=document.getElementById('app');return !!(a&&!a.classList.contains('hidden'));}
+  function panelsOpen(){var c=document.getElementById('nvChatPanel'),t=document.getElementById('nt-panel');return !!((c&&c.classList.contains('on'))||(t&&!t.hasAttribute('hidden')));}
+  function sync(){var on=inApp();root.classList.toggle('nv-fab',on);fab.classList.toggle('nv-off',!on||panelsOpen());if(!on)menu.classList.remove('on');}
+  btn.addEventListener('click',function(){var o=!menu.classList.contains('on');menu.classList.toggle('on',o);btn.setAttribute('aria-expanded',o?'true':'false');});
+  menu.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;menu.classList.remove('on');btn.setAttribute('aria-expanded','false');if(b.getAttribute('data-k')==='chat'){if(window.nvOpenChat)window.nvOpenChat();}else{var l=document.getElementById('nt-launch');if(l)l.click();}setTimeout(sync,60);});
+  document.addEventListener('click',function(e){if(!fab.contains(e.target))menu.classList.remove('on');});
+  /* 스크롤 중에는 숨기고 멈추면 다시 보인다 — 읽는 동안 시야를 가리지 않도록 */
+  var st;window.addEventListener('scroll',function(){fab.classList.add('nv-hide');clearTimeout(st);st=setTimeout(function(){fab.classList.remove('nv-hide');},260);},{passive:true});
+  function watch(id,attr){var el=document.getElementById(id);if(!el)return;try{new MutationObserver(sync).observe(el,{attributes:true,attributeFilter:[attr]});}catch(e){}}
+  watch('app','class');watch('nvChatPanel','class');watch('nt-panel','hidden');
+  sync();setTimeout(sync,1200);
+})();
+</script>
+<!-- ▲▲ 앱 내부 AI 도우미 통합 버튼 끝 ▲▲ -->
 <script src="/native-bridge.js" defer></script>
 </body></html>
