@@ -1610,19 +1610,19 @@ html.nv-focus-on #nvNav,html.nv-focus-on #nvAiFab{display:none!important}
     if (!pushSupported()) { setPush('이 브라우저는 알림을 지원하지 않아요.'); return; }
     if (isIOS() && !standalone()) { setPush('아이폰은 먼저 홈 화면에 추가한 뒤(공유 → 홈 화면에 추가) 알림을 켤 수 있어요.'); return; }
     if (typeof NB === 'undefined' || !NB || !NB.user) { setPush('로그인 후 알림을 켤 수 있어요.'); return; }
-    if (typeof SB === 'undefined') { setPush('잠시 후 다시 시도해 주세요.'); return; }
+    if (!NB.sb) { setPush('잠시 후 다시 시도해 주세요.'); return; }
     setPush('알림을 켜는 중…');
     try {
       var perm = await Notification.requestPermission();
       if (perm !== 'granted') { setPush('알림 권한이 꺼져 있어요. 브라우저 설정에서 허용해 주세요.'); return; }
       var reg = await navigator.serviceWorker.ready;
-      var keyResp = await SB.functions.invoke('push-key');
+      var keyResp = await NB.sb.functions.invoke('push-key');
       var pub = keyResp && keyResp.data && keyResp.data.publicKey;
       if (!pub) { setPush('알림 키를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.'); return; }
       var sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(pub) });
       var j = sub.toJSON();
       var row = { student_id: NB.user.id, endpoint: sub.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, ua: String(navigator.userAgent).slice(0, 180), last_seen: new Date().toISOString() };
-      var ins = await SB.from('push_subscriptions').upsert(row, { onConflict: 'endpoint' });
+      var ins = await NB.sb.from('push_subscriptions').upsert(row, { onConflict: 'endpoint' });
       if (ins.error) { setPush('구독 저장에 실패했어요: ' + ins.error.message); return; }
       setPush('알림을 켰어요. 오늘 복습이 있으면 폰으로 알려드릴게요.', true);
     } catch (e) { setPush('알림을 켜지 못했어요: ' + (e && e.message || e)); }
