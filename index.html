@@ -798,7 +798,7 @@ function Dan(){
  return el(`<h2 class="sec">단권화 (소거법) <span class="auto">나만의 오답노트</span></h2>
   <p class="subtle"><b>“5번을 봐도 모르면, 그게 시험문제다.”</b> 회독마다 <b style="color:var(--c3)">✓ 맞음</b> / <b style="color:var(--c1)">✗ 틀림</b>만 기록하세요. 5회독을 완주하고도 틀린 것만 남으면 <b>너울이 그것만 모아 핵심 엑기스로 압축한 ‘단권화’를 자동으로 만들어 드립니다</b> — 인쇄해서 <b>시험장에는 이 한 권만</b> 가져가세요.</p>
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="do" style="font-size:.84rem;background:#1A3A5C;color:#fff;font-weight:700" onclick="danBuild()">📘 너울이 내 단권화 만들기 — 확정 ${fixN}개 AI 압축</button><button class="do" style="font-size:.8rem" onclick="danExam()">📗 시험장 한 권 보기</button><button class="do" style="font-size:.8rem" onclick="danAdd()">＋ 모르는 개념 추가</button></div>
-  ${items}
+  ${items||'<div class="card">아직 단권화가 없어요. 퀴즈·복습에서 틀린 개념이 자동으로 쌓입니다.</div>'}
   <div class="note"><b>지금 상태:</b> <b style="color:#fff">단권화 확정 ${fixN}개</b> · 후보 ${candN}개 · <b style="color:var(--wave)">소거(마스터) ${masterN}개</b> · 시험 전 최종 확인 ${finN}/${fixN}. 회독을 완주할수록 시험장에 가져갈 양이 줄어듭니다 — 확정 항목의 ‘시험 전 최종 확인’까지 채우면 준비 끝.</div>`);}
 
 function Quiz(){var _lim=10,_used=(state.user&&state.dbStats)?(state.dbStats.quizToday||0):(state.sampleMode?6:0),_left=Math.max(0,_lim-_used),_pct=Math.min(100,Math.round(_used/_lim*100));/* 크레딧은 실계정이면 오늘 quiz_attempts 집계, 데모면 예시 */return el(`<h2 class="sec">AI 퀴즈 <span class="auto">복습 범위 문제은행 · 자동 채점</span></h2>
@@ -846,7 +846,7 @@ function Shop(){
  let ti=0;for(let i=0;i<TIERS.length;i++)if(cum>=TIERS[i][1])ti=i;
  const cur=TIERS[ti],nx=TIERS[ti+1];const prog=nx?Math.round((cum-cur[1])/(nx[1]-cur[1])*100):100;
  const tierStrip=TIERS.map((t,i)=>`<div style="flex:1;min-width:82px;text-align:center;background:${i===ti?'#fff':'rgba(255,255,255,.12)'};color:${i===ti?'#1A3A5C':'#D3E2EF'};border-radius:12px;padding:9px 5px"><div style="font-size:.88rem;font-weight:800">${t[0]}</div><div style="font-size:.62rem;opacity:.9">${t[1].toLocaleString()}+${i===ti?' · 현재':''}</div></div>`).join('');
- const MISSIONS=[['rev','오늘의 복습 3개 이행',90,'2/3 — 망각곡선 복습'],['quiz','AI 퀴즈 1과목 풀기',50,'능동 인출(retrieval)'],['dan','단권화 1건 정리',15,'메타인지 활동'],['streak','연속 학습 유지(오늘)',30,'🔥 6일째']];
+ const MISSIONS=[['rev','오늘의 복습 3개 이행',90,'망각곡선 복습'],['quiz','AI 퀴즈 1과목 풀기',50,'능동 인출(retrieval)'],['dan','단권화 1건 정리',15,'메타인지 활동'],['streak','연속 학습 유지(오늘)',30,(state.streak?state.streak+'일 연속':'연속 학습 보상')]];
  const missionH=MISSIONS.map(m=>{const c=state.claimed[m[0]];return `<div style="display:flex;align-items:center;gap:10px;padding:11px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;background:#fff"><div style="flex:1"><b style="font-size:.88rem">${m[1]}</b><div style="font-size:.73rem;color:var(--muted)">${m[3]}</div></div><span style="font-weight:800;color:var(--c2);font-size:.82rem">+${m[2]}</span><button onclick="claimMission('${m[0]}',${m[2]})" ${c?'disabled':''} style="border:none;border-radius:8px;padding:7px 13px;font-weight:700;font-size:.8rem;cursor:pointer;${c?'background:#F2F4F6;color:var(--c3)':'background:var(--mid);color:#fff'}">${c?'✓ 완료':'받기'}</button></div>`;}).join('');
  const XPRULES=[['복습 회차 이행(1·3·7·11·15일)','+30','★핵심 — 망각곡선 복습 엔진'],['약점 극복(오답→정답)','+25','‘향상’에 직접 보상'],['단권화 정리','+15','메타인지'],['AI 퀴즈 정답','+10','능동 인출'],['인강 1강 시청','+10','입력형 기본'],['진도 입력','+5','자가기록 습관'],['연속 학습 streak','+5×일','3·7·14·30일 = +50·100·200·500'],['5회독 1과목 완주','+300','★너울 단위 보상 + 티어 승급']];
  const items=SHOP.map((s,i)=>`<div class="item"><div class="ico">${s.i}</div><b>${s.n}</b><div class="c">${s.c.toLocaleString()}P</div><button class="redeem" ${state.points<s.c?'disabled':''} onclick="redeem(${i})">${state.points<s.c?'포인트 부족':'교환하기'}</button></div>`).join('');
@@ -857,7 +857,7 @@ function Shop(){
     <div style="height:14px;background:rgba(255,255,255,.18);border-radius:8px;overflow:hidden;margin:10px 0 5px"><div style="height:100%;width:${prog}%;background:linear-gradient(90deg,#A8C4DD,#fff)"></div></div>
     <div style="font-size:.78rem;color:#D3E2EF">${nx?`물결이 차오릅니다 — <b style="color:#fff">${nx[0]}</b>까지 ${(nx[1]-cum).toLocaleString()} XP`:'최고 티어 달성 🌊'}</div>
     <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:11px">${tierStrip}</div></div>
-  <div class="card"><div style="display:flex;align-items:center;gap:8px"><b style="font-size:.92rem">🔥 연속 학습 6일</b><span style="font-size:.76rem;color:var(--c2);font-weight:700">물결이 끊기지 않았어요</span></div><div style="font-size:.76rem;color:var(--muted);margin-top:4px">다음 마일스톤: 7일 달성 시 <b style="color:var(--deep)">+100 XP</b> 보너스.</div></div>
+  ${(function(){var _sk=state.sampleMode?6:(state.streak||0);return _sk>0?'<div class="card"><div style="display:flex;align-items:center;gap:8px"><b style="font-size:.92rem">🔥 연속 학습 '+_sk+'일</b><span style="font-size:.76rem;color:var(--c2);font-weight:700">물결이 끊기지 않았어요</span></div><div style="font-size:.76rem;color:var(--muted);margin-top:4px">'+(_sk<7?'다음 마일스톤: 7일 달성 시 <b style="color:var(--deep)">+100 XP</b> 보너스.':'꾸준함이 실력이 됩니다 — 오늘도 이어가요.')+'</div></div>':'<div class="card"><b style="font-size:.92rem">연속 학습 0일</b><div style="font-size:.76rem;color:var(--muted);margin-top:4px">오늘 복습을 하면 연속 기록이 시작돼요. 7일 달성 시 <b style="color:var(--deep)">+100 XP</b> 보너스.</div></div>';})()}
   <div class="card"><b style="font-size:.92rem">오늘의 물방울 (미션)</b><div style="margin-top:10px">${missionH}</div></div>
   <div class="card"><b style="font-size:.92rem">물결 리그 · 이번 주</b><div style="font-size:.73rem;color:var(--muted);margin:3px 0 10px">또래 그룹과 ‘복습 이행·향상’으로 선의의 경쟁. <b>절대 순위는 노출하지 않습니다</b>(번아웃 차단).</div>
     <div style="display:flex;gap:6px;text-align:center;font-size:.72rem"><div style="flex:1;background:#F2F4F6;color:var(--c3);border-radius:8px;padding:9px 3px"><b>승급권</b><br/>상위 30%</div><div style="flex:1.2;background:var(--mid);color:#fff;border-radius:8px;padding:9px 3px"><b>나의 위치</b><br/>유지권 상단</div><div style="flex:1;background:#F2F4F6;color:var(--muted);border-radius:8px;padding:9px 3px">유지권</div><div style="flex:1;background:#F2F4F6;color:var(--c1);border-radius:8px;padding:9px 3px"><b>강등권</b><br/>하위 20%</div></div></div>
@@ -1147,8 +1147,8 @@ window.nbBackToSignup=function(){if(window._otpTimer)clearInterval(window._otpTi
 window.nbLogout=async()=>{await SB.auth.signOut();location.reload();};
 async function ensureRows(stype){if(!window.NB.user)return;const uid=window.NB.user.id;/* 최초 1회만 생성하고 기존 행은 건드리지 않는다 (ignoreDuplicates) — 로그인마다 XP·요금제가 초기화되던 결함 차단 */await SB.from('students').upsert({id:uid,student_type:stype||'repeat',exam_system:'current'},{onConflict:'id',ignoreDuplicates:true});await SB.from('subscriptions').upsert({student_id:uid,tier:'free',ai_credits_limit:10},{onConflict:'student_id',ignoreDuplicates:true});await SB.from('gamification').upsert({student_id:uid,xp:0,level:1,points:0,tier:'물방울'},{onConflict:'student_id',ignoreDuplicates:true});}
 async function bootUser(){const st=window.state;const uid=window.NB.user.id;if(window.NB._bootedFor===uid)return;window.NB._bootedFor=uid;/* 동일 사용자 중복 부팅 차단 */await ensureRows();
-  const {data:g}=await SB.from('gamification').select('*').eq('student_id',uid).single();if(g){st.xp=g.xp||0;st.lvl=g.level||1;st.points=g.points||0;}
-  const {data:dw}=await SB.from('danwon_items').select('*').eq('student_id',uid);if(dw&&dw.length){st.danwon=dw.map(d=>({id:d.id,subj:d.subject,c:d.concept,hist:d.review_history||['X'],note:d.note||'',fin:!!d.final_check,ai:d.ai_digest||null}));}
+  const {data:g}=await SB.from('gamification').select('*').eq('student_id',uid).single();if(g){st.xp=g.xp||0;st.lvl=g.level||1;st.points=g.points||0;st.streak=g.streak_days||0;}
+  const {data:dw}=await SB.from('danwon_items').select('*').eq('student_id',uid);st.danwon=(dw||[]).map(d=>({id:d.id,subj:d.subject,c:d.concept,hist:d.review_history||['X'],note:d.note||'',fin:!!d.final_check,ai:d.ai_digest||null}));/* 로그인=항상 DB: 실제 단권화 없으면 빈 목록(데모 잔재 제거) */
   const today=new Date().toISOString().slice(0,10);const {data:ms}=await SB.from('missions').select('mission_key').eq('student_id',uid).eq('for_date',today);if(ms)ms.forEach(m=>st.claimed[m.mission_key]=true);
   try{var _stu=await SB.from('students').select('exam_date').eq('id',uid).single();if(_stu.data&&_stu.data.exam_date)st.examDate=_stu.data.exam_date;}catch(e){}await window.nbLoadReviews();await window.nbStats();await window.nbLoadGrowth();await window.nbLoadUnits();st.guest=false;st.user=uid;st.role='student';window.bootIntoApp();window.toast('환영합니다 — 실시간 저장이 켜졌어요');}
 window.nbSaveDiagnosis=async(r)=>{const st=window.state;if(!window.NB.user)return;const uid=window.NB.user.id;const gmap={'고1':'g1','고2':'g2','고3':'g3'};
@@ -1438,6 +1438,11 @@ html.nv-appshell.nv-inapp #nvNav{display:flex}
 #nvNav .nvNavFocus.on{color:#1A3A5C}
 #nvNav .nvNavFocus.on .nvNavDisc{background:#2B5F8B}
 
+/* '나'(성장) 탭 상단 퀵링크 — 상단 탭이 숨겨진 앱 셸에서 단권화·성장 리포트·진단으로 이동 */
+html.nv-appshell #nvHub{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+html.nv-appshell #nvHub button{flex:1;min-width:96px;min-height:44px;border:1px solid #E4E7EB;background:#FFFFFF;border-radius:12px;color:#1A3A5C;font-weight:700;font-size:.82rem;font-family:inherit;cursor:pointer}
+html.nv-appshell #nvHub button:active{background:#EDF1F5}
+
 /* 집중 화면 — 전체 오버레이 (열품타식 대형 타이머) */
 #nvFocus{position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;background:#F5F9FC;color:#1F2933;font-family:inherit;overflow-y:auto;
   padding:calc(14px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom))}
@@ -1526,11 +1531,21 @@ html.nv-focus-on #nvNav,html.nv-focus-on #nvAiFab{display:none!important}
     if (window.go) { window.go(k); }
   });
 
+  /* '나'(성장) 화면 상단에 단권화·성장 리포트·진단 퀵링크를 얹는다 (앱 셸에서만). go()가 #view를 새로 그리므로 그 직후 삽입한다. */
+  function injectHub(k) {
+    if (!root.classList.contains('nv-appshell') || k !== 'shop') { return; }
+    var view = document.getElementById('view'); if (!view || document.getElementById('nvHub')) { return; }
+    var hub = document.createElement('div'); hub.id = 'nvHub';
+    hub.innerHTML = '<button type="button" data-k="dan">단권화</button><button type="button" data-k="parent">성장 리포트</button><button type="button" data-k="diag">진단·매칭</button>';
+    hub.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && window.go) { window.go(b.dataset.k); } });
+    view.insertBefore(hub, view.firstChild);
+  }
+
   /* go()를 감싸 탭 전환 시 하단 탭 하이라이트를 맞추고, 이동하면 집중 화면을 닫는다. */
   function wrapGo() {
     if (typeof window.go === 'function' && !window.go.__nvWrapped) {
       var orig = window.go;
-      var wrapped = function (k) { var r = orig.apply(this, arguments); try { closeFocus(); syncNav(k); } catch (e) { } return r; };
+      var wrapped = function (k) { var r = orig.apply(this, arguments); try { closeFocus(); syncNav(k); injectHub(k); } catch (e) { } return r; };
       wrapped.__nvWrapped = true; window.go = wrapped; return true;
     }
     return false;
